@@ -1,0 +1,11 @@
+/**
+ * RTK Query Cache Tag Constants
+ */
+export const API_TAGS = {
+  GROWW_STATUS: 'GROWW_STATUS',
+  GROWW_PROFILE: 'GROWW_PROFILE',
+  GROWW_FUNDS: 'GROWW_FUNDS',
+  GROWW_HOLDINGS: 'GROWW_HOLDINGS',
+  GROWW_POSITIONS: 'GROWW_POSITIONS',
+} as const;
+
