@@ -69,12 +69,21 @@ export interface HoldingItem {
   dematFreeQuantity: number;
   averagePrice: number;
   investedValue: number;
+  ltp: number;
+  currentValue: number;
+  pnl: number;
+  pnlPercentage: number;
+  dayChange: number;
+  dayChangePercentage: number;
   tradableExchanges: string[];
 }
 
 export interface GrowwHoldings {
   totalHoldingsCount: number;
   totalInvested: number;
+  totalCurrentValue: number;
+  totalPnl: number;
+  totalPnlPercentage: number;
   holdings: HoldingItem[];
 }
 

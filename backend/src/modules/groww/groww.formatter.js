@@ -166,6 +166,64 @@ class GrowwFormatter {
       }))
     };
   }
+
+    /**
+   * Formats Groww raw holdings list with live returns, current value & PnL.
+   *
+   * @param {Object} rawHoldings
+   * @returns {Object}
+   */
+  static formatHoldings(rawHoldings) {
+    const list = rawHoldings?.payload?.holdings || [];
+
+    let totalInvested = 0;
+    let totalCurrentValue = 0;
+
+    const formattedList = list.map((item) => {
+      const quantity = Number(item.quantity || 0);
+      const avgPrice = Number(item.average_price || 0);
+      const investedValue = quantity * avgPrice;
+      totalInvested += investedValue;
+
+      const live = item.liveQuote || {};
+      const ltp = Number(live.last_price || avgPrice);
+      const currentValue = quantity * ltp;
+      totalCurrentValue += currentValue;
+
+      const pnl = currentValue - investedValue;
+      const pnlPercentage = investedValue > 0 ? (pnl / investedValue) * 100 : 0;
+      const dayChange = Number(live.day_change || 0);
+      const dayChangePercentage = Number(live.day_change_perc || 0);
+
+      return {
+        isin: item.isin,
+        tradingSymbol: item.trading_symbol,
+        quantity,
+        dematFreeQuantity: Number(item.demat_free_quantity || 0),
+        averagePrice: avgPrice,
+        investedValue: Math.round(investedValue * 100) / 100,
+        ltp: Math.round(ltp * 100) / 100,
+        currentValue: Math.round(currentValue * 100) / 100,
+        pnl: Math.round(pnl * 100) / 100,
+        pnlPercentage: Math.round(pnlPercentage * 100) / 100,
+        dayChange: Math.round(dayChange * 100) / 100,
+        dayChangePercentage: Math.round(dayChangePercentage * 100) / 100,
+        tradableExchanges: item.tradable_exchanges || ['NSE']
+      };
+    });
+
+    const totalPnl = totalCurrentValue - totalInvested;
+    const totalPnlPercentage = totalInvested > 0 ? (totalPnl / totalInvested) * 100 : 0;
+
+    return {
+      totalHoldingsCount: formattedList.length,
+      totalInvested: Math.round(totalInvested * 100) / 100,
+      totalCurrentValue: Math.round(totalCurrentValue * 100) / 100,
+      totalPnl: Math.round(totalPnl * 100) / 100,
+      totalPnlPercentage: Math.round(totalPnlPercentage * 100) / 100,
+      holdings: formattedList
+    };
+  }
 }
 
 module.exports = GrowwFormatter;

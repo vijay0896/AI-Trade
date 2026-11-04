@@ -127,6 +127,53 @@ class GrowwClient {
       throw new AppError(`Groww Service Error: ${err.message}`, 502);
     }
   }
+
+    /**
+   * Fetches live market quote for an instrument (with auto-fallback).
+   *
+   * @param {string} accessToken
+   * @param {string} exchange
+   * @param {string} tradingSymbol
+   * @returns {Promise<Object>}
+   */
+  static async getLiveQuote(accessToken, exchange = 'NSE', tradingSymbol) {
+    const url = `${env.GROWW_API_BASE_URL}/v1/live-data/quote?exchange=${exchange}&segment=CASH&trading_symbol=${tradingSymbol}`;
+    try {
+      return await this._authorizedGet(url, accessToken);
+    } catch (err) {
+      // Fallback to real-time NSE quote if Groww plan does not have Live Data permission (403)
+      return await this.getFallbackLiveQuote(tradingSymbol);
+    }
+  }
+
+  /**
+   * Real-time live market fallback quote.
+   */
+  static async getFallbackLiveQuote(tradingSymbol) {
+    try {
+      const symbol = `${tradingSymbol}.NS`;
+      const res = await fetch(`https://query1.finance.yahoo.com/v8/finance/chart/${symbol}?interval=1d`);
+      const json = await res.json();
+      const meta = json.chart?.result?.[0]?.meta;
+      if (meta && meta.regularMarketPrice) {
+        const ltp = Number(meta.regularMarketPrice);
+        const prevClose = Number(meta.chartPreviousClose || meta.previousClose || ltp);
+        const dayChange = ltp - prevClose;
+        const dayChangePerc = prevClose ? (dayChange / prevClose) * 100 : 0;
+        return {
+          status: 'SUCCESS',
+          payload: {
+            last_price: ltp,
+            day_change: Math.round(dayChange * 100) / 100,
+            day_change_perc: Math.round(dayChangePerc * 100) / 100
+          }
+        };
+      }
+    } catch (e) {
+      logger.error(`Fallback quote error for ${tradingSymbol}: ${e.message}`);
+    }
+    return null;
+  }
 }
 
 module.exports = GrowwClient;

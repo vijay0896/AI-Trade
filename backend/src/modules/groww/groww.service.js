@@ -127,6 +127,34 @@ class GrowwService {
     const rawPositions = await GrowwClient.getPositions(token);
     return GrowwFormatter.formatPositions(rawPositions);
   }
+
+
+    /**
+   * Fetches user Demat holdings merged with real-time live market quotes.
+   *
+   * @returns {Promise<Object>} Formatted holdings data with live returns
+   */
+  static async getHoldings() {
+    const token = await this.ensureValidToken();
+    const rawHoldings = await GrowwClient.getHoldings(token);
+    const holdingsList = rawHoldings?.payload?.holdings || [];
+
+    // Fetch live market LTP for each holding in parallel
+    const holdingsWithLiveQuotes = await Promise.all(
+      holdingsList.map(async (holding) => {
+        const quote = await GrowwClient.getLiveQuote(token, 'NSE', holding.trading_symbol);
+        return {
+          ...holding,
+          liveQuote: quote?.payload || null
+        };
+      })
+    );
+
+    return GrowwFormatter.formatHoldings({
+      status: 'SUCCESS',
+      payload: { holdings: holdingsWithLiveQuotes }
+    });
+  }
 }
 
 module.exports = GrowwService;
