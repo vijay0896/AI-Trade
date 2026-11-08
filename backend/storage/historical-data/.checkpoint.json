@@ -1,0 +1,1842 @@
+{
+  "ICICIBANK_2021_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:42.728Z",
+    "candleCount": 1234,
+    "duplicatesCount": 0,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-30T15:25:00"
+  },
+  "ICICIBANK_2021_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:43.901Z",
+    "candleCount": 1760,
+    "duplicatesCount": 0,
+    "earliest": "2021-12-01T09:15:00",
+    "latest": "2021-12-31T15:25:00"
+  },
+  "ICICIBANK_2022_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:45.001Z",
+    "candleCount": 1537,
+    "duplicatesCount": 0,
+    "earliest": "2022-01-03T09:15:00",
+    "latest": "2022-01-31T15:30:00"
+  },
+  "ICICIBANK_2022_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:46.313Z",
+    "candleCount": 1535,
+    "duplicatesCount": 0,
+    "earliest": "2022-02-01T09:15:00",
+    "latest": "2022-02-28T15:30:00"
+  },
+  "ICICIBANK_2022_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:47.304Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2022-03-02T09:15:00",
+    "latest": "2022-03-31T15:30:00"
+  },
+  "ICICIBANK_2022_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:48.133Z",
+    "candleCount": 1464,
+    "duplicatesCount": 0,
+    "earliest": "2022-04-01T09:15:00",
+    "latest": "2022-04-29T15:40:00"
+  },
+  "ICICIBANK_2022_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:49.341Z",
+    "candleCount": 1607,
+    "duplicatesCount": 0,
+    "earliest": "2022-05-02T09:15:00",
+    "latest": "2022-05-31T15:25:00"
+  },
+  "ICICIBANK_2022_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:50.347Z",
+    "candleCount": 1685,
+    "duplicatesCount": 0,
+    "earliest": "2022-06-01T09:15:00",
+    "latest": "2022-06-30T15:25:00"
+  },
+  "ICICIBANK_2022_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:51.447Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2022-07-01T09:15:00",
+    "latest": "2022-07-29T15:40:00"
+  },
+  "ICICIBANK_2022_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:52.680Z",
+    "candleCount": 1542,
+    "duplicatesCount": 0,
+    "earliest": "2022-08-01T09:15:00",
+    "latest": "2022-08-30T15:40:00"
+  },
+  "ICICIBANK_2022_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:53.920Z",
+    "candleCount": 1688,
+    "duplicatesCount": 0,
+    "earliest": "2022-09-01T09:15:00",
+    "latest": "2022-09-30T15:30:00"
+  },
+  "ICICIBANK_2022_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:54.892Z",
+    "candleCount": 1389,
+    "duplicatesCount": 0,
+    "earliest": "2022-10-03T09:15:00",
+    "latest": "2022-10-31T15:25:00"
+  },
+  "ICICIBANK_2022_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:55.994Z",
+    "candleCount": 1612,
+    "duplicatesCount": 0,
+    "earliest": "2022-11-01T09:15:00",
+    "latest": "2022-11-30T15:30:00"
+  },
+  "ICICIBANK_2022_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:57.020Z",
+    "candleCount": 1687,
+    "duplicatesCount": 0,
+    "earliest": "2022-12-01T09:15:00",
+    "latest": "2022-12-30T15:40:00"
+  },
+  "ICICIBANK_2023_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:58.043Z",
+    "candleCount": 1620,
+    "duplicatesCount": 0,
+    "earliest": "2023-01-02T09:15:00",
+    "latest": "2023-01-31T15:25:00"
+  },
+  "ICICIBANK_2023_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:38:59.201Z",
+    "candleCount": 1529,
+    "duplicatesCount": 0,
+    "earliest": "2023-02-01T09:15:00",
+    "latest": "2023-02-28T15:25:00"
+  },
+  "ICICIBANK_2023_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:00.605Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2023-03-01T09:15:00",
+    "latest": "2023-03-31T15:25:00"
+  },
+  "ICICIBANK_2023_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:01.732Z",
+    "candleCount": 1304,
+    "duplicatesCount": 0,
+    "earliest": "2023-04-03T09:15:00",
+    "latest": "2023-04-28T16:00:00"
+  },
+  "ICICIBANK_2023_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:02.935Z",
+    "candleCount": 1680,
+    "duplicatesCount": 0,
+    "earliest": "2023-05-02T09:15:00",
+    "latest": "2023-05-31T15:30:00"
+  },
+  "ICICIBANK_2023_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:04.024Z",
+    "candleCount": 1610,
+    "duplicatesCount": 0,
+    "earliest": "2023-06-01T09:15:00",
+    "latest": "2023-06-30T15:30:00"
+  },
+  "ICICIBANK_2023_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:04.999Z",
+    "candleCount": 1608,
+    "duplicatesCount": 0,
+    "earliest": "2023-07-03T09:15:00",
+    "latest": "2023-07-31T15:30:00"
+  },
+  "ICICIBANK_2023_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:06.135Z",
+    "candleCount": 1676,
+    "duplicatesCount": 0,
+    "earliest": "2023-08-01T09:15:00",
+    "latest": "2023-08-31T15:25:00"
+  },
+  "ICICIBANK_2023_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:07.058Z",
+    "candleCount": 1530,
+    "duplicatesCount": 0,
+    "earliest": "2023-09-01T09:15:00",
+    "latest": "2023-09-29T15:40:00"
+  },
+  "ICICIBANK_2023_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:08.071Z",
+    "candleCount": 1533,
+    "duplicatesCount": 0,
+    "earliest": "2023-10-03T09:15:00",
+    "latest": "2023-10-31T15:30:00"
+  },
+  "ICICIBANK_2023_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:09.043Z",
+    "candleCount": 1541,
+    "duplicatesCount": 0,
+    "earliest": "2023-11-01T09:15:00",
+    "latest": "2023-11-30T15:25:00"
+  },
+  "ICICIBANK_2023_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:10.010Z",
+    "candleCount": 1533,
+    "duplicatesCount": 0,
+    "earliest": "2023-12-01T09:15:00",
+    "latest": "2023-12-29T15:40:00"
+  },
+  "ICICIBANK_2024_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:11.003Z",
+    "candleCount": 1692,
+    "duplicatesCount": 0,
+    "earliest": "2024-01-01T09:15:00",
+    "latest": "2024-01-31T15:30:00"
+  },
+  "ICICIBANK_2024_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:12.006Z",
+    "candleCount": 1613,
+    "duplicatesCount": 0,
+    "earliest": "2024-02-01T09:15:00",
+    "latest": "2024-02-29T15:25:00"
+  },
+  "ICICIBANK_2024_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:12.932Z",
+    "candleCount": 1399,
+    "duplicatesCount": 0,
+    "earliest": "2024-03-01T09:15:00",
+    "latest": "2024-03-28T16:00:00"
+  },
+  "ICICIBANK_2024_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:13.810Z",
+    "candleCount": 1536,
+    "duplicatesCount": 0,
+    "earliest": "2024-04-01T09:15:00",
+    "latest": "2024-04-30T15:25:00"
+  },
+  "ICICIBANK_2024_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:14.738Z",
+    "candleCount": 1633,
+    "duplicatesCount": 0,
+    "earliest": "2024-05-02T09:15:00",
+    "latest": "2024-05-31T15:30:00"
+  },
+  "ICICIBANK_2024_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:15.684Z",
+    "candleCount": 1460,
+    "duplicatesCount": 0,
+    "earliest": "2024-06-03T09:15:00",
+    "latest": "2024-06-28T15:40:00"
+  },
+  "ICICIBANK_2024_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:16.623Z",
+    "candleCount": 1685,
+    "duplicatesCount": 0,
+    "earliest": "2024-07-01T09:15:00",
+    "latest": "2024-07-31T15:25:00"
+  },
+  "ICICIBANK_2024_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:17.667Z",
+    "candleCount": 1616,
+    "duplicatesCount": 0,
+    "earliest": "2024-08-01T09:15:00",
+    "latest": "2024-08-30T15:40:00"
+  },
+  "ICICIBANK_2024_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:18.627Z",
+    "candleCount": 1622,
+    "duplicatesCount": 0,
+    "earliest": "2024-09-02T09:15:00",
+    "latest": "2024-09-30T15:30:00"
+  },
+  "ICICIBANK_2024_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:19.652Z",
+    "candleCount": 1687,
+    "duplicatesCount": 0,
+    "earliest": "2024-10-01T09:15:00",
+    "latest": "2024-10-31T15:30:00"
+  },
+  "ICICIBANK_2024_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:20.645Z",
+    "candleCount": 1388,
+    "duplicatesCount": 0,
+    "earliest": "2024-11-01T18:00:00",
+    "latest": "2024-11-29T15:40:00"
+  },
+  "ICICIBANK_2024_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:21.738Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2024-12-02T09:15:00",
+    "latest": "2024-12-31T15:25:00"
+  },
+  "ICICIBANK_2025_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:22.700Z",
+    "candleCount": 1864,
+    "duplicatesCount": 0,
+    "earliest": "2025-01-01T09:15:00",
+    "latest": "2025-01-31T15:25:00"
+  },
+  "ICICIBANK_2025_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:23.723Z",
+    "candleCount": 1623,
+    "duplicatesCount": 0,
+    "earliest": "2025-02-01T09:15:00",
+    "latest": "2025-02-28T15:25:00"
+  },
+  "ICICIBANK_2025_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:24.705Z",
+    "candleCount": 1549,
+    "duplicatesCount": 0,
+    "earliest": "2025-03-03T09:00:00",
+    "latest": "2025-03-28T15:55:00"
+  },
+  "ICICIBANK_2025_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:25.647Z",
+    "candleCount": 1536,
+    "duplicatesCount": 0,
+    "earliest": "2025-04-01T09:15:00",
+    "latest": "2025-04-30T15:30:00"
+  },
+  "ICICIBANK_2025_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:26.587Z",
+    "candleCount": 1707,
+    "duplicatesCount": 0,
+    "earliest": "2025-05-02T09:00:00",
+    "latest": "2025-05-30T15:50:00"
+  },
+  "ICICIBANK_2025_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:27.760Z",
+    "candleCount": 1711,
+    "duplicatesCount": 0,
+    "earliest": "2025-06-02T09:00:00",
+    "latest": "2025-06-30T15:30:00"
+  },
+  "ICICIBANK_2025_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:28.786Z",
+    "candleCount": 1868,
+    "duplicatesCount": 0,
+    "earliest": "2025-07-01T09:15:00",
+    "latest": "2025-07-31T15:30:00"
+  },
+  "ICICIBANK_2025_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:29.769Z",
+    "candleCount": 1546,
+    "duplicatesCount": 0,
+    "earliest": "2025-08-01T09:15:00",
+    "latest": "2025-08-29T15:50:00"
+  },
+  "ICICIBANK_2025_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:30.805Z",
+    "candleCount": 1769,
+    "duplicatesCount": 0,
+    "earliest": "2025-09-01T09:15:00",
+    "latest": "2025-09-30T15:25:00"
+  },
+  "ICICIBANK_2025_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:31.800Z",
+    "candleCount": 1632,
+    "duplicatesCount": 0,
+    "earliest": "2025-10-01T09:15:00",
+    "latest": "2025-10-31T15:30:00"
+  },
+  "ICICIBANK_2025_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:33.081Z",
+    "candleCount": 1436,
+    "duplicatesCount": 0,
+    "earliest": "2025-11-03T09:15:00",
+    "latest": "2025-11-28T15:55:00"
+  },
+  "ICICIBANK_2025_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:34.132Z",
+    "candleCount": 1746,
+    "duplicatesCount": 0,
+    "earliest": "2025-12-01T09:15:00",
+    "latest": "2025-12-31T15:25:00"
+  },
+  "ICICIBANK_2026_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:35.130Z",
+    "candleCount": 1596,
+    "duplicatesCount": 0,
+    "earliest": "2026-01-01T09:15:00",
+    "latest": "2026-01-30T15:55:00"
+  },
+  "ICICIBANK_2026_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:36.137Z",
+    "candleCount": 1674,
+    "duplicatesCount": 0,
+    "earliest": "2026-02-01T09:15:00",
+    "latest": "2026-02-27T15:55:00"
+  },
+  "ICICIBANK_2026_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:37.447Z",
+    "candleCount": 1518,
+    "duplicatesCount": 0,
+    "earliest": "2026-03-02T09:15:00",
+    "latest": "2026-03-30T15:55:00"
+  },
+  "ICICIBANK_2026_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:38.372Z",
+    "candleCount": 1587,
+    "duplicatesCount": 0,
+    "earliest": "2026-04-01T09:15:00",
+    "latest": "2026-04-30T15:25:00"
+  },
+  "ICICIBANK_2026_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:39.329Z",
+    "candleCount": 1510,
+    "duplicatesCount": 0,
+    "earliest": "2026-05-04T09:15:00",
+    "latest": "2026-05-29T15:50:00"
+  },
+  "ICICIBANK_2026_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:40.342Z",
+    "candleCount": 1660,
+    "duplicatesCount": 0,
+    "earliest": "2026-06-01T09:15:00",
+    "latest": "2026-06-30T15:25:00"
+  },
+  "ICICIBANK_2026_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:41.301Z",
+    "candleCount": 1824,
+    "duplicatesCount": 0,
+    "earliest": "2026-07-01T09:15:00",
+    "latest": "2026-07-31T15:30:00"
+  },
+  "ICICIBANK_2026_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:42.369Z",
+    "candleCount": 1618,
+    "duplicatesCount": 0,
+    "earliest": "2026-08-03T09:15:00",
+    "latest": "2026-08-31T15:25:00"
+  },
+  "ICICIBANK_2026_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:43.682Z",
+    "candleCount": 1576,
+    "duplicatesCount": 0,
+    "earliest": "2026-09-01T09:15:00",
+    "latest": "2026-09-30T15:25:00"
+  },
+  "ICICIBANK_2026_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:44.678Z",
+    "candleCount": 1519,
+    "duplicatesCount": 0,
+    "earliest": "2026-10-01T09:15:00",
+    "latest": "2026-10-30T15:55:00"
+  },
+  "ICICIBANK_2026_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:45.103Z",
+    "candleCount": 378,
+    "duplicatesCount": 0,
+    "earliest": "2026-11-02T09:15:00",
+    "latest": "2026-11-06T15:25:00"
+  },
+  "HDFCBANK_2021_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:46.381Z",
+    "candleCount": 1229,
+    "duplicatesCount": 0,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-30T15:30:00"
+  },
+  "HDFCBANK_2021_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:47.520Z",
+    "candleCount": 1762,
+    "duplicatesCount": 0,
+    "earliest": "2021-12-01T09:15:00",
+    "latest": "2021-12-31T15:25:00"
+  },
+  "HDFCBANK_2022_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:48.545Z",
+    "candleCount": 1540,
+    "duplicatesCount": 0,
+    "earliest": "2022-01-03T09:15:00",
+    "latest": "2022-01-31T15:25:00"
+  },
+  "HDFCBANK_2022_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:49.514Z",
+    "candleCount": 1537,
+    "duplicatesCount": 0,
+    "earliest": "2022-02-01T09:15:00",
+    "latest": "2022-02-28T15:30:00"
+  },
+  "HDFCBANK_2022_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:50.626Z",
+    "candleCount": 1610,
+    "duplicatesCount": 0,
+    "earliest": "2022-03-02T09:15:00",
+    "latest": "2022-03-31T15:30:00"
+  },
+  "HDFCBANK_2022_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:51.692Z",
+    "candleCount": 1467,
+    "duplicatesCount": 0,
+    "earliest": "2022-04-01T09:15:00",
+    "latest": "2022-04-29T15:40:00"
+  },
+  "HDFCBANK_2022_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:53.021Z",
+    "candleCount": 1614,
+    "duplicatesCount": 0,
+    "earliest": "2022-05-02T09:15:00",
+    "latest": "2022-05-31T15:30:00"
+  },
+  "HDFCBANK_2022_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:53.992Z",
+    "candleCount": 1687,
+    "duplicatesCount": 0,
+    "earliest": "2022-06-01T09:15:00",
+    "latest": "2022-06-30T15:25:00"
+  },
+  "HDFCBANK_2022_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:55.066Z",
+    "candleCount": 1610,
+    "duplicatesCount": 0,
+    "earliest": "2022-07-01T09:15:00",
+    "latest": "2022-07-29T15:40:00"
+  },
+  "HDFCBANK_2022_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:55.993Z",
+    "candleCount": 1539,
+    "duplicatesCount": 0,
+    "earliest": "2022-08-01T09:15:00",
+    "latest": "2022-08-30T15:40:00"
+  },
+  "HDFCBANK_2022_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:56.949Z",
+    "candleCount": 1690,
+    "duplicatesCount": 0,
+    "earliest": "2022-09-01T09:15:00",
+    "latest": "2022-09-30T15:25:00"
+  },
+  "HDFCBANK_2022_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:57.890Z",
+    "candleCount": 1393,
+    "duplicatesCount": 0,
+    "earliest": "2022-10-03T09:15:00",
+    "latest": "2022-10-31T15:25:00"
+  },
+  "HDFCBANK_2022_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:58.910Z",
+    "candleCount": 1611,
+    "duplicatesCount": 0,
+    "earliest": "2022-11-01T09:15:00",
+    "latest": "2022-11-30T15:30:00"
+  },
+  "HDFCBANK_2022_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:39:59.933Z",
+    "candleCount": 1692,
+    "duplicatesCount": 0,
+    "earliest": "2022-12-01T09:15:00",
+    "latest": "2022-12-30T15:40:00"
+  },
+  "HDFCBANK_2023_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:00.934Z",
+    "candleCount": 1622,
+    "duplicatesCount": 0,
+    "earliest": "2023-01-02T09:15:00",
+    "latest": "2023-01-31T15:25:00"
+  },
+  "HDFCBANK_2023_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:01.845Z",
+    "candleCount": 1529,
+    "duplicatesCount": 0,
+    "earliest": "2023-02-01T09:15:00",
+    "latest": "2023-02-28T15:30:00"
+  },
+  "HDFCBANK_2023_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:03.144Z",
+    "candleCount": 1605,
+    "duplicatesCount": 0,
+    "earliest": "2023-03-01T09:15:00",
+    "latest": "2023-03-31T15:30:00"
+  },
+  "HDFCBANK_2023_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:04.279Z",
+    "candleCount": 1299,
+    "duplicatesCount": 0,
+    "earliest": "2023-04-03T09:15:00",
+    "latest": "2023-04-28T15:40:00"
+  },
+  "HDFCBANK_2023_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:05.390Z",
+    "candleCount": 1684,
+    "duplicatesCount": 0,
+    "earliest": "2023-05-02T09:15:00",
+    "latest": "2023-05-31T15:30:00"
+  },
+  "HDFCBANK_2023_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:06.535Z",
+    "candleCount": 1611,
+    "duplicatesCount": 0,
+    "earliest": "2023-06-01T09:15:00",
+    "latest": "2023-06-30T15:30:00"
+  },
+  "HDFCBANK_2023_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:07.621Z",
+    "candleCount": 1615,
+    "duplicatesCount": 0,
+    "earliest": "2023-07-03T09:15:00",
+    "latest": "2023-07-31T15:25:00"
+  },
+  "HDFCBANK_2023_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:08.697Z",
+    "candleCount": 1691,
+    "duplicatesCount": 0,
+    "earliest": "2023-08-01T09:15:00",
+    "latest": "2023-08-31T15:25:00"
+  },
+  "HDFCBANK_2023_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:09.904Z",
+    "candleCount": 1536,
+    "duplicatesCount": 0,
+    "earliest": "2023-09-01T09:15:00",
+    "latest": "2023-09-29T15:55:00"
+  },
+  "HDFCBANK_2023_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:10.996Z",
+    "candleCount": 1538,
+    "duplicatesCount": 0,
+    "earliest": "2023-10-03T09:15:00",
+    "latest": "2023-10-31T15:30:00"
+  },
+  "HDFCBANK_2023_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:12.079Z",
+    "candleCount": 1546,
+    "duplicatesCount": 0,
+    "earliest": "2023-11-01T09:15:00",
+    "latest": "2023-11-30T15:25:00"
+  },
+  "HDFCBANK_2023_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:13.508Z",
+    "candleCount": 1538,
+    "duplicatesCount": 0,
+    "earliest": "2023-12-01T09:15:00",
+    "latest": "2023-12-29T15:40:00"
+  },
+  "HDFCBANK_2024_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:15.220Z",
+    "candleCount": 1696,
+    "duplicatesCount": 0,
+    "earliest": "2024-01-01T09:15:00",
+    "latest": "2024-01-31T15:30:00"
+  },
+  "HDFCBANK_2024_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:16.293Z",
+    "candleCount": 1622,
+    "duplicatesCount": 0,
+    "earliest": "2024-02-01T09:15:00",
+    "latest": "2024-02-29T15:30:00"
+  },
+  "HDFCBANK_2024_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:17.249Z",
+    "candleCount": 1404,
+    "duplicatesCount": 0,
+    "earliest": "2024-03-01T09:15:00",
+    "latest": "2024-03-28T15:40:00"
+  },
+  "HDFCBANK_2024_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:18.253Z",
+    "candleCount": 1539,
+    "duplicatesCount": 0,
+    "earliest": "2024-04-01T09:15:00",
+    "latest": "2024-04-30T15:30:00"
+  },
+  "HDFCBANK_2024_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:19.280Z",
+    "candleCount": 1635,
+    "duplicatesCount": 0,
+    "earliest": "2024-05-02T09:15:00",
+    "latest": "2024-05-31T15:30:00"
+  },
+  "HDFCBANK_2024_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:20.662Z",
+    "candleCount": 1462,
+    "duplicatesCount": 0,
+    "earliest": "2024-06-03T09:15:00",
+    "latest": "2024-06-28T15:40:00"
+  },
+  "HDFCBANK_2024_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:21.647Z",
+    "candleCount": 1694,
+    "duplicatesCount": 0,
+    "earliest": "2024-07-01T09:15:00",
+    "latest": "2024-07-31T15:30:00"
+  },
+  "HDFCBANK_2024_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:22.965Z",
+    "candleCount": 1618,
+    "duplicatesCount": 0,
+    "earliest": "2024-08-01T09:15:00",
+    "latest": "2024-08-30T15:40:00"
+  },
+  "HDFCBANK_2024_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:24.104Z",
+    "candleCount": 1621,
+    "duplicatesCount": 0,
+    "earliest": "2024-09-02T09:15:00",
+    "latest": "2024-09-30T15:30:00"
+  },
+  "HDFCBANK_2024_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:25.167Z",
+    "candleCount": 1687,
+    "duplicatesCount": 0,
+    "earliest": "2024-10-01T09:15:00",
+    "latest": "2024-10-31T15:25:00"
+  },
+  "HDFCBANK_2024_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:26.161Z",
+    "candleCount": 1393,
+    "duplicatesCount": 0,
+    "earliest": "2024-11-01T18:00:00",
+    "latest": "2024-11-29T15:40:00"
+  },
+  "HDFCBANK_2024_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:27.258Z",
+    "candleCount": 1615,
+    "duplicatesCount": 0,
+    "earliest": "2024-12-02T09:15:00",
+    "latest": "2024-12-31T15:30:00"
+  },
+  "HDFCBANK_2025_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:28.313Z",
+    "candleCount": 1872,
+    "duplicatesCount": 0,
+    "earliest": "2025-01-01T09:15:00",
+    "latest": "2025-01-31T15:30:00"
+  },
+  "HDFCBANK_2025_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:29.286Z",
+    "candleCount": 1631,
+    "duplicatesCount": 0,
+    "earliest": "2025-02-01T09:15:00",
+    "latest": "2025-02-28T15:30:00"
+  },
+  "HDFCBANK_2025_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:30.266Z",
+    "candleCount": 1557,
+    "duplicatesCount": 0,
+    "earliest": "2025-03-03T09:00:00",
+    "latest": "2025-03-28T15:55:00"
+  },
+  "HDFCBANK_2025_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:31.248Z",
+    "candleCount": 1542,
+    "duplicatesCount": 0,
+    "earliest": "2025-04-01T09:15:00",
+    "latest": "2025-04-30T15:30:00"
+  },
+  "HDFCBANK_2025_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:32.412Z",
+    "candleCount": 1712,
+    "duplicatesCount": 0,
+    "earliest": "2025-05-02T09:00:00",
+    "latest": "2025-05-30T15:50:00"
+  },
+  "HDFCBANK_2025_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:33.380Z",
+    "candleCount": 1716,
+    "duplicatesCount": 0,
+    "earliest": "2025-06-02T09:00:00",
+    "latest": "2025-06-30T15:30:00"
+  },
+  "HDFCBANK_2025_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:34.720Z",
+    "candleCount": 1873,
+    "duplicatesCount": 0,
+    "earliest": "2025-07-01T09:15:00",
+    "latest": "2025-07-31T15:30:00"
+  },
+  "HDFCBANK_2025_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:35.606Z",
+    "candleCount": 1553,
+    "duplicatesCount": 0,
+    "earliest": "2025-08-01T09:15:00",
+    "latest": "2025-08-29T15:55:00"
+  },
+  "HDFCBANK_2025_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:36.576Z",
+    "candleCount": 1779,
+    "duplicatesCount": 0,
+    "earliest": "2025-09-01T09:15:00",
+    "latest": "2025-09-30T15:30:00"
+  },
+  "HDFCBANK_2025_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:37.628Z",
+    "candleCount": 1640,
+    "duplicatesCount": 0,
+    "earliest": "2025-10-01T09:15:00",
+    "latest": "2025-10-31T15:30:00"
+  },
+  "HDFCBANK_2025_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:38.559Z",
+    "candleCount": 1441,
+    "duplicatesCount": 0,
+    "earliest": "2025-11-03T09:15:00",
+    "latest": "2025-11-28T15:55:00"
+  },
+  "HDFCBANK_2025_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:39.512Z",
+    "candleCount": 1751,
+    "duplicatesCount": 0,
+    "earliest": "2025-12-01T09:15:00",
+    "latest": "2025-12-31T15:30:00"
+  },
+  "HDFCBANK_2026_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:40.532Z",
+    "candleCount": 1598,
+    "duplicatesCount": 0,
+    "earliest": "2026-01-01T09:15:00",
+    "latest": "2026-01-30T15:55:00"
+  },
+  "HDFCBANK_2026_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:41.975Z",
+    "candleCount": 1679,
+    "duplicatesCount": 0,
+    "earliest": "2026-02-01T09:15:00",
+    "latest": "2026-02-27T15:55:00"
+  },
+  "HDFCBANK_2026_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:43.118Z",
+    "candleCount": 1520,
+    "duplicatesCount": 0,
+    "earliest": "2026-03-02T09:15:00",
+    "latest": "2026-03-30T15:55:00"
+  },
+  "HDFCBANK_2026_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:44.113Z",
+    "candleCount": 1591,
+    "duplicatesCount": 0,
+    "earliest": "2026-04-01T09:15:00",
+    "latest": "2026-04-30T15:30:00"
+  },
+  "HDFCBANK_2026_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:45.090Z",
+    "candleCount": 1514,
+    "duplicatesCount": 0,
+    "earliest": "2026-05-04T09:15:00",
+    "latest": "2026-05-29T15:55:00"
+  },
+  "HDFCBANK_2026_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:46.070Z",
+    "candleCount": 1661,
+    "duplicatesCount": 0,
+    "earliest": "2026-06-01T09:15:00",
+    "latest": "2026-06-30T15:25:00"
+  },
+  "HDFCBANK_2026_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:46.996Z",
+    "candleCount": 1832,
+    "duplicatesCount": 0,
+    "earliest": "2026-07-01T09:15:00",
+    "latest": "2026-07-31T15:30:00"
+  },
+  "HDFCBANK_2026_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:47.988Z",
+    "candleCount": 1617,
+    "duplicatesCount": 0,
+    "earliest": "2026-08-03T09:15:00",
+    "latest": "2026-08-31T15:25:00"
+  },
+  "HDFCBANK_2026_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:48.955Z",
+    "candleCount": 1577,
+    "duplicatesCount": 0,
+    "earliest": "2026-09-01T09:15:00",
+    "latest": "2026-09-30T15:25:00"
+  },
+  "HDFCBANK_2026_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:49.891Z",
+    "candleCount": 1519,
+    "duplicatesCount": 0,
+    "earliest": "2026-10-01T09:15:00",
+    "latest": "2026-10-30T15:55:00"
+  },
+  "HDFCBANK_2026_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:50.291Z",
+    "candleCount": 378,
+    "duplicatesCount": 0,
+    "earliest": "2026-11-02T09:15:00",
+    "latest": "2026-11-06T15:25:00"
+  },
+  "M&M_2021_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:51.172Z",
+    "candleCount": 1227,
+    "duplicatesCount": 0,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-30T15:30:00"
+  },
+  "M&M_2021_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:52.371Z",
+    "candleCount": 1758,
+    "duplicatesCount": 0,
+    "earliest": "2021-12-01T09:15:00",
+    "latest": "2021-12-31T15:25:00"
+  },
+  "M&M_2022_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:53.935Z",
+    "candleCount": 1539,
+    "duplicatesCount": 0,
+    "earliest": "2022-01-03T09:15:00",
+    "latest": "2022-01-31T15:30:00"
+  },
+  "M&M_2022_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:55.108Z",
+    "candleCount": 1529,
+    "duplicatesCount": 0,
+    "earliest": "2022-02-01T09:15:00",
+    "latest": "2022-02-28T15:30:00"
+  },
+  "M&M_2022_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:56.633Z",
+    "candleCount": 1611,
+    "duplicatesCount": 0,
+    "earliest": "2022-03-02T09:15:00",
+    "latest": "2022-03-31T15:30:00"
+  },
+  "M&M_2022_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:57.653Z",
+    "candleCount": 1457,
+    "duplicatesCount": 0,
+    "earliest": "2022-04-01T09:15:00",
+    "latest": "2022-04-29T15:40:00"
+  },
+  "M&M_2022_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:40:58.999Z",
+    "candleCount": 1600,
+    "duplicatesCount": 0,
+    "earliest": "2022-05-02T09:15:00",
+    "latest": "2022-05-31T15:30:00"
+  },
+  "M&M_2022_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:00.202Z",
+    "candleCount": 1683,
+    "duplicatesCount": 0,
+    "earliest": "2022-06-01T09:15:00",
+    "latest": "2022-06-30T15:30:00"
+  },
+  "M&M_2022_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:01.415Z",
+    "candleCount": 1606,
+    "duplicatesCount": 0,
+    "earliest": "2022-07-01T09:15:00",
+    "latest": "2022-07-29T15:40:00"
+  },
+  "M&M_2022_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:02.534Z",
+    "candleCount": 1533,
+    "duplicatesCount": 0,
+    "earliest": "2022-08-01T09:15:00",
+    "latest": "2022-08-30T15:40:00"
+  },
+  "M&M_2022_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:03.838Z",
+    "candleCount": 1686,
+    "duplicatesCount": 0,
+    "earliest": "2022-09-01T09:15:00",
+    "latest": "2022-09-30T15:25:00"
+  },
+  "M&M_2022_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:04.875Z",
+    "candleCount": 1384,
+    "duplicatesCount": 0,
+    "earliest": "2022-10-03T09:15:00",
+    "latest": "2022-10-31T15:30:00"
+  },
+  "M&M_2022_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:05.912Z",
+    "candleCount": 1610,
+    "duplicatesCount": 0,
+    "earliest": "2022-11-01T09:15:00",
+    "latest": "2022-11-30T15:30:00"
+  },
+  "M&M_2022_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:06.917Z",
+    "candleCount": 1683,
+    "duplicatesCount": 0,
+    "earliest": "2022-12-01T09:15:00",
+    "latest": "2022-12-30T15:40:00"
+  },
+  "M&M_2023_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:07.954Z",
+    "candleCount": 1607,
+    "duplicatesCount": 0,
+    "earliest": "2023-01-02T09:15:00",
+    "latest": "2023-01-31T15:30:00"
+  },
+  "M&M_2023_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:08.910Z",
+    "candleCount": 1525,
+    "duplicatesCount": 0,
+    "earliest": "2023-02-01T09:15:00",
+    "latest": "2023-02-28T15:25:00"
+  },
+  "M&M_2023_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:10.447Z",
+    "candleCount": 1605,
+    "duplicatesCount": 0,
+    "earliest": "2023-03-01T09:15:00",
+    "latest": "2023-03-31T15:30:00"
+  },
+  "M&M_2023_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:11.389Z",
+    "candleCount": 1296,
+    "duplicatesCount": 0,
+    "earliest": "2023-04-03T09:15:00",
+    "latest": "2023-04-28T15:40:00"
+  },
+  "M&M_2023_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:12.614Z",
+    "candleCount": 1686,
+    "duplicatesCount": 0,
+    "earliest": "2023-05-02T09:15:00",
+    "latest": "2023-05-31T15:30:00"
+  },
+  "M&M_2023_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:13.776Z",
+    "candleCount": 1602,
+    "duplicatesCount": 0,
+    "earliest": "2023-06-01T09:15:00",
+    "latest": "2023-06-30T15:30:00"
+  },
+  "M&M_2023_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:14.813Z",
+    "candleCount": 1604,
+    "duplicatesCount": 0,
+    "earliest": "2023-07-03T09:15:00",
+    "latest": "2023-07-31T15:25:00"
+  },
+  "M&M_2023_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:15.965Z",
+    "candleCount": 1681,
+    "duplicatesCount": 0,
+    "earliest": "2023-08-01T09:15:00",
+    "latest": "2023-08-31T15:25:00"
+  },
+  "M&M_2023_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:16.889Z",
+    "candleCount": 1531,
+    "duplicatesCount": 0,
+    "earliest": "2023-09-01T09:15:00",
+    "latest": "2023-09-29T15:40:00"
+  },
+  "M&M_2023_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:17.958Z",
+    "candleCount": 1534,
+    "duplicatesCount": 0,
+    "earliest": "2023-10-03T09:15:00",
+    "latest": "2023-10-31T15:30:00"
+  },
+  "M&M_2023_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:18.953Z",
+    "candleCount": 1539,
+    "duplicatesCount": 0,
+    "earliest": "2023-11-01T09:15:00",
+    "latest": "2023-11-30T15:25:00"
+  },
+  "M&M_2023_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:20.275Z",
+    "candleCount": 1529,
+    "duplicatesCount": 0,
+    "earliest": "2023-12-01T09:15:00",
+    "latest": "2023-12-29T15:40:00"
+  },
+  "M&M_2024_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:21.846Z",
+    "candleCount": 1687,
+    "duplicatesCount": 0,
+    "earliest": "2024-01-01T09:15:00",
+    "latest": "2024-01-31T15:30:00"
+  },
+  "M&M_2024_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:23.122Z",
+    "candleCount": 1611,
+    "duplicatesCount": 0,
+    "earliest": "2024-02-01T09:15:00",
+    "latest": "2024-02-29T15:25:00"
+  },
+  "M&M_2024_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:24.483Z",
+    "candleCount": 1401,
+    "duplicatesCount": 0,
+    "earliest": "2024-03-01T09:15:00",
+    "latest": "2024-03-28T16:00:00"
+  },
+  "M&M_2024_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:25.660Z",
+    "candleCount": 1534,
+    "duplicatesCount": 0,
+    "earliest": "2024-04-01T09:15:00",
+    "latest": "2024-04-30T15:30:00"
+  },
+  "M&M_2024_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:26.613Z",
+    "candleCount": 1629,
+    "duplicatesCount": 0,
+    "earliest": "2024-05-02T09:15:00",
+    "latest": "2024-05-31T15:25:00"
+  },
+  "M&M_2024_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:27.565Z",
+    "candleCount": 1460,
+    "duplicatesCount": 0,
+    "earliest": "2024-06-03T09:15:00",
+    "latest": "2024-06-28T15:40:00"
+  },
+  "M&M_2024_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:28.562Z",
+    "candleCount": 1684,
+    "duplicatesCount": 0,
+    "earliest": "2024-07-01T09:15:00",
+    "latest": "2024-07-31T15:25:00"
+  },
+  "M&M_2024_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:29.589Z",
+    "candleCount": 1612,
+    "duplicatesCount": 0,
+    "earliest": "2024-08-01T09:15:00",
+    "latest": "2024-08-30T15:40:00"
+  },
+  "M&M_2024_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:30.589Z",
+    "candleCount": 1616,
+    "duplicatesCount": 0,
+    "earliest": "2024-09-02T09:15:00",
+    "latest": "2024-09-30T15:25:00"
+  },
+  "M&M_2024_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:31.624Z",
+    "candleCount": 1683,
+    "duplicatesCount": 0,
+    "earliest": "2024-10-01T09:15:00",
+    "latest": "2024-10-31T15:30:00"
+  },
+  "M&M_2024_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:32.569Z",
+    "candleCount": 1391,
+    "duplicatesCount": 0,
+    "earliest": "2024-11-01T18:00:00",
+    "latest": "2024-11-29T15:40:00"
+  },
+  "M&M_2024_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:33.608Z",
+    "candleCount": 1610,
+    "duplicatesCount": 0,
+    "earliest": "2024-12-02T09:15:00",
+    "latest": "2024-12-31T15:30:00"
+  },
+  "M&M_2025_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:34.700Z",
+    "candleCount": 1861,
+    "duplicatesCount": 0,
+    "earliest": "2025-01-01T09:15:00",
+    "latest": "2025-01-31T15:30:00"
+  },
+  "M&M_2025_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:35.679Z",
+    "candleCount": 1625,
+    "duplicatesCount": 0,
+    "earliest": "2025-02-01T09:15:00",
+    "latest": "2025-02-28T15:25:00"
+  },
+  "M&M_2025_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:36.671Z",
+    "candleCount": 1545,
+    "duplicatesCount": 0,
+    "earliest": "2025-03-03T09:00:00",
+    "latest": "2025-03-28T15:55:00"
+  },
+  "M&M_2025_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:37.650Z",
+    "candleCount": 1535,
+    "duplicatesCount": 0,
+    "earliest": "2025-04-01T09:15:00",
+    "latest": "2025-04-30T15:30:00"
+  },
+  "M&M_2025_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:38.703Z",
+    "candleCount": 1707,
+    "duplicatesCount": 0,
+    "earliest": "2025-05-02T09:00:00",
+    "latest": "2025-05-30T15:55:00"
+  },
+  "M&M_2025_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:39.668Z",
+    "candleCount": 1708,
+    "duplicatesCount": 0,
+    "earliest": "2025-06-02T09:00:00",
+    "latest": "2025-06-30T15:30:00"
+  },
+  "M&M_2025_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:41.163Z",
+    "candleCount": 1858,
+    "duplicatesCount": 0,
+    "earliest": "2025-07-01T09:15:00",
+    "latest": "2025-07-31T15:30:00"
+  },
+  "M&M_2025_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:42.924Z",
+    "candleCount": 1538,
+    "duplicatesCount": 0,
+    "earliest": "2025-08-01T09:15:00",
+    "latest": "2025-08-29T15:55:00"
+  },
+  "M&M_2025_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:44.869Z",
+    "candleCount": 1772,
+    "duplicatesCount": 0,
+    "earliest": "2025-09-01T09:15:00",
+    "latest": "2025-09-30T15:30:00"
+  },
+  "M&M_2025_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:46.142Z",
+    "candleCount": 1630,
+    "duplicatesCount": 0,
+    "earliest": "2025-10-01T09:15:00",
+    "latest": "2025-10-31T15:30:00"
+  },
+  "M&M_2025_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:47.665Z",
+    "candleCount": 1432,
+    "duplicatesCount": 0,
+    "earliest": "2025-11-03T09:15:00",
+    "latest": "2025-11-28T15:55:00"
+  },
+  "M&M_2025_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:48.948Z",
+    "candleCount": 1737,
+    "duplicatesCount": 0,
+    "earliest": "2025-12-01T09:15:00",
+    "latest": "2025-12-31T15:30:00"
+  },
+  "M&M_2026_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:50.485Z",
+    "candleCount": 1585,
+    "duplicatesCount": 0,
+    "earliest": "2026-01-01T09:15:00",
+    "latest": "2026-01-30T15:55:00"
+  },
+  "M&M_2026_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:51.766Z",
+    "candleCount": 1665,
+    "duplicatesCount": 0,
+    "earliest": "2026-02-01T09:15:00",
+    "latest": "2026-02-27T15:55:00"
+  },
+  "M&M_2026_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:53.056Z",
+    "candleCount": 1513,
+    "duplicatesCount": 0,
+    "earliest": "2026-03-02T09:15:00",
+    "latest": "2026-03-30T15:55:00"
+  },
+  "M&M_2026_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:54.215Z",
+    "candleCount": 1577,
+    "duplicatesCount": 0,
+    "earliest": "2026-04-01T09:15:00",
+    "latest": "2026-04-30T15:25:00"
+  },
+  "M&M_2026_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:55.265Z",
+    "candleCount": 1506,
+    "duplicatesCount": 0,
+    "earliest": "2026-05-04T09:15:00",
+    "latest": "2026-05-29T15:55:00"
+  },
+  "M&M_2026_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:56.352Z",
+    "candleCount": 1651,
+    "duplicatesCount": 0,
+    "earliest": "2026-06-01T09:15:00",
+    "latest": "2026-06-30T15:30:00"
+  },
+  "M&M_2026_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:57.604Z",
+    "candleCount": 1813,
+    "duplicatesCount": 0,
+    "earliest": "2026-07-01T09:15:00",
+    "latest": "2026-07-31T15:30:00"
+  },
+  "M&M_2026_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:58.670Z",
+    "candleCount": 1616,
+    "duplicatesCount": 0,
+    "earliest": "2026-08-03T09:15:00",
+    "latest": "2026-08-31T15:25:00"
+  },
+  "M&M_2026_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:41:59.714Z",
+    "candleCount": 1576,
+    "duplicatesCount": 0,
+    "earliest": "2026-09-01T09:15:00",
+    "latest": "2026-09-30T15:25:00"
+  },
+  "M&M_2026_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:00.745Z",
+    "candleCount": 1520,
+    "duplicatesCount": 0,
+    "earliest": "2026-10-01T09:15:00",
+    "latest": "2026-10-30T15:50:00"
+  },
+  "M&M_2026_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:01.166Z",
+    "candleCount": 378,
+    "duplicatesCount": 0,
+    "earliest": "2026-11-02T09:15:00",
+    "latest": "2026-11-06T15:25:00"
+  },
+  "AXISBANK_2021_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:02.212Z",
+    "candleCount": 1233,
+    "duplicatesCount": 0,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-30T15:30:00"
+  },
+  "AXISBANK_2021_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:03.491Z",
+    "candleCount": 1766,
+    "duplicatesCount": 0,
+    "earliest": "2021-12-01T09:15:00",
+    "latest": "2021-12-31T15:30:00"
+  },
+  "AXISBANK_2022_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:04.523Z",
+    "candleCount": 1534,
+    "duplicatesCount": 0,
+    "earliest": "2022-01-03T09:15:00",
+    "latest": "2022-01-31T15:30:00"
+  },
+  "AXISBANK_2022_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:05.563Z",
+    "candleCount": 1535,
+    "duplicatesCount": 0,
+    "earliest": "2022-02-01T09:15:00",
+    "latest": "2022-02-28T15:30:00"
+  },
+  "AXISBANK_2022_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:06.540Z",
+    "candleCount": 1607,
+    "duplicatesCount": 0,
+    "earliest": "2022-03-02T09:15:00",
+    "latest": "2022-03-31T15:30:00"
+  },
+  "AXISBANK_2022_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:08.049Z",
+    "candleCount": 1464,
+    "duplicatesCount": 0,
+    "earliest": "2022-04-01T09:15:00",
+    "latest": "2022-04-29T15:40:00"
+  },
+  "AXISBANK_2022_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:09.347Z",
+    "candleCount": 1608,
+    "duplicatesCount": 0,
+    "earliest": "2022-05-02T09:15:00",
+    "latest": "2022-05-31T15:30:00"
+  },
+  "AXISBANK_2022_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:10.500Z",
+    "candleCount": 1686,
+    "duplicatesCount": 0,
+    "earliest": "2022-06-01T09:15:00",
+    "latest": "2022-06-30T15:25:00"
+  },
+  "AXISBANK_2022_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:12.004Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2022-07-01T09:15:00",
+    "latest": "2022-07-29T15:40:00"
+  },
+  "AXISBANK_2022_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:14.149Z",
+    "candleCount": 1533,
+    "duplicatesCount": 0,
+    "earliest": "2022-08-01T09:15:00",
+    "latest": "2022-08-30T15:40:00"
+  },
+  "AXISBANK_2022_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:15.572Z",
+    "candleCount": 1692,
+    "duplicatesCount": 0,
+    "earliest": "2022-09-01T09:15:00",
+    "latest": "2022-09-30T15:30:00"
+  },
+  "AXISBANK_2022_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:16.754Z",
+    "candleCount": 1392,
+    "duplicatesCount": 0,
+    "earliest": "2022-10-03T09:15:00",
+    "latest": "2022-10-31T15:25:00"
+  },
+  "AXISBANK_2022_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:17.879Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2022-11-01T09:15:00",
+    "latest": "2022-11-30T15:25:00"
+  },
+  "AXISBANK_2022_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:19.024Z",
+    "candleCount": 1686,
+    "duplicatesCount": 0,
+    "earliest": "2022-12-01T09:15:00",
+    "latest": "2022-12-30T15:40:00"
+  },
+  "AXISBANK_2023_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:20.199Z",
+    "candleCount": 1612,
+    "duplicatesCount": 0,
+    "earliest": "2023-01-02T09:15:00",
+    "latest": "2023-01-31T15:30:00"
+  },
+  "AXISBANK_2023_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:21.280Z",
+    "candleCount": 1531,
+    "duplicatesCount": 0,
+    "earliest": "2023-02-01T09:15:00",
+    "latest": "2023-02-28T15:30:00"
+  },
+  "AXISBANK_2023_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:22.731Z",
+    "candleCount": 1604,
+    "duplicatesCount": 0,
+    "earliest": "2023-03-01T09:15:00",
+    "latest": "2023-03-31T15:25:00"
+  },
+  "AXISBANK_2023_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:24.182Z",
+    "candleCount": 1225,
+    "duplicatesCount": 0,
+    "earliest": "2023-04-03T09:15:00",
+    "latest": "2023-04-28T16:00:00"
+  },
+  "AXISBANK_2023_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:25.329Z",
+    "candleCount": 1679,
+    "duplicatesCount": 0,
+    "earliest": "2023-05-02T09:15:00",
+    "latest": "2023-05-31T15:30:00"
+  },
+  "AXISBANK_2023_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:26.383Z",
+    "candleCount": 1608,
+    "duplicatesCount": 0,
+    "earliest": "2023-06-01T09:15:00",
+    "latest": "2023-06-30T15:30:00"
+  },
+  "AXISBANK_2023_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:27.523Z",
+    "candleCount": 1603,
+    "duplicatesCount": 0,
+    "earliest": "2023-07-03T09:15:00",
+    "latest": "2023-07-31T15:25:00"
+  },
+  "AXISBANK_2023_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:28.673Z",
+    "candleCount": 1679,
+    "duplicatesCount": 0,
+    "earliest": "2023-08-01T09:15:00",
+    "latest": "2023-08-31T15:30:00"
+  },
+  "AXISBANK_2023_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:29.791Z",
+    "candleCount": 1530,
+    "duplicatesCount": 0,
+    "earliest": "2023-09-01T09:15:00",
+    "latest": "2023-09-29T15:40:00"
+  },
+  "AXISBANK_2023_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:30.878Z",
+    "candleCount": 1530,
+    "duplicatesCount": 0,
+    "earliest": "2023-10-03T09:15:00",
+    "latest": "2023-10-31T15:25:00"
+  },
+  "AXISBANK_2023_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:32.093Z",
+    "candleCount": 1545,
+    "duplicatesCount": 0,
+    "earliest": "2023-11-01T09:15:00",
+    "latest": "2023-11-30T15:30:00"
+  },
+  "AXISBANK_2023_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:33.612Z",
+    "candleCount": 1529,
+    "duplicatesCount": 0,
+    "earliest": "2023-12-01T09:15:00",
+    "latest": "2023-12-29T15:40:00"
+  },
+  "AXISBANK_2024_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:34.778Z",
+    "candleCount": 1681,
+    "duplicatesCount": 0,
+    "earliest": "2024-01-01T09:15:00",
+    "latest": "2024-01-31T15:25:00"
+  },
+  "AXISBANK_2024_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:35.863Z",
+    "candleCount": 1615,
+    "duplicatesCount": 0,
+    "earliest": "2024-02-01T09:15:00",
+    "latest": "2024-02-29T15:25:00"
+  },
+  "AXISBANK_2024_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:36.870Z",
+    "candleCount": 1400,
+    "duplicatesCount": 0,
+    "earliest": "2024-03-01T09:15:00",
+    "latest": "2024-03-28T15:40:00"
+  },
+  "AXISBANK_2024_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:37.873Z",
+    "candleCount": 1537,
+    "duplicatesCount": 0,
+    "earliest": "2024-04-01T09:15:00",
+    "latest": "2024-04-30T15:30:00"
+  },
+  "AXISBANK_2024_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:38.875Z",
+    "candleCount": 1623,
+    "duplicatesCount": 0,
+    "earliest": "2024-05-02T09:15:00",
+    "latest": "2024-05-31T15:25:00"
+  },
+  "AXISBANK_2024_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:39.896Z",
+    "candleCount": 1458,
+    "duplicatesCount": 0,
+    "earliest": "2024-06-03T09:15:00",
+    "latest": "2024-06-28T15:40:00"
+  },
+  "AXISBANK_2024_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:40.963Z",
+    "candleCount": 1685,
+    "duplicatesCount": 0,
+    "earliest": "2024-07-01T09:15:00",
+    "latest": "2024-07-31T15:25:00"
+  },
+  "AXISBANK_2024_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:42.066Z",
+    "candleCount": 1612,
+    "duplicatesCount": 0,
+    "earliest": "2024-08-01T09:15:00",
+    "latest": "2024-08-30T15:40:00"
+  },
+  "AXISBANK_2024_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:43.394Z",
+    "candleCount": 1613,
+    "duplicatesCount": 0,
+    "earliest": "2024-09-02T09:15:00",
+    "latest": "2024-09-30T15:30:00"
+  },
+  "AXISBANK_2024_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:44.475Z",
+    "candleCount": 1680,
+    "duplicatesCount": 0,
+    "earliest": "2024-10-01T09:15:00",
+    "latest": "2024-10-31T15:30:00"
+  },
+  "AXISBANK_2024_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:45.967Z",
+    "candleCount": 1393,
+    "duplicatesCount": 0,
+    "earliest": "2024-11-01T18:00:00",
+    "latest": "2024-11-29T15:40:00"
+  },
+  "AXISBANK_2024_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:47.042Z",
+    "candleCount": 1607,
+    "duplicatesCount": 0,
+    "earliest": "2024-12-02T09:15:00",
+    "latest": "2024-12-31T15:25:00"
+  },
+  "AXISBANK_2025_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:48.148Z",
+    "candleCount": 1865,
+    "duplicatesCount": 0,
+    "earliest": "2025-01-01T09:15:00",
+    "latest": "2025-01-31T15:30:00"
+  },
+  "AXISBANK_2025_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:49.143Z",
+    "candleCount": 1623,
+    "duplicatesCount": 0,
+    "earliest": "2025-02-01T09:15:00",
+    "latest": "2025-02-28T15:25:00"
+  },
+  "AXISBANK_2025_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:50.195Z",
+    "candleCount": 1543,
+    "duplicatesCount": 0,
+    "earliest": "2025-03-03T09:00:00",
+    "latest": "2025-03-28T15:50:00"
+  },
+  "AXISBANK_2025_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:51.340Z",
+    "candleCount": 1535,
+    "duplicatesCount": 0,
+    "earliest": "2025-04-01T09:15:00",
+    "latest": "2025-04-30T15:25:00"
+  },
+  "AXISBANK_2025_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:52.342Z",
+    "candleCount": 1704,
+    "duplicatesCount": 0,
+    "earliest": "2025-05-02T09:00:00",
+    "latest": "2025-05-30T15:55:00"
+  },
+  "AXISBANK_2025_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:53.523Z",
+    "candleCount": 1696,
+    "duplicatesCount": 0,
+    "earliest": "2025-06-02T09:00:00",
+    "latest": "2025-06-30T15:30:00"
+  },
+  "AXISBANK_2025_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:54.626Z",
+    "candleCount": 1863,
+    "duplicatesCount": 0,
+    "earliest": "2025-07-01T09:15:00",
+    "latest": "2025-07-31T15:30:00"
+  },
+  "AXISBANK_2025_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:55.614Z",
+    "candleCount": 1540,
+    "duplicatesCount": 0,
+    "earliest": "2025-08-01T09:15:00",
+    "latest": "2025-08-29T15:55:00"
+  },
+  "AXISBANK_2025_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:56.659Z",
+    "candleCount": 1764,
+    "duplicatesCount": 0,
+    "earliest": "2025-09-01T09:15:00",
+    "latest": "2025-09-30T15:25:00"
+  }
+}

@@ -4,6 +4,7 @@
  */
 
 const MarketDataService = require('./marketData.service');
+const HistoricalDownloaderService = require('./downloader/historicalDownloader.service');
 const { ApiResponse } = require('../../core/utils/response.utils');
 const { asyncHandler } = require('../../core/utils/asyncHandler');
 
@@ -35,6 +36,32 @@ class MarketDataController {
     return ApiResponse.success(res, {
       message: 'Historical candles fetched successfully',
       data
+    });
+  });
+
+  /**
+   * @route GET /api/v1/market-data/historical-coverage
+   * @description Validates whether historical 5-minute data exists back to November 2021
+   */
+  static validateCoverage = asyncHandler(async (req, res) => {
+    const result = await HistoricalDownloaderService.validateCoverage();
+    return ApiResponse.success(res, {
+      message: result.success
+        ? 'Groww 5-year historical data coverage verified'
+        : 'Groww historical data coverage verification failed',
+      data: result
+    });
+  });
+
+  /**
+   * @route GET /api/v1/market-data/downloader-status
+   * @description Returns 5-year downloader checkpoint and completion summary
+   */
+  static getDownloaderStatus = asyncHandler(async (req, res) => {
+    const status = HistoricalDownloaderService.getStatus();
+    return ApiResponse.success(res, {
+      message: 'Downloader status retrieved successfully',
+      data: status
     });
   });
 }
