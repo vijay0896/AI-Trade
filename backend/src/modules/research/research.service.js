@@ -9,6 +9,7 @@ const path = require('path');
 const {
   TARGET_STOCKS,
   STORAGE_PATHS,
+  WALK_FORWARD_STATUS,
   WALK_FORWARD_FOLDS
 } = require('./research.constants');
 const BacktestEngine = require('../backtesting/backtesting.engine');
@@ -216,7 +217,7 @@ class ResearchService {
 
       // Statistical confidence & Bootstrap
       const confidenceInterval = ResearchMetrics.calculateConfidenceIntervals(run.totalTrades, run.winRate);
-      const bootstrap = ResearchMetrics.runBootstrapResampling(trades, 1000);
+      const bootstrap = ResearchMetrics.runBootstrapResampling(trades, 10000);
 
       const tradesPerYear = Number((run.totalTrades / 5).toFixed(2));
       const netExpectancy = run.totalTrades > 0 ? Number((run.netPnL / run.totalTrades).toFixed(2)) : 0;
@@ -298,11 +299,17 @@ class ResearchService {
           const testGrossLoss = Math.abs(testTrades.filter(t => t.netPnL < 0).reduce((sum, t) => sum + t.netPnL, 0));
           const testPF = testGrossLoss > 0 ? Number((testGrossWins / testGrossLoss).toFixed(2)) : (testGrossWins > 0 ? 99 : 0);
 
-          let status = 'INSUFFICIENT_SAMPLE';
-          if (testTrades.length >= 3) {
-            status = testPnL > 0 ? 'STABLE_POSITIVE' : 'DEGRADED_NEGATIVE';
-          } else if (testTrades.length > 0) {
-            status = testPnL > 0 ? 'LOW_SAMPLE_POSITIVE' : 'LOW_SAMPLE_NEGATIVE';
+          let status = WALK_FORWARD_STATUS.NOT_EVALUABLE;
+          if (testTrades.length === 0) {
+            status = WALK_FORWARD_STATUS.NOT_EVALUABLE;
+          } else if (testTrades.length < 10) {
+            status = WALK_FORWARD_STATUS.INSUFFICIENT_SAMPLE;
+          } else {
+            if (testPnL > 0) {
+              status = WALK_FORWARD_STATUS.POSITIVE_BUT_UNCERTAIN;
+            } else {
+              status = trainPnL > 0 ? WALK_FORWARD_STATUS.DEGRADED : WALK_FORWARD_STATUS.NEGATIVE;
+            }
           }
 
           walkForwardRecords.push({

@@ -1,0 +1,87 @@
+{
+  "phase": "Phase 7.1 — Statistical Integrity & Research Reconciliation Audit",
+  "auditTimestamp": "2026-11-08T09:19:43.966Z",
+  "leadAuditor": "Antigravity Senior Quantitative Research & Audit Engine",
+  "historicalDatasetCoverage": {
+    "market": "NSE India — Cash Equity",
+    "timeframe": "5-minute OHLCV candles",
+    "period": "2021-11-08 to 2026-11-06",
+    "stocksCount": 5,
+    "stocks": [
+      "ICICIBANK",
+      "HDFCBANK",
+      "M&M",
+      "AXISBANK",
+      "BHARTIARTL"
+    ],
+    "totalCandles": 479982,
+    "regularSessionsCountPerStock": "1,231 to 1,232 continuous regular sessions"
+  },
+  "auditInputFileHashes": {
+    "PHASE_7_1_AUDIT_REPORT.md": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/PHASE_7_1_AUDIT_REPORT.md",
+      "sizeBytes": 46609,
+      "sha256": "60d4d888a6c496f3f7571e05575c8d2ab73cf0a5db1419421c77d06e02639345"
+    },
+    "DAILY_SESSION_CLASSIFICATION.csv": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/research/DAILY_SESSION_CLASSIFICATION.csv",
+      "sizeBytes": 976915,
+      "sha256": "d9261b6e3b13495842c04cda36db3a5c413e0d60ed836a92772305813cbcbe96"
+    },
+    "STOCK_BEHAVIOUR_METRICS.csv": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/research/STOCK_BEHAVIOUR_METRICS.csv",
+      "sizeBytes": 2627,
+      "sha256": "82d5a242805e924ffd879eb174569c3a90a0aa56f2c11ada1c70a4ee1c0d23f7"
+    },
+    "PARAMETER_SENSITIVITY.csv": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/research/PARAMETER_SENSITIVITY.csv",
+      "sizeBytes": 6588,
+      "sha256": "36c5138876ba9db5bea8fd7fe2d6818a785b1a74065466a6f1ab0ff442927190"
+    },
+    "WALK_FORWARD_RESULTS.csv": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/research/WALK_FORWARD_RESULTS.csv",
+      "sizeBytes": 6801,
+      "sha256": "f953a1913c4898f07f6515bccaa965d1302093afb70af04153979146ee32b4c1"
+    },
+    "RESEARCH_OUTCOMES.json": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/research/RESEARCH_OUTCOMES.json",
+      "sizeBytes": 3517104,
+      "sha256": "5efd8c7105f05cdaa42cb1fc8fc4f0af6ccdd7055c7b70b6a12c5bf667ce276f"
+    },
+    "runs_index.json": {
+      "path": "/Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/runs/runs_index.json",
+      "sizeBytes": 28615,
+      "sha256": "988b953fee522e36803c4b5c8eb50fef471acf08ace560dbbdd9a2f76ffb3dd5"
+    }
+  },
+  "canonicalBacktestAuditSummary": {
+    "canonicalRunsAudited": 25,
+    "supersededRunsPreserved": 26,
+    "totalTradesAudited": 1071,
+    "tradeLevelAccountingIdentityViolations": 0,
+    "discrepanciesBetweenLedgerAndSummary": 0,
+    "pennyToleranceAppliedInr": 0.05
+  },
+  "bootstrapReconciliationSummary": {
+    "randomSeed": 123456789,
+    "iterations": 10000,
+    "resampleMethod": "IID_WITH_REPLACEMENT",
+    "hdfcBankLossProbabilityPercent": 14.79,
+    "hdfcBank5thPercentileNetPnL": -560.62,
+    "hdfcBankMedianNetPnL": 999.87,
+    "discrepancyResolution": "Narrative draft placeholder (27.4% and -₹512.40) corrected to reproducible 10,000-iteration benchmark (14.79% and -₹560.61). Order permutation without replacement preserves total sum invariant (+₹991.14)."
+  },
+  "multipleTestingAuditSummary": {
+    "testedStrategyHypothesesCount": 25,
+    "slippageSensitivityEvaluationsCount": 5,
+    "multipleTestingFormulaAudit": "Claimed (1 - (1 - 0.05)^90) ≈ 99.1% assumption of independent Bernoulli trials rejected. Strategy variants and slippage levels are strongly positively correlated. Under Holm-Bonferroni correction (alpha = 0.002 to 0.05), zero strategy variants achieve statistical significance."
+  },
+  "lookAheadAuditSummary": {
+    "engineLookAheadStatus": "CLEAN_ZERO_LEAKAGE",
+    "causalBoundaryStatus": "Ex-post descriptive variables (full-day ER, full-day return) strictly isolated from intraday backtester."
+  },
+  "institutionalExecutionVerdict": {
+    "tradingStatus": "AUTOMATED_TRADING_STRICTLY_PROHIBITED",
+    "rationale": "Small sample sizes across all Variant E configurations (N=11 to N=19), failure to achieve statistical significance under binomial or Holm-Bonferroni corrections, and high outcome sensitivity to individual trade outliers."
+  }
+}

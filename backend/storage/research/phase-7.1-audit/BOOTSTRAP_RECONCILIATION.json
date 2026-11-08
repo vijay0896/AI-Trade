@@ -1,0 +1,303 @@
+{
+  "metadata": {
+    "auditTimestamp": "2026-11-08T09:19:43.942Z",
+    "auditScope": "Phase 7.1 Bootstrap Statistical Reconciliation",
+    "randomSeed": 123456789,
+    "iterations": 10000,
+    "testedVariants": [
+      "E_FULL_CONFIRMATION"
+    ],
+    "symbols": [
+      "BHARTIARTL",
+      "AXISBANK",
+      "M&M",
+      "HDFCBANK",
+      "ICICIBANK"
+    ]
+  },
+  "variantEResults": {
+    "BHARTIARTL": {
+      "symbol": "BHARTIARTL",
+      "variant": "E_FULL_CONFIRMATION",
+      "observedTradesCount": 18,
+      "observedNetPnL": -634.14,
+      "observedExpectancy": -35.23,
+      "bootstrapMethodology": {
+        "type": "IID_RESAMPLING_WITH_REPLACEMENT",
+        "resampleSize": 18,
+        "iterations": 10000,
+        "randomSeed": 123456789,
+        "deterministicGenerator": "LinearCongruentialGenerator_9301_49297_233280"
+      },
+      "cumulativeNetPnLDistribution": {
+        "mean": -634.23,
+        "median": -705.61,
+        "stdDev": 955.04,
+        "percentile5": -2074.63,
+        "percentile25": -1301.17,
+        "percentile75": -35.76,
+        "percentile95": 1032.28,
+        "probabilityOfNetLossPercent": 75.99
+      },
+      "netExpectancyDistribution": {
+        "mean": -35.24,
+        "median": -39.2,
+        "stdDev": 53.06,
+        "percentile5": -115.26,
+        "percentile95": 57.35,
+        "confidenceInterval95": [
+          -115.26,
+          57.35
+        ]
+      },
+      "statisticalAssessment": "Sample size of N=18 trades is below minimum statistical reliability threshold (N >= 30). Empirical variance remains high."
+    },
+    "AXISBANK": {
+      "symbol": "AXISBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "observedTradesCount": 18,
+      "observedNetPnL": -282.82,
+      "observedExpectancy": -15.71,
+      "bootstrapMethodology": {
+        "type": "IID_RESAMPLING_WITH_REPLACEMENT",
+        "resampleSize": 18,
+        "iterations": 10000,
+        "randomSeed": 123456789,
+        "deterministicGenerator": "LinearCongruentialGenerator_9301_49297_233280"
+      },
+      "cumulativeNetPnLDistribution": {
+        "mean": -287.88,
+        "median": -351.01,
+        "stdDev": 1132.46,
+        "percentile5": -2043.37,
+        "percentile25": -1063.51,
+        "percentile75": 434.56,
+        "percentile95": 1661.87,
+        "probabilityOfNetLossPercent": 61.9
+      },
+      "netExpectancyDistribution": {
+        "mean": -15.99,
+        "median": -19.5,
+        "stdDev": 62.91,
+        "percentile5": -113.52,
+        "percentile95": 92.33,
+        "confidenceInterval95": [
+          -113.52,
+          92.33
+        ]
+      },
+      "statisticalAssessment": "Sample size of N=18 trades is below minimum statistical reliability threshold (N >= 30). Empirical variance remains high."
+    },
+    "M&M": {
+      "symbol": "M&M",
+      "variant": "E_FULL_CONFIRMATION",
+      "observedTradesCount": 19,
+      "observedNetPnL": -1022.65,
+      "observedExpectancy": -53.82,
+      "bootstrapMethodology": {
+        "type": "IID_RESAMPLING_WITH_REPLACEMENT",
+        "resampleSize": 19,
+        "iterations": 10000,
+        "randomSeed": 123456789,
+        "deterministicGenerator": "LinearCongruentialGenerator_9301_49297_233280"
+      },
+      "cumulativeNetPnLDistribution": {
+        "mean": -1023.46,
+        "median": -1031.6,
+        "stdDev": 667.81,
+        "percentile5": -2116.47,
+        "percentile25": -1478.95,
+        "percentile75": -569.45,
+        "percentile95": 78.17,
+        "probabilityOfNetLossPercent": 93.69
+      },
+      "netExpectancyDistribution": {
+        "mean": -53.87,
+        "median": -54.29,
+        "stdDev": 35.15,
+        "percentile5": -111.39,
+        "percentile95": 4.11,
+        "confidenceInterval95": [
+          -111.39,
+          4.11
+        ]
+      },
+      "statisticalAssessment": "Sample size of N=19 trades is below minimum statistical reliability threshold (N >= 30). Empirical variance remains high."
+    },
+    "HDFCBANK": {
+      "symbol": "HDFCBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "observedTradesCount": 11,
+      "observedNetPnL": 991.14,
+      "observedExpectancy": 90.1,
+      "bootstrapMethodology": {
+        "type": "IID_RESAMPLING_WITH_REPLACEMENT",
+        "resampleSize": 11,
+        "iterations": 10000,
+        "randomSeed": 123456789,
+        "deterministicGenerator": "LinearCongruentialGenerator_9301_49297_233280"
+      },
+      "cumulativeNetPnLDistribution": {
+        "mean": 996.37,
+        "median": 999.87,
+        "stdDev": 936.57,
+        "percentile5": -560.62,
+        "percentile25": 367.94,
+        "percentile75": 1629.24,
+        "percentile95": 2545.81,
+        "probabilityOfNetLossPercent": 14.79
+      },
+      "netExpectancyDistribution": {
+        "mean": 90.58,
+        "median": 90.9,
+        "stdDev": 85.14,
+        "percentile5": -50.97,
+        "percentile95": 231.44,
+        "confidenceInterval95": [
+          -50.97,
+          231.44
+        ]
+      },
+      "statisticalAssessment": "Sample size of N=11 trades is below minimum statistical reliability threshold (N >= 30). Empirical variance remains high."
+    },
+    "ICICIBANK": {
+      "symbol": "ICICIBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "observedTradesCount": 18,
+      "observedNetPnL": -2075.51,
+      "observedExpectancy": -115.31,
+      "bootstrapMethodology": {
+        "type": "IID_RESAMPLING_WITH_REPLACEMENT",
+        "resampleSize": 18,
+        "iterations": 10000,
+        "randomSeed": 123456789,
+        "deterministicGenerator": "LinearCongruentialGenerator_9301_49297_233280"
+      },
+      "cumulativeNetPnLDistribution": {
+        "mean": -2080.21,
+        "median": -2106.09,
+        "stdDev": 1412.62,
+        "percentile5": -4329.69,
+        "percentile25": -3052.78,
+        "percentile75": -1153.94,
+        "percentile95": 275.12,
+        "probabilityOfNetLossPercent": 92.85
+      },
+      "netExpectancyDistribution": {
+        "mean": -115.57,
+        "median": -117,
+        "stdDev": 78.48,
+        "percentile5": -240.54,
+        "percentile95": 15.28,
+        "confidenceInterval95": [
+          -240.54,
+          15.28
+        ]
+      },
+      "statisticalAssessment": "Sample size of N=18 trades is below minimum statistical reliability threshold (N >= 30). Empirical variance remains high."
+    }
+  },
+  "hdfcBankDeepAudit": {
+    "symbol": "HDFCBANK",
+    "variant": "E_FULL_CONFIRMATION",
+    "observedData": {
+      "totalTrades": 11,
+      "winningTrades": 7,
+      "losingTrades": 4,
+      "winRatePercent": 63.64,
+      "realizedNetPnL": 991.14,
+      "independentTradingSessionsCount": 10,
+      "multitradeSessions": [
+        {
+          "date": "2022-10-31",
+          "tradesCount": 2,
+          "sessionNetPnL": 533.6
+        }
+      ],
+      "sessionsList": [
+        {
+          "date": "2021-12-31",
+          "tradesCount": 1,
+          "sessionNetPnL": -148.06
+        },
+        {
+          "date": "2022-09-30",
+          "tradesCount": 1,
+          "sessionNetPnL": 7.9
+        },
+        {
+          "date": "2022-10-31",
+          "tradesCount": 2,
+          "sessionNetPnL": 533.6
+        },
+        {
+          "date": "2022-12-15",
+          "tradesCount": 1,
+          "sessionNetPnL": 440.17
+        },
+        {
+          "date": "2023-06-15",
+          "tradesCount": 1,
+          "sessionNetPnL": 280.56
+        },
+        {
+          "date": "2026-08-31",
+          "tradesCount": 1,
+          "sessionNetPnL": 114.01
+        },
+        {
+          "date": "2026-09-29",
+          "tradesCount": 1,
+          "sessionNetPnL": -299.97
+        },
+        {
+          "date": "2026-09-30",
+          "tradesCount": 1,
+          "sessionNetPnL": -374.4
+        },
+        {
+          "date": "2026-10-15",
+          "tradesCount": 1,
+          "sessionNetPnL": 334.29
+        },
+        {
+          "date": "2026-11-06",
+          "tradesCount": 1,
+          "sessionNetPnL": 103.04
+        }
+      ]
+    },
+    "resolutionOfPriorReportDiscrepancies": {
+      "discrepancyIdentified": "Conflicting reported figures in Phase 7 report: Table 15.1% loss prob vs Narrative 27.4%; Table -₹560.15 5th percentile vs Narrative -₹512.40.",
+      "rootCause": "The narrative draft retained an earlier unseeded placeholder figure (27.4% and -₹512.40) and erroneously described it as resulting from trade sequence permutations without replacement. In contrast, the table was dynamically populated by a 1,000-iteration bootstrap simulation producing 15.1% and -₹560.15.",
+      "mathematicalCorrection": "A permutation of existing trade outcomes WITHOUT replacement preserves the cumulative sum invariant sum(netPnL) = +₹991.14. Trade order permutation cannot change the final cumulative net P&L; it only alters the path-dependent maximum drawdown. Therefore, describing sequence permutation as having a probability of ending with a net loss is mathematically incorrect. True probability of net loss requires resampling WITH replacement.",
+      "reconciled10000IterationBenchmark": {
+        "tradeLevelIidBootstrap": {
+          "iterations": 10000,
+          "probabilityOfNetLossPercent": 14.79,
+          "medianNetPnL": 999.87,
+          "percentile5NetPnL": -560.62,
+          "percentile95NetPnL": 2545.81,
+          "standardError": 936.57
+        },
+        "sessionLevelBlockBootstrap": {
+          "independentBlocks": 10,
+          "iterations": 10000,
+          "probabilityOfNetLossPercent": 14.2,
+          "medianNetPnL": 992.85,
+          "percentile5NetPnL": -535.19,
+          "percentile95NetPnL": 2492.37,
+          "blockLimitationNote": "With only 10 independent trading dates across 5 years, block bootstrap degrees of freedom remain severely constrained."
+        },
+        "sequencePermutationDrawdownDistribution": {
+          "purpose": "Evaluates path-dependent maximum drawdown under random trade orderings without replacement.",
+          "iterations": 10000,
+          "finalNetPnLInvariant": 991.14,
+          "medianMaxDrawdownPercent": 0.46,
+          "percentile95MaxDrawdownPercent": 0.82,
+          "worstCaseMaxDrawdownPercent": 0.84
+        }
+      }
+    }
+  }
+}

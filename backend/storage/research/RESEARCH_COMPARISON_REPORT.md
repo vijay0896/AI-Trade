@@ -3,7 +3,7 @@
 **Dataset Coverage:** 5 NSE Stocks (`ICICIBANK`, `HDFCBANK`, `M&M`, `AXISBANK`, `BHARTIARTL`)  
 **Historical Period:** 8 November 2021 to 6 November 2026 (5 Full Years, 479,982 5-minute Candles)  
 **Session Completeness:** 99.92% continuous regular market coverage (09:15 to 15:25 IST)  
-**Report Generated:** 2026-11-08T08:01:42.033Z  
+**Report Generated:** 2026-11-08T09:19:37.931Z  
 **Lead Quantitative Architect:** Antigravity Quantitative Research Engine  
 
 ---
@@ -17,21 +17,22 @@ This research report presents an exhaustive, statistically disciplined quantitat
 
 ### Primary Quantitative Conclusions
 
-1. **Pervasive Sideways Regime & False Breakouts:** Across all 5 stocks, Indian large-cap equities spend over **45% to 52%** of trading sessions in consolidating or choppy regimes (Efficiency Ratio $\le 0.22$, Choppiness $\ge 60$, or $\ge 5$ VWAP crossings). Opening range breakouts (15m OR) occur on **93% to 96%** of trading days, but **45% to 50%** of those breakouts immediately fail within 3 bars ($K=3$, 15 minutes) by closing back inside the range.
+1. **Pervasive Sideways Regime & False Breakouts:** Across all 5 stocks, Indian large-cap equities spend **21% to 35%** of regular sessions in explicitly flat Sideways regimes, and **82% to 85%** in non-trending regimes (Sideways + Mixed/Unclear; ranging from 82.14% in M&M to 85.06% in ICICIBANK). Sessions with low directional efficiency ($ER \le 0.22$) account for **77% to 83%**, and sessions with $\ge 5$ VWAP crossings account for **63% to 67%**. Opening range breakouts (15m OR) occur on **93% to 96%** of trading days, but **45% to 50%** of those breakouts immediately fail within 3 bars ($K=3$, 15 minutes) by closing back inside the range.
 2. **Value Destruction of Basic Breakouts (Variant A):** Unfiltered breakout trading is consistently value-destroying across all five stocks, generating net losses ranging from **-0.43% to -8.69%** of capital. Whipsaws during morning chop generate high turnover that is rapidly consumed by transaction costs.
 3. **Drastic Filter Compression in Variant E:** Progressively adding VWAP, EMA stacks, ADX strength, and Choppiness filters (Variant E) successfully eliminates ~70% to 80% of false breakout trades, compressing maximum drawdowns from >8% down to <1.6% across the entire universe.
 4. **Statistical Fragility of Apparent "Winners" (Sample Size Reality Check):**
    - While **HDFCBANK under Variant E** produced a positive backtest outcome (**+₹991.14**, +0.99% net return, 63.64% win rate, 2.18 profit factor, 0.67% max drawdown), this result was achieved on **only 11 trades across 5 years** (~2.2 trades per year).
-   - The Wilson-score 95% binomial confidence interval for HDFCBANK Variant E's win rate spans **[35.4%, 84.8%]**. A 50% coin-flip null hypothesis cannot be rejected at standard significance levels ($p > 0.05$).
-   - Bootstrap resampling reveals a **27.4% probability of experiencing a net loss** when resampled over the same sample distribution.
-   - **Conclusion:** HDFCBANK Variant E must be classified as an **exploratory positive finding**, NOT proof of a proven structural edge.
+   - The Wilson-score 95% binomial confidence interval for HDFCBANK Variant E's win rate spans **[35.4%, 84.8%]**. A two-sided exact binomial test against a 50% win-rate null hypothesis ($H_0: p=0.5$) yields $p = 0.5488$ (not statistically distinguishable from chance). Note that this p-value tests win rate against a 50% coin-flip, not direct positive trading expectancy.
+   - The empirical 95% confidence interval for net expectancy per trade spans **[-₹50.96, +₹231.45]**, which crosses zero and represents the direct measure of profitability uncertainty.
+   - Reproducible bootstrap resampling (10,000 iterations with replacement) reveals a **14.8% probability of experiencing a net loss** (5th percentile: -₹560.61). Resampling 10,000 iterations increases simulation precision, not the underlying independent trade sample size ($N=11$). The 10-session block bootstrap serves as a small-sample sensitivity diagnostic.
+   - **Conclusion:** HDFCBANK Variant E must be classified as an **exploratory positive finding**, NOT proof of a validated trading edge.
 5. **No Universal Candidate Suitable for Unattended Automation:** Based on strict statistical criteria, walk-forward diagnostics, and trade frequency constraints, **no stock/strategy pair currently satisfies institutional criteria for automated execution**. Further parameter expansion or multi-stock portfolio aggregation is required before considering live deployment.
 
 ---
 
 ## 1. Stock Behaviour Analysis (Part 2)
 
-All five stocks were analyzed across their **1,231 to 1,232 completed regular continuous sessions** (excluding non-regular sessions like Diwali Muhurat, DR split tests, and data spikes from standard baseline metrics).
+All five stocks were analyzed across their **1,231 to 1,232 completed regular continuous sessions** (6,159 total eligible regular sessions across the universe; 40 sessions excluded due to 35 special sessions and 5 single-day broker data spike sessions on 2025-05-12).
 
 ### 1.1 Intraday Volatility Metrics
 
@@ -51,23 +52,23 @@ $$\text{Session Efficiency Ratio } (ER) = \frac{|\text{Close}_{\text{last}} - \t
 
 | Symbol | Mean Session ER | Median Session ER | Mean Choppiness | % Chop $\ge 60$ | % ADX $\ge 25$ | % ADX Rising | % Bullish EMA Stack | % Bearish EMA Stack | Strong Sessions % |
 |---|---|---|---|---|---|---|---|---|---|
-| **ICICIBANK** | **0.129** | 0.106 | 50.6 | 19.54% | **45.72%** | 46.32% | 51.25% | 48.57% | **30.6%** |
-| **HDFCBANK** | **0.136** | 0.116 | 50.45 | 19.54% | **47.09%** | 45.95% | 50.58% | 49.26% | **30.84%** |
-| **M&M** | **0.145** | 0.127 | 49.09 | 15.18% | **47.12%** | 45.88% | 51.8% | 48.11% | **49.03%** |
-| **AXISBANK** | **0.128** | 0.105 | 50.18 | 17.78% | **46.74%** | 46.18% | 50.88% | 48.94% | **37.21%** |
-| **BHARTIARTL** | **0.139** | 0.117 | 49.79 | 17.12% | **44.95%** | 45.85% | 52.12% | 47.69% | **39.53%** |
+| **ICICIBANK** | **0.122** | 0.101 | 50.6 | 19.54% | **45.72%** | 46.32% | 51.25% | 48.57% | **30.6%** |
+| **HDFCBANK** | **0.128** | 0.109 | 50.45 | 19.54% | **47.09%** | 45.95% | 50.58% | 49.26% | **30.84%** |
+| **M&M** | **0.136** | 0.121 | 49.09 | 15.18% | **47.12%** | 45.88% | 51.8% | 48.11% | **49.03%** |
+| **AXISBANK** | **0.121** | 0.1 | 50.18 | 17.78% | **46.74%** | 46.18% | 50.88% | 48.94% | **37.21%** |
+| **BHARTIARTL** | **0.13** | 0.111 | 49.79 | 17.12% | **44.95%** | 45.85% | 52.12% | 47.69% | **39.53%** |
 
-*Key Finding:* **M&M** ($ER = 0.145$) and **BHARTIARTL** ($ER = 0.139$) exhibit the highest directional efficiency, spending ~47% of bars with ADX $\ge 25$. In contrast, **AXISBANK** ($ER = 0.128$) and **ICICIBANK** ($ER = 0.129$) display lower directional persistence with higher intraday noise.
+*Key Finding:* **M&M** ($ER = 0.136$) and **BHARTIARTL** ($ER = 0.130$) exhibit the highest directional efficiency, spending ~44% to 47% of bars with ADX $\ge 25$. In contrast, **ICICIBANK** ($ER = 0.122$) and **AXISBANK** ($ER = 0.121$) display lower directional persistence with higher intraday noise.
 
 ### 1.3 Sideways Dynamics & Mean-Reversion
 
 | Symbol | Mean VWAP Crosses/Day | Median Crosses | Max Crosses | % Time Above VWAP | % Time Below VWAP | % Days Repeated Crosses ($\ge 5$) | % Days Low ER ($\le 0.22$) | % Days High Chop ($\ge 60$) |
 |---|---|---|---|---|---|---|---|---|
-| **ICICIBANK** | **6.86** | 6 | 42 | 48.53% | 51.35% | **67.37%** | 83.12% | 0.89% |
-| **HDFCBANK** | **6.63** | 6 | 39 | 50.17% | 49.75% | **64.04%** | 78.73% | 0.97% |
-| **M&M** | **6.47** | 6 | 41 | 48.01% | 51.95% | **63.07%** | 76.95% | 0.08% |
-| **AXISBANK** | **6.66** | 6 | 38 | 47.79% | 52.11% | **65.39%** | 83.18% | 1.06% |
-| **BHARTIARTL** | **6.85** | 6 | 43 | 49.33% | 50.58% | **65.02%** | 79.3% | 1.22% |
+| **ICICIBANK** | **6.86** | 6 | 42 | 48.53% | 51.35% | **67.37%** | 84.9% | 0.89% |
+| **HDFCBANK** | **6.63** | 6 | 39 | 50.17% | 49.75% | **64.04%** | 81.41% | 0.97% |
+| **M&M** | **6.47** | 6 | 41 | 48.01% | 51.95% | **63.07%** | 80.03% | 0.08% |
+| **AXISBANK** | **6.66** | 6 | 38 | 47.79% | 52.11% | **65.39%** | 85.78% | 1.06% |
+| **BHARTIARTL** | **6.85** | 6 | 43 | 49.33% | 50.58% | **65.02%** | 82.14% | 1.22% |
 
 *Key Finding:* Across all 5 stocks, price crosses VWAP an average of **6.5 to 6.9 times per session**. Over **63% to 67% of sessions** exhibit 5 or more distinct VWAP crossovers, and ~77% to 83% of sessions have low directional efficiency ($ER \le 0.22$), confirming that intraday equity trading on the NSE is predominantly non-trending.
 
@@ -119,23 +120,21 @@ Completed regular trading sessions are classified into five mutually exclusive r
 
 | Symbol | Strong Trend Up % | Strong Trend Down % | Total Strong Trend % | Weak Trend % | Sideways % | Mixed / Unclear % |
 |---|---|---|---|---|---|---|
-| **ICICIBANK** | 3.57% | 3.41% | **6.98%** | 9.09% | **34.74%** | 49.19% |
-| **HDFCBANK** | 5.28% | 4.22% | **9.50%** | 9.01% | **32.79%** | 48.7% |
-| **M&M** | 3.9% | 5.19% | **9.09%** | 9.42% | **21.35%** | 60.15% |
-| **AXISBANK** | 4.31% | 2.92% | **7.23%** | 9.26% | **28.27%** | 55.24% |
-| **BHARTIARTL** | 3.73% | 5.28% | **9.01%** | 8.85% | **27.92%** | 54.22% |
+| **ICICIBANK** | 3.25% | 3.25% | **6.50%** | 8.44% | **34.74%** | 50.32% |
+| **HDFCBANK** | 4.63% | 3.81% | **8.44%** | 9.09% | **32.79%** | 49.68% |
+| **M&M** | 3.41% | 4.63% | **8.04%** | 9.82% | **21.35%** | 60.8% |
+| **AXISBANK** | 3.98% | 2.84% | **6.82%** | 8.85% | **28.27%** | 56.05% |
+| **BHARTIARTL** | 3.41% | 4.63% | **8.04%** | 9.33% | **27.92%** | 54.71% |
 
 ### 2.3 Threshold Sensitivity Analysis (Baseline vs Tight vs Loose)
 
-| Threshold Grid | Condition Criteria | Strong Trend % (Universe Avg) | Sideways % (Universe Avg) | Mixed/Unclear % |
-|---|---|---|---|---|
-| **Tight** | Return $\ge 1.0\%$, $ER \ge 0.35$, VWAP $\le 2$, Chop $\ge 61.8$, VWAP $\ge 6$ | **4.2%** | **23.1%** | **72.7%** |
-| **Baseline** | Return $\ge 0.7\%$, $ER \ge 0.25$, VWAP $\le 3$, Chop $\ge 58.0$, VWAP $\ge 5$ | **8.4%** | **34.2%** | **57.4%** |
-| **Loose** | Return $\ge 0.5\%$, $ER \ge 0.20$, VWAP $\le 4$, Chop $\ge 55.0$, VWAP $\ge 4$ | **15.6%** | **44.8%** | **39.6%** |
+| Threshold Grid | Trend Criteria (Strong) | Sideways Criteria | Strong Trend % | Weak Trend % | Sideways % | Mixed/Unclear % |
+|---|---|---|---|---|---|---|
+| **Tight** | Return $\ge 1.0\%$, $ER \ge 0.35$, VWAP $\le 2$ | Chop $\ge 61.8$, VWAP $\ge 6$, $ER \le 0.18$ | **2.60%** | **5.99%** | **20.51%** | **70.90%** |
+| **Baseline** | Return $\ge 0.7\%$, $ER \ge 0.25$, VWAP $\le 3$ | Chop $\ge 58.0$, VWAP $\ge 5$, $ER \le 0.20$ | **8.36%** | **9.13%** | **29.01%** | **53.50%** |
+| **Loose** | Return $\ge 0.5\%$, $ER \ge 0.20$, VWAP $\le 4$ | Chop $\ge 55.0$, VWAP $\ge 4$, $ER \le 0.25$ | **15.29%** | **8.07%** | **35.86%** | **40.77%** |
 
-*Methodological Insight:* Threshold shifts smoothly scale the proportion of classified sessions without creating artificial step discontinuities.
-
-*Methodological Insight:* Threshold shifts smoothly scale the proportion of classified sessions without creating artificial step discontinuities.
+*Methodological Insight:* Threshold shifts smoothly scale the proportion of classified sessions without creating artificial step discontinuities. Every grid sums to exactly 100.00%.
 
 ---
 
@@ -208,21 +207,21 @@ Yearly breakdown for Variant E across the 5 years:
 
 | Fold | Symbol | Variant | Train Period | Train Trades | Train Win Rate | Train Net P&L (₹) | Test Period | Test Trades | Test Win Rate | Test Net P&L (₹) | Status |
 |---|---|---|---|---|---|---|---|---|---|---|---|
-| FOLD_1 | **ICICIBANK** | E_FULL_CONFIRMATION | 2021-11-08 to 2023-10-31 | 6 | 16.67% | ₹-1158.77 | 2023-11-01 to 2024-10-31 | 5 | 0% | ₹-1794.39 | **DEGRADED_NEGATIVE** |
-| FOLD_2 | **ICICIBANK** | E_FULL_CONFIRMATION | 2022-11-01 to 2024-10-31 | 9 | 11.11% | ₹-2388.33 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **INSUFFICIENT_SAMPLE** |
-| FOLD_3 | **ICICIBANK** | E_FULL_CONFIRMATION | 2023-11-01 to 2025-10-31 | 5 | 0% | ₹-1794.39 | 2025-11-01 to 2026-11-06 | 7 | 42.86% | ₹877.65 | **STABLE_POSITIVE** |
-| FOLD_1 | **ICICIBANK** | A_BASIC_ORB | 2021-11-08 to 2023-10-31 | 22 | 18.18% | ₹-4780.01 | 2023-11-01 to 2024-10-31 | 17 | 11.76% | ₹-4108.70 | **DEGRADED_NEGATIVE** |
-| FOLD_2 | **ICICIBANK** | A_BASIC_ORB | 2022-11-01 to 2024-10-31 | 30 | 13.33% | ₹-7417.79 | 2024-11-01 to 2025-10-31 | 1 | 0% | ₹-119.85 | **LOW_SAMPLE_NEGATIVE** |
-| FOLD_3 | **ICICIBANK** | A_BASIC_ORB | 2023-11-01 to 2025-10-31 | 18 | 11.11% | ₹-4228.55 | 2025-11-01 to 2026-11-06 | 18 | 50% | ₹318.35 | **STABLE_POSITIVE** |
-| FOLD_1 | **HDFCBANK** | E_FULL_CONFIRMATION | 2021-11-08 to 2023-10-31 | 6 | 66.67% | ₹1114.17 | 2023-11-01 to 2024-10-31 | 0 | 0% | ₹0.00 | **INSUFFICIENT_SAMPLE** |
-| FOLD_2 | **HDFCBANK** | E_FULL_CONFIRMATION | 2022-11-01 to 2024-10-31 | 2 | 100% | ₹720.73 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **INSUFFICIENT_SAMPLE** |
-| FOLD_3 | **HDFCBANK** | E_FULL_CONFIRMATION | 2023-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | 2025-11-01 to 2026-11-06 | 5 | 60% | ₹-123.03 | **DEGRADED_NEGATIVE** |
-| FOLD_1 | **HDFCBANK** | A_BASIC_ORB | 2021-11-08 to 2023-10-31 | 21 | 42.86% | ₹614.25 | 2023-11-01 to 2024-10-31 | 6 | 16.67% | ₹-1328.10 | **DEGRADED_NEGATIVE** |
-| FOLD_2 | **HDFCBANK** | A_BASIC_ORB | 2022-11-01 to 2024-10-31 | 16 | 18.75% | ₹-2490.09 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **INSUFFICIENT_SAMPLE** |
-| FOLD_3 | **HDFCBANK** | A_BASIC_ORB | 2023-11-01 to 2025-10-31 | 6 | 16.67% | ₹-1328.10 | 2025-11-01 to 2026-11-06 | 13 | 61.54% | ₹287.14 | **STABLE_POSITIVE** |
-| FOLD_1 | **M&M** | E_FULL_CONFIRMATION | 2021-11-08 to 2023-10-31 | 8 | 25% | ₹-394.07 | 2023-11-01 to 2024-10-31 | 6 | 33.33% | ₹-242.54 | **DEGRADED_NEGATIVE** |
-| FOLD_2 | **M&M** | E_FULL_CONFIRMATION | 2022-11-01 to 2024-10-31 | 10 | 40% | ₹-333.58 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **INSUFFICIENT_SAMPLE** |
-| FOLD_3 | **M&M** | E_FULL_CONFIRMATION | 2023-11-01 to 2025-10-31 | 6 | 33.33% | ₹-242.54 | 2025-11-01 to 2026-11-06 | 5 | 40% | ₹-386.04 | **DEGRADED_NEGATIVE** |
+| FOLD_1 | **ICICIBANK** | E_FULL_CONFIRMATION | 2021-11-08 to 2023-10-31 | 6 | 16.67% | ₹-1158.77 | 2023-11-01 to 2024-10-31 | 5 | 0% | ₹-1794.39 | **INSUFFICIENT_SAMPLE** |
+| FOLD_2 | **ICICIBANK** | E_FULL_CONFIRMATION | 2022-11-01 to 2024-10-31 | 9 | 11.11% | ₹-2388.33 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **NOT_EVALUABLE** |
+| FOLD_3 | **ICICIBANK** | E_FULL_CONFIRMATION | 2023-11-01 to 2025-10-31 | 5 | 0% | ₹-1794.39 | 2025-11-01 to 2026-11-06 | 7 | 42.86% | ₹877.65 | **INSUFFICIENT_SAMPLE** |
+| FOLD_1 | **ICICIBANK** | A_BASIC_ORB | 2021-11-08 to 2023-10-31 | 22 | 18.18% | ₹-4780.01 | 2023-11-01 to 2024-10-31 | 17 | 11.76% | ₹-4108.70 | **NEGATIVE** |
+| FOLD_2 | **ICICIBANK** | A_BASIC_ORB | 2022-11-01 to 2024-10-31 | 30 | 13.33% | ₹-7417.79 | 2024-11-01 to 2025-10-31 | 1 | 0% | ₹-119.85 | **INSUFFICIENT_SAMPLE** |
+| FOLD_3 | **ICICIBANK** | A_BASIC_ORB | 2023-11-01 to 2025-10-31 | 18 | 11.11% | ₹-4228.55 | 2025-11-01 to 2026-11-06 | 18 | 50% | ₹318.35 | **POSITIVE_BUT_UNCERTAIN** |
+| FOLD_1 | **HDFCBANK** | E_FULL_CONFIRMATION | 2021-11-08 to 2023-10-31 | 6 | 66.67% | ₹1114.17 | 2023-11-01 to 2024-10-31 | 0 | 0% | ₹0.00 | **NOT_EVALUABLE** |
+| FOLD_2 | **HDFCBANK** | E_FULL_CONFIRMATION | 2022-11-01 to 2024-10-31 | 2 | 100% | ₹720.73 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **NOT_EVALUABLE** |
+| FOLD_3 | **HDFCBANK** | E_FULL_CONFIRMATION | 2023-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | 2025-11-01 to 2026-11-06 | 5 | 60% | ₹-123.03 | **INSUFFICIENT_SAMPLE** |
+| FOLD_1 | **HDFCBANK** | A_BASIC_ORB | 2021-11-08 to 2023-10-31 | 21 | 42.86% | ₹614.25 | 2023-11-01 to 2024-10-31 | 6 | 16.67% | ₹-1328.10 | **INSUFFICIENT_SAMPLE** |
+| FOLD_2 | **HDFCBANK** | A_BASIC_ORB | 2022-11-01 to 2024-10-31 | 16 | 18.75% | ₹-2490.09 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **NOT_EVALUABLE** |
+| FOLD_3 | **HDFCBANK** | A_BASIC_ORB | 2023-11-01 to 2025-10-31 | 6 | 16.67% | ₹-1328.10 | 2025-11-01 to 2026-11-06 | 13 | 61.54% | ₹287.14 | **POSITIVE_BUT_UNCERTAIN** |
+| FOLD_1 | **M&M** | E_FULL_CONFIRMATION | 2021-11-08 to 2023-10-31 | 8 | 25% | ₹-394.07 | 2023-11-01 to 2024-10-31 | 6 | 33.33% | ₹-242.54 | **INSUFFICIENT_SAMPLE** |
+| FOLD_2 | **M&M** | E_FULL_CONFIRMATION | 2022-11-01 to 2024-10-31 | 10 | 40% | ₹-333.58 | 2024-11-01 to 2025-10-31 | 0 | 0% | ₹0.00 | **NOT_EVALUABLE** |
+| FOLD_3 | **M&M** | E_FULL_CONFIRMATION | 2023-11-01 to 2025-10-31 | 6 | 33.33% | ₹-242.54 | 2025-11-01 to 2026-11-06 | 5 | 40% | ₹-386.04 | **INSUFFICIENT_SAMPLE** |
 
 *Diagnostic Takeaway:* Due to extreme trade filtering in Variant E, individual 12-month test folds often contain only **1 to 4 trades**, producing high outcome variance between folds.
 
@@ -256,17 +255,17 @@ Yearly breakdown for Variant E across the 5 years:
 | **HDFCBANK** | Variant E | **11** | **63.64%** | **35.38%** | **84.84%** | ±24.73% | **FRAGILE (N < 30)** |
 | **ICICIBANK** | Variant E | **18** | **22.22%** | **9%** | **45.21%** | ±18.11% | **FRAGILE (N < 30)** |
 
-### 7.2 Bootstrap Resampling (1,000 Iterations with Replacement)
+### 7.2 Bootstrap Resampling (10,000 Iterations with Replacement)
 
 | Symbol | Realized Net P&L (₹) | Bootstrap Median (₹) | 5th Percentile (Worst 5%) | 95th Percentile (Best 5%) | Probability of Net Loss % | Standard Error (₹) |
 |---|---|---|---|---|---|---|
-| **BHARTIARTL** | ₹-634.14 | ₹-720.58 | **₹-2089.18** | **₹1080.83** | **75.7%** | ±₹968.58 |
-| **AXISBANK** | ₹-282.82 | ₹-381.42 | **₹-2038.83** | **₹1675.97** | **62.2%** | ±₹1132.21 |
-| **M&M** | ₹-1022.65 | ₹-1019.72 | **₹-2127.57** | **₹127.24** | **92.8%** | ±₹685.75 |
-| **HDFCBANK** | ₹991.14 | ₹1008.34 | **₹-560.15** | **₹2578.70** | **15.1%** | ±₹951.82 |
-| **ICICIBANK** | ₹-2075.51 | ₹-2151.60 | **₹-4416.65** | **₹270.51** | **93.2%** | ±₹1436.23 |
+| **BHARTIARTL** | ₹-634.14 | ₹-705.60 | **₹-2074.62** | **₹1032.81** | **75.99%** | ±₹955.04 |
+| **AXISBANK** | ₹-282.82 | ₹-350.79 | **₹-2043.10** | **₹1662.24** | **61.9%** | ±₹1132.46 |
+| **M&M** | ₹-1022.65 | ₹-1031.55 | **₹-2116.47** | **₹81.38** | **93.69%** | ±₹667.81 |
+| **HDFCBANK** | ₹991.14 | ₹1000.01 | **₹-560.61** | **₹2545.94** | **14.79%** | ±₹936.57 |
+| **ICICIBANK** | ₹-2075.51 | ₹-2106.03 | **₹-4329.68** | **₹276.39** | **92.85%** | ±₹1412.62 |
 
-*Critical Statistical Reality:* Even for HDFCBANK Variant E, bootstrap resampling reveals a **27.4% probability of net loss** under trade sequence permutations. The 5th percentile outcome is negative (**-₹512.40**). The apparent positive result is heavily influenced by just 2 individual winning trades.
+*Critical Statistical Reality:* For HDFCBANK Variant E, reproducible bootstrap resampling (10,000 iterations with replacement) reveals a **14.8% probability of net loss** with a 5th percentile outcome of **-₹560.61** (median: +₹1,000.01). Note: Sequence order permutation without replacement preserves total net profit (+₹991.14), but exhibits substantial drawdown variability. The apparent positive result is heavily influenced by just 2 individual winning trades.
 
 ---
 
@@ -280,11 +279,11 @@ Two completely independent multi-factor rankings were produced to prevent confla
 
 | Rank | Symbol | Baseline Composite Score | Trend-Heavy Score | Volatility-Heavy Score | Key Behavioural Characteristic |
 |---|---|---|---|---|---|
-| **#1** | **M&M** | **90.93** | 88.49 | 92.56 | Highest directional efficiency & breakout follow-through |
-| **#2** | **HDFCBANK** | **56.66** | 65.64 | 48.37 | Highest directional efficiency & breakout follow-through |
-| **#3** | **BHARTIARTL** | **49** | 59.26 | 40.66 | Highest directional efficiency & breakout follow-through |
-| **#4** | **AXISBANK** | **28.31** | 19.22 | 41.61 | Highest directional efficiency & breakout follow-through |
-| **#5** | **ICICIBANK** | **8.88** | 6.9 | 13.84 | Highest directional efficiency & breakout follow-through |
+| **#1** | **M&M** | **89.85** | 86.75 | 91.91 | Highest relative volatility (2.44% range), highest ER (0.136), lowest chop (49.09), highest follow-through |
+| **#2** | **HDFCBANK** | **56.58** | 65.54 | 48.33 | Highest market turnover liquidity (₹2,324 Cr/day), lowest intraday range (1.64%), lowest ATR % (0.180%) |
+| **#3** | **BHARTIARTL** | **47.77** | 57.61 | 40.02 | High directional efficiency (0.130 ER), high ADX persistence (44.95% >= 25), balanced volatility (2.00%) |
+| **#4** | **AXISBANK** | **29.96** | 21.85 | 42.6 | Moderate volatility (2.04% range), lower trend persistence (0.121 ER), frequent VWAP mean-reversion |
+| **#5** | **ICICIBANK** | **9.04** | 7.1 | 13.92 | Lowest directional efficiency (0.122 ER), lowest strong trend proportion (6.98%), high VWAP oscillation |
 
 ### 8.2 Ranking B: Strategy Performance (Variant E / Intraday Trend Following)
 
@@ -292,11 +291,11 @@ Two completely independent multi-factor rankings were produced to prevent confla
 
 | Rank | Symbol | Baseline Composite Score | Capital Preservation Score | Return-Focused Score | Empirical Backtest Verdict |
 |---|---|---|---|---|---|
-| **#1** | **HDFCBANK** | **95** | 95 | 100 | Exploratory positive return; high sample fragility |
-| **#2** | **AXISBANK** | **49.09** | 58.65 | 43.73 | Exploratory positive return; high sample fragility |
-| **#3** | **BHARTIARTL** | **43.7** | 56.47 | 36.15 | Exploratory positive return; high sample fragility |
-| **#4** | **M&M** | **28.28** | 35.44 | 22.14 | Exploratory positive return; high sample fragility |
-| **#5** | **ICICIBANK** | **14.02** | 23.67 | 4.82 | Exploratory positive return; high sample fragility |
+| **#1** | **HDFCBANK** | **95** | 95 | 100 | Exploratory positive return (+₹991.14); extreme sample fragility (N=11) |
+| **#2** | **AXISBANK** | **49.09** | 58.65 | 43.73 | Net negative (-₹282.82); moderate capital preservation, negative expectancy (-₹15.71) |
+| **#3** | **BHARTIARTL** | **43.7** | 56.47 | 36.15 | Net negative (-₹634.14); fee drag erosion, negative expectancy (-₹35.23) |
+| **#4** | **M&M** | **28.28** | 35.44 | 22.14 | Net negative (-₹1,022.65); poor trend capture, negative expectancy (-₹53.82) |
+| **#5** | **ICICIBANK** | **14.02** | 23.67 | 4.82 | Net negative (-₹2,075.51); severe directional whipsaw, negative expectancy (-₹115.31) |
 
 ---
 

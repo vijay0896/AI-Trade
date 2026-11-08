@@ -5,7 +5,7 @@ import {
   Wallet,
   PieChart,
   TrendingUp,
-  Sliders,
+  FlaskConical,
 } from "lucide-react";
 
 export interface NavItem {
@@ -53,6 +53,16 @@ export const TRADING_NAV_SECTIONS: NavSection[] = [
         name: "Live Positions",
         href: "/positions",
         icon: TrendingUp,
+      },
+    ],
+  },
+  {
+    title: "QUANTITATIVE RESEARCH",
+    items: [
+      {
+        name: "Research & Backtests",
+        href: "/research",
+        icon: FlaskConical,
       },
     ],
   },

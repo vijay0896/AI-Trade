@@ -464,7 +464,7 @@ Completed evidence:
 - 8 Deliverables persisted in `backend/storage/research/`:
   1. [`RESEARCH_COMPARISON_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/RESEARCH_COMPARISON_REPORT.md): Comprehensive 310-line quantitative findings report.
   2. [`STOCK_BEHAVIOUR_METRICS.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/STOCK_BEHAVIOUR_METRICS.csv): 55 granular metrics per stock across all 5 candidates.
-  3. [`DAILY_SESSION_CLASSIFICATION.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/DAILY_SESSION_CLASSIFICATION.csv): Complete classification of all 6,198 historical sessions into 5 regimes.
+  3. [`DAILY_SESSION_CLASSIFICATION.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/DAILY_SESSION_CLASSIFICATION.csv): Complete classification of all 6,199 historical sessions into 5 regimes (6,159 eligible regular sessions).
   4. [`STRATEGY_ROBUSTNESS.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/STRATEGY_ROBUSTNESS.csv): Canonical run metrics, Wilson score CIs, and bootstrap percentiles.
   5. [`WALK_FORWARD_RESULTS.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/WALK_FORWARD_RESULTS.csv): Chronological 24m-train / 12m-test walk-forward folds.
   6. [`PARAMETER_SENSITIVITY.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/PARAMETER_SENSITIVITY.csv): Parameter progression and 0 to 5 bps slippage stress testing.
@@ -472,30 +472,60 @@ Completed evidence:
   8. [`research_run_metadata.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/research_run_metadata.json): Pipeline execution telemetry.
 - Dual Multi-Factor Stock Rankings:
   - **Ranking A (Intraday Price Behaviour - Strategy-Independent):**
-    #1 M&M (90.93), #2 HDFCBANK (56.66), #3 BHARTIARTL (49.00), #4 AXISBANK (28.31), #5 ICICIBANK (8.88).
+    #1 M&M (89.85), #2 HDFCBANK (56.58), #3 BHARTIARTL (47.77), #4 AXISBANK (29.96), #5 ICICIBANK (9.04).
   - **Ranking B (Trading Strategy Performance - Variant E / Trend-Following):**
     #1 HDFCBANK (95.00), #2 AXISBANK (49.09), #3 BHARTIARTL (43.70), #4 M&M (28.28), #5 ICICIBANK (14.02).
 - Statistical Rigour & Sample Fragility Disclosures:
-  - Wilson-score 95% binomial confidence interval for HDFCBANK Variant E spans **[35.4%, 84.8%]** due to small sample size ($N=11$ trades across 5 years, ~2.2 trades/year).
-  - Bootstrap resampling (1,000 iterations) indicates a **27.4% probability of experiencing a net loss**.
+  - Wilson-score 95% binomial confidence interval for HDFCBANK Variant E spans **[35.4%, 84.8%]** due to small sample size ($N=11$ trades across 5 years, ~2.2 trades/year). Exact binomial test against $H_0: p=0.5$ yields $p = 0.5488$ (testing 50% win rate, not direct positive expectancy). Net expectancy 95% CI is [-₹50.96, +₹231.45].
+  - Bootstrap resampling (10,000 iterations benchmark) indicates a **14.8% probability of experiencing a net loss** (5th percentile -₹560.61). 10,000 iterations improve simulation precision, not underlying sample size ($N=11$). The 10-session block bootstrap serves as a small-sample sensitivity diagnostic.
   - Qualified HDFCBANK Variant E as an **exploratory positive finding**, not proof of a proven structural edge.
   - Confirmed that no single stock/strategy pair currently satisfies criteria for unattended automated execution.
-- Test Suite: 77 passing unit tests across 28 suites (`backend/test/research.test.js`, `backend/test/backtesting.test.js`, `backend/test/indicators.test.js`, `backend/test/strategy.test.js`).
+
+### Phase 7.1 — Statistical Integrity & Research Reconciliation Audit
+
+**Status: COMPLETED (All 25 Canonical Runs Audited, Invariants Verified, Conflicting Figures Reconciled, Zero Look-Ahead Certified).**
+
+Completed evidence:
+- Independent audit script executed: `node backend/src/scripts/runResearchAudit.js`.
+- Automated test suite executed: `npm test --prefix backend` (**88 tests passing across 37 suites**, including 11 native audit tests in `backend/test/research.audit.test.js`).
+- 10 Audit Deliverables generated in [`backend/storage/research/phase-7.1-audit/`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/):
+  1. [`PHASE_7_1_AUDIT_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/PHASE_7_1_AUDIT_REPORT.md): Comprehensive institutional-grade audit report.
+  2. [`CANONICAL_TRADE_RECONCILIATION.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/CANONICAL_TRADE_RECONCILIATION.csv): Trade-level and run-level ledger reconciliation across all 25 canonical runs (1,071 trades; 0 identity violations; 0 discrepancies with `summary.json`).
+  3. [`BOOTSTRAP_RECONCILIATION.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/BOOTSTRAP_RECONCILIATION.json): Reproducible 10,000-iteration bootstrap simulation (fixed seed `123456789`), session-level block bootstrap (10 sessions), and sequence permutation drawdown distribution.
+  4. [`REGIME_METRIC_RECONCILIATION.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/REGIME_METRIC_RECONCILIATION.csv): Itemized definitions, numerators, denominators, and verified percentages across bar and session levels (100% mutual exclusivity verified).
+  5. [`STATISTICAL_VALIDITY.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/STATISTICAL_VALIDITY.csv): Wilson score 95% CIs, exact binomial tests against $H_0: p=0.5$ (HDFCBANK p-value = 0.5488), break-even win rates, and expectancy intervals.
+  6. [`WALK_FORWARD_REASSESSMENT.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/WALK_FORWARD_REASSESSMENT.csv): 30 folds reclassified under objective status definitions (`NOT_EVALUABLE`, `INSUFFICIENT_SAMPLE`, `POSITIVE_BUT_UNCERTAIN`, `DEGRADED`, `NEGATIVE`).
+  7. [`EXPERIMENT_REGISTRY.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/EXPERIMENT_REGISTRY.csv): Registry of all 25 canonical runs, 5 slippage stress tests, correlation disclosures, and Holm-Bonferroni corrections (zero statistically significant variants at family-wise $\alpha = 0.05$).
+  8. [`CAUSAL_FEATURE_AUDIT.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/CAUSAL_FEATURE_AUDIT.csv): As-of-time timeline audit verifying zero look-ahead bias in `backtesting.engine.js` and strict isolation of ex-post full-day variables.
+  9. [`RANKING_RECONCILIATION.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/RANKING_RECONCILIATION.csv): Verified composite scores, normalized scores, differentiated behavioural characteristics, and corrected verdicts for losing stocks.
+  10. [`RESEARCH_AUDIT_METADATA.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/phase-7.1-audit/RESEARCH_AUDIT_METADATA.json): Complete SHA-256 file hashes, audit parameters, tolerances, and governance verdicts.
+- Key Discrepancies Reconciled & Implementation Defects Corrected:
+  - **Narrative vs Table Bootstrap Discrepancy Resolved:** Unseeded draft placeholder figures (27.4% and -₹512.40) and erroneous reference to sequence permutation replaced with reproducible 10,000-iteration benchmark: Mean +₹996.37, Median +₹1,000.01, 5th percentile -₹560.61, 95th percentile +₹2,545.94, $P(\text{Net Loss}) = 14.79\%$. Sequence permutation without replacement preserves total sum invariant (+₹991.14).
+  - **Ranking B Verdicts Corrected:** Formatter defect that hardcoded "Exploratory positive return" for all stocks replaced with accurate verdicts reflecting actual net losses (-₹282 to -₹2,075) for AXISBANK, BHARTIARTL, M&M, and ICICIBANK.
+  - **Regime Classification Consistency:** Executive summary narrative reconciled to cite explicit Sideways (21.35% to 34.74%) and total non-trending consolidation (81.39% to 88.08%). Bar-level ($15.18\% - 19.54\%$) vs session-mean ($0.08\% - 1.22\%$) choppiness fully documented.
+  - **Walk-Forward Stability Labels:** `STABLE_POSITIVE` removed from low-sample folds; objective statistical criteria enforced.
+  - **Multiple Testing Audit:** Rejection of independent Bernoulli trial assumption ($1 - (1 - 0.05)^{90} \approx 99.1\%$); documented strong positive correlation among nested strategy filters.
+- Governance & Institutional Trading Verdict:
+  - **Automated live trading remains strictly prohibited.**
+  - Safe to proceed to **Phase 8 (React Research Dashboard)**.
 
 ### Phase 8 — React research dashboard
 
-**Status: NOT STARTED.**
+**Status: COMPLETED (React 19 + TypeScript Frontend, RTK Query Cache, 7 Modular Sections, Pure Responsive SVG Equity Curve, Full Antislop WCAG AA Adherence).**
 
-Extend the existing React 19 + TypeScript + RTK Query application without breaking existing Dashboard/Profile/Funds/Holdings/Positions pages.
-
-Suggested new pages/sections:
-
-1. **Research Overview:** current phase, dataset coverage, latest download status, and quality warnings.
-2. **Historical Data:** symbol/date filters, candle counts, gaps, duplicates, download manifest, and download/resume controls (backend-protected).
-3. **Stock Comparison:** side-by-side trend, choppiness, volatility, liquidity, and strategy statistics.
-4. **Chart Analysis:** 5-minute OHLC candles with VWAP, EMA 20/50, ORH/ORL, volume, and optional ADX/ATR panels.
-5. **Backtest Results:** configuration, trades table, equity curve, monthly/yearly P&L, drawdown, and fee breakdown.
-6. **Reports:** export CSV/JSON summaries with data version, source, date range, and configuration.
+Completed evidence:
+- Modular frontend architecture built in `frontend/src/pages/Research/` and connected via React Router v7 (`/research` route).
+- RTK Query API slice implemented in `frontend/src/api/researchApi.ts` consuming `/api/v1/research/*` and `/api/v1/backtesting/*`.
+- 7 comprehensive tabs implemented:
+  1. **Overview:** Dataset coverage (5 stocks, 479,982 candles, 6,159 regular sessions), audit badge, key findings.
+  2. **Stock Behaviour & Rankings:** Ranking A & B side-by-side with interactive weighting switches and 55 raw metrics.
+  3. **Market Regimes:** 5-regime distribution bar charts, non-trending dominance (82.14% to 85.06%), threshold sensitivity, and causal isolation disclosure.
+  4. **Strategy Matrix:** 25 canonical runs matrix, variant filters, Wilson-score 95% CIs with $N < 30$ fragility badges, and prominent HDFCBANK Variant E disclaimer.
+  5. **Statistical Rigour & Walk-Forward:** Reproducible 10,000-iteration bootstrap distributions (P(Loss)=14.8%), chronological walk-forward fold table with objective status labels, and multiple-testing disclosures.
+  6. **Backtest Explorer:** Run selector across all 25 canonical runs, interactive SVG equity curve, underwater drawdown chart, and paginated trade records table.
+  7. **Audited Deliverables:** Read-only export/download buttons and path copies for all 8 storage files and 10 audit artifacts.
+- Zero TypeScript or lint errors (`npm run build --prefix frontend` passes cleanly).
+- Automated live trading permanently disabled; live orders strictly prohibited.
 
 UI requirements:
 
@@ -594,8 +624,9 @@ Update this table whenever a phase changes. Add the completion date and evidence
 | 6 | Backtesting engine | COMPLETED | Deterministic event-driven engine with Groww fee schedule, slippage, same-bar ambiguity handling & 25 canonical runs across 479,982 candles in `BACKTEST_ENGINE_REPORT.md` |
 | 6.1 | Backtest reconciliation and financial accuracy audit | COMPLETED | 100% reconciled ledger, Groww effective-dated 0.1% + min fee floors, NSE Circular FA64232, and slippage sensitivity in `BACKTEST_RECONCILIATION_REPORT.md` (61 tests pass) |
 | 7 | Research comparison, ranking, and robustness | COMPLETED | Comprehensive stock behaviour metrics, objective session classification, chronological walk-forward diagnostics, dual stock rankings & 77 tests pass in `RESEARCH_COMPARISON_REPORT.md` |
-| 8 | React research dashboard | NEXT | Ready to commence (React 19 + TypeScript frontend with RTK Query for historical data, indicators, backtest results & research visualizer) |
-| 9 | Paper trading and operational hardening | NOT STARTED | Not started |
+| 7.1 | Statistical integrity and research reconciliation audit | COMPLETED | 100% audit of 25 canonical runs (1,071 trades; 0 identity violations), 10,000 bootstrap simulations, 6,159 regular sessions, multiple-testing correlation audit & 10 deliverables in `phase-7.1-audit/` (88 tests pass) |
+| 8 | React research dashboard | COMPLETED | React 19 + TypeScript + RTK Query research dashboard built with 7 comprehensive tabs (Overview, Stock Comparison, Market Regimes, Strategy Matrix, Statistical Validity, Backtest Explorer & Equity Curve, Audited Deliverables); zero type errors; antislop WCAG AA compliant |
+| 9 | Paper trading and operational hardening | NEXT | Ready to commence (Groww paper execution mode, mock order books, risk circuit breakers & system resilience) |
 | 10 | Optional persistence/production improvements | NOT STARTED | Not started |
 
 ### Phase completion notes
@@ -607,8 +638,10 @@ Update this table whenever a phase changes. Add the completion date and evidence
 - **2026-11-08 — Phase 5 (Strategy Specification & Configuration):** Formalized Opening Range Breakout (ORB) + VWAP + EMA strategy with 5 predefined variants (A–E). Built Zod validation schemas, risk budgeting (0.5% risk/trade, max daily loss 1.0%), and experimental parameter matrix cohorts. Persisted specification to `backend/storage/strategy/STRATEGY_SPECIFICATION.md` with 44 passing unit tests.
 - **2026-11-08 — Phase 6 (Historical Backtesting Engine):** Developed deterministic event-driven engine in `backend/src/modules/backtesting/` with causal execution ($t+1$ candle open fill), conservative intrabar worst-case stop handling, and full Groww fee schedule. Completed 25 canonical runs across 5 stocks and 5 variants (479,982 candles). Master report in `BACKTEST_ENGINE_REPORT.md`.
 - **2026-11-08 — Phase 6.1 (Backtest Reconciliation & Financial Audit):** Certified 100% accounting reconciliation ($\text{Net P\&L} = \text{Theoretical Gross} - \text{Slippage} - \text{Charges}$). Verified effective-dated Groww brokerage (0.1% max ₹20, min ₹2 pre-June 2025 / min ₹5 post-June 2025, SEBI 2.5% cap), NSE circular FA64232 (₹2.97/lakh), GST base strictly excluding STT/Stamp Duty. Unit tests expanded to 61 passing tests. Certified in `BACKTEST_RECONCILIATION_REPORT.md`.
-- **2026-11-08 — Phase 7 (Quantitative Research, Stock Ranking & Strategy Robustness):** Completed comprehensive research pipeline (`backend/src/modules/research/`) across all 5 stocks and 479,982 candles. Formulated objective 5-regime classification model, chronological walk-forward folds, Wilson score 95% binomial confidence intervals, and bootstrap resampling. Generated Ranking A (Price Behaviour: #1 M&M, #2 HDFCBANK, #3 BHARTIARTL) and Ranking B (Strategy Performance: #1 HDFCBANK, #2 AXISBANK, #3 BHARTIARTL). Qualified HDFCBANK Variant E as exploratory positive finding ($N=11$ trades, [35.4%, 84.8%] 95% CI, 27.4% bootstrap loss probability). Delivered all 8 storage files in `backend/storage/research/` and certified 77 passing unit tests across 28 suites.
-- **Next action:** Proceed to Phase 8 (React research dashboard — UI visualization for historical data, indicators, backtest results, and research comparisons).
+- **2026-11-08 — Phase 7 (Quantitative Research, Stock Ranking & Strategy Robustness):** Completed comprehensive research pipeline (`backend/src/modules/research/`) across all 5 stocks and 479,982 candles. Formulated objective 5-regime classification model, chronological walk-forward folds, Wilson score 95% binomial confidence intervals, and bootstrap resampling. Generated Ranking A (Price Behaviour: #1 M&M, #2 HDFCBANK, #3 BHARTIARTL) and Ranking B (Strategy Performance: #1 HDFCBANK, #2 AXISBANK, #3 BHARTIARTL). Qualified HDFCBANK Variant E as exploratory positive finding ($N=11$ trades, [35.4%, 84.8%] 95% CI). Delivered all 8 storage files in `backend/storage/research/` and certified 77 passing unit tests across 28 suites.
+- **2026-11-08 — Phase 7.1 (Statistical Integrity & Research Reconciliation Audit):** Completed exhaustive audit and reconciliation across all 25 canonical backtest runs (1,071 trades). Verified 100% financial accounting identity ($Net = Gross - Charges$, zero identity violations, zero discrepancies with `summary.json`). Resolved contradictory bootstrap figures in HDFCBANK Variant E: narrative draft placeholder corrected to reproducible 10,000-iteration benchmark ($P(\text{Net Loss}) = 14.79\%$, 5th percentile -₹560.61, Median +₹1,000.01). Clarified sequence permutation invariant ($\sum PnL \equiv +₹991.14$). Resolved regime classification metrics across bar vs session scopes (summing to 100.00% across 6,159 eligible regular sessions). Corrected Ranking B empirical verdicts for losing stocks, reclassified walk-forward folds under objective status labels (`INSUFFICIENT_SAMPLE`, `NOT_EVALUABLE`), and audited multiple-testing correlation structure (zero variants significant under Holm-Bonferroni at $\alpha = 0.05$). Generated 10 audit deliverables in `backend/storage/research/phase-7.1-audit/`. Expanded test suite to **88 passing unit tests across 37 suites**.
+- **2026-11-08 — Phase 8 (React Research Dashboard):** Built comprehensive research dashboard in React 19 + TypeScript + Vite + RTK Query (`frontend/src/pages/Research/`) connected to `/research` route. Implemented 7 modular tabs: Overview, Stock Comparison (Dual Rankings A & B), Market Regimes (5-regime distribution with 82.14%–85.06% non-trending dominance), Strategy Matrix (25 canonical runs with Wilson 95% CIs and prominent HDFCBANK Variant E disclaimer), Statistical Rigour & Walk-Forward (10,000 bootstrap simulation distributions and objective status folds), Backtest Explorer (run selector, responsive SVG equity curve, underwater drawdown chart, and paginated trade records table), and Audited Deliverables registry. Passed full TypeScript check and Vite production build with zero errors. All antislop WCAG AA contrast and mobile accessibility requirements fulfilled. Automated live execution permanently disabled.
+- **Next action:** Proceed to Phase 9 (Paper trading and operational hardening).
 
 ## 13. Instructions for Antigravity — master operating prompt
 

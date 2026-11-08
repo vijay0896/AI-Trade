@@ -406,21 +406,22 @@ This research report presents an exhaustive, statistically disciplined quantitat
 
 ### Primary Quantitative Conclusions
 
-1. **Pervasive Sideways Regime & False Breakouts:** Across all 5 stocks, Indian large-cap equities spend over **45% to 52%** of trading sessions in consolidating or choppy regimes (Efficiency Ratio $\\le 0.22$, Choppiness $\\ge 60$, or $\\ge 5$ VWAP crossings). Opening range breakouts (15m OR) occur on **93% to 96%** of trading days, but **45% to 50%** of those breakouts immediately fail within 3 bars ($K=3$, 15 minutes) by closing back inside the range.
+1. **Pervasive Sideways Regime & False Breakouts:** Across all 5 stocks, Indian large-cap equities spend **21% to 35%** of regular sessions in explicitly flat Sideways regimes, and **82% to 85%** in non-trending regimes (Sideways + Mixed/Unclear; ranging from 82.14% in M&M to 85.06% in ICICIBANK). Sessions with low directional efficiency ($ER \\le 0.22$) account for **77% to 83%**, and sessions with $\\ge 5$ VWAP crossings account for **63% to 67%**. Opening range breakouts (15m OR) occur on **93% to 96%** of trading days, but **45% to 50%** of those breakouts immediately fail within 3 bars ($K=3$, 15 minutes) by closing back inside the range.
 2. **Value Destruction of Basic Breakouts (Variant A):** Unfiltered breakout trading is consistently value-destroying across all five stocks, generating net losses ranging from **-0.43% to -8.69%** of capital. Whipsaws during morning chop generate high turnover that is rapidly consumed by transaction costs.
 3. **Drastic Filter Compression in Variant E:** Progressively adding VWAP, EMA stacks, ADX strength, and Choppiness filters (Variant E) successfully eliminates ~70% to 80% of false breakout trades, compressing maximum drawdowns from >8% down to <1.6% across the entire universe.
 4. **Statistical Fragility of Apparent "Winners" (Sample Size Reality Check):**
    - While **HDFCBANK under Variant E** produced a positive backtest outcome (**+₹991.14**, +0.99% net return, 63.64% win rate, 2.18 profit factor, 0.67% max drawdown), this result was achieved on **only 11 trades across 5 years** (~2.2 trades per year).
-   - The Wilson-score 95% binomial confidence interval for HDFCBANK Variant E's win rate spans **[35.4%, 84.8%]**. A 50% coin-flip null hypothesis cannot be rejected at standard significance levels ($p > 0.05$).
-   - Bootstrap resampling reveals a **27.4% probability of experiencing a net loss** when resampled over the same sample distribution.
-   - **Conclusion:** HDFCBANK Variant E must be classified as an **exploratory positive finding**, NOT proof of a proven structural edge.
+   - The Wilson-score 95% binomial confidence interval for HDFCBANK Variant E's win rate spans **[35.4%, 84.8%]**. A two-sided exact binomial test against a 50% win-rate null hypothesis ($H_0: p=0.5$) yields $p = 0.5488$ (not statistically distinguishable from chance). Note that this p-value tests win rate against a 50% coin-flip, not direct positive trading expectancy.
+   - The empirical 95% confidence interval for net expectancy per trade spans **[-₹50.96, +₹231.45]**, which crosses zero and represents the direct measure of profitability uncertainty.
+   - Reproducible bootstrap resampling (10,000 iterations with replacement) reveals a **14.8% probability of experiencing a net loss** (5th percentile: -₹560.61). Resampling 10,000 iterations increases simulation precision, not the underlying independent trade sample size ($N=11$). The 10-session block bootstrap serves as a small-sample sensitivity diagnostic.
+   - **Conclusion:** HDFCBANK Variant E must be classified as an **exploratory positive finding**, NOT proof of a validated trading edge.
 5. **No Universal Candidate Suitable for Unattended Automation:** Based on strict statistical criteria, walk-forward diagnostics, and trade frequency constraints, **no stock/strategy pair currently satisfies institutional criteria for automated execution**. Further parameter expansion or multi-stock portfolio aggregation is required before considering live deployment.
 
 ---
 
 ## 1. Stock Behaviour Analysis (Part 2)
 
-All five stocks were analyzed across their **1,231 to 1,232 completed regular continuous sessions** (excluding non-regular sessions like Diwali Muhurat, DR split tests, and data spikes from standard baseline metrics).
+All five stocks were analyzed across their **1,231 to 1,232 completed regular continuous sessions** (6,159 total eligible regular sessions across the universe; 40 sessions excluded due to 35 special sessions and 5 single-day broker data spike sessions on 2025-05-12).
 
 ### 1.1 Intraday Volatility Metrics
 
@@ -444,7 +445,7 @@ ${Object.entries(stockBehaviours).map(([sym, b]) => {
   return `| **${sym}** | **${d.averageSessionEfficiencyRatio}** | ${d.medianSessionEfficiencyRatio} | ${d.meanChoppinessIndex} | ${d.percentChoppinessAbove60}% | **${d.adxAbove25Percent}%** | ${d.adxRisingPercent}% | ${d.emaBullishAlignmentPercent}% | ${d.emaBearishAlignmentPercent}% | **${d.strongDirectionalSessionsPercent}%** |`;
 }).join('\n')}
 
-*Key Finding:* **M&M** ($ER = 0.145$) and **BHARTIARTL** ($ER = 0.139$) exhibit the highest directional efficiency, spending ~47% of bars with ADX $\\ge 25$. In contrast, **AXISBANK** ($ER = 0.128$) and **ICICIBANK** ($ER = 0.129$) display lower directional persistence with higher intraday noise.
+*Key Finding:* **M&M** ($ER = 0.136$) and **BHARTIARTL** ($ER = 0.130$) exhibit the highest directional efficiency, spending ~44% to 47% of bars with ADX $\\ge 25$. In contrast, **ICICIBANK** ($ER = 0.122$) and **AXISBANK** ($ER = 0.121$) display lower directional persistence with higher intraday noise.
 
 ### 1.3 Sideways Dynamics & Mean-Reversion
 
@@ -511,15 +512,13 @@ ${Object.entries(stockBehaviours).map(([sym, b]) => {
 
 ### 2.3 Threshold Sensitivity Analysis (Baseline vs Tight vs Loose)
 
-| Threshold Grid | Condition Criteria | Strong Trend % (Universe Avg) | Sideways % (Universe Avg) | Mixed/Unclear % |
-|---|---|---|---|---|
-| **Tight** | Return $\\ge 1.0\\%$, $ER \\ge 0.35$, VWAP $\\le 2$, Chop $\\ge 61.8$, VWAP $\\ge 6$ | **4.2%** | **23.1%** | **72.7%** |
-| **Baseline** | Return $\\ge 0.7\\%$, $ER \\ge 0.25$, VWAP $\\le 3$, Chop $\\ge 58.0$, VWAP $\\ge 5$ | **8.4%** | **34.2%** | **57.4%** |
-| **Loose** | Return $\\ge 0.5\\%$, $ER \\ge 0.20$, VWAP $\\le 4$, Chop $\\ge 55.0$, VWAP $\\ge 4$ | **15.6%** | **44.8%** | **39.6%** |
+| Threshold Grid | Trend Criteria (Strong) | Sideways Criteria | Strong Trend % | Weak Trend % | Sideways % | Mixed/Unclear % |
+|---|---|---|---|---|---|---|
+| **Tight** | Return $\\ge 1.0\\%$, $ER \\ge 0.35$, VWAP $\\le 2$ | Chop $\\ge 61.8$, VWAP $\\ge 6$, $ER \\le 0.18$ | **2.60%** | **5.99%** | **20.51%** | **70.90%** |
+| **Baseline** | Return $\\ge 0.7\\%$, $ER \\ge 0.25$, VWAP $\\le 3$ | Chop $\\ge 58.0$, VWAP $\\ge 5$, $ER \\le 0.20$ | **8.36%** | **9.13%** | **29.01%** | **53.50%** |
+| **Loose** | Return $\\ge 0.5\\%$, $ER \\ge 0.20$, VWAP $\\le 4$ | Chop $\\ge 55.0$, VWAP $\\ge 4$, $ER \\le 0.25$ | **15.29%** | **8.07%** | **35.86%** | **40.77%** |
 
-*Methodological Insight:* Threshold shifts smoothly scale the proportion of classified sessions without creating artificial step discontinuities.
-
-*Methodological Insight:* Threshold shifts smoothly scale the proportion of classified sessions without creating artificial step discontinuities.
+*Methodological Insight:* Threshold shifts smoothly scale the proportion of classified sessions without creating artificial step discontinuities. Every grid sums to exactly 100.00%.
 
 ---
 
@@ -606,7 +605,7 @@ ${strategyMetricsList.filter(r => r.variant === 'E_FULL_CONFIRMATION').map(r => 
   return `| **${r.symbol}** | Variant E | **${r.totalTrades}** | **${r.winRate}%** | **${ci.ciLowerPercent}%** | **${ci.ciUpperPercent}%** | ±${ci.marginOfErrorPercent}% | **${ci.isStatisticallyFragile ? 'FRAGILE (N < 30)' : 'ADEQUATE'}** |`;
 }).join('\n')}
 
-### 7.2 Bootstrap Resampling (1,000 Iterations with Replacement)
+### 7.2 Bootstrap Resampling (10,000 Iterations with Replacement)
 
 | Symbol | Realized Net P&L (₹) | Bootstrap Median (₹) | 5th Percentile (Worst 5%) | 95th Percentile (Best 5%) | Probability of Net Loss % | Standard Error (₹) |
 |---|---|---|---|---|---|---|
@@ -615,7 +614,7 @@ ${strategyMetricsList.filter(r => r.variant === 'E_FULL_CONFIRMATION').map(r => 
   return `| **${r.symbol}** | ₹${r.netPnL.toFixed(2)} | ₹${b.medianNetPnL.toFixed(2)} | **₹${b.percentile5NetPnL.toFixed(2)}** | **₹${b.percentile95NetPnL.toFixed(2)}** | **${b.probabilityOfLossPercent}%** | ±₹${b.standardError.toFixed(2)} |`;
 }).join('\n')}
 
-*Critical Statistical Reality:* Even for HDFCBANK Variant E, bootstrap resampling reveals a **27.4% probability of net loss** under trade sequence permutations. The 5th percentile outcome is negative (**-₹512.40**). The apparent positive result is heavily influenced by just 2 individual winning trades.
+*Critical Statistical Reality:* For HDFCBANK Variant E, reproducible bootstrap resampling (10,000 iterations with replacement) reveals a **14.8% probability of net loss** with a 5th percentile outcome of **-₹560.61** (median: +₹1,000.01). Note: Sequence order permutation without replacement preserves total net profit (+₹991.14), but exhibits substantial drawdown variability. The apparent positive result is heavily influenced by just 2 individual winning trades.
 
 ---
 
@@ -633,7 +632,14 @@ ${rankingA.baselineRanking.map(item => {
   const sym = item.symbol;
   const th = rankingA.weightingSensitivity.trendHeavy.find(x => x.symbol === sym)?.compositeScore;
   const vh = rankingA.weightingSensitivity.volatilityHeavy.find(x => x.symbol === sym)?.compositeScore;
-  return `| **#${item.rank}** | **${sym}** | **${item.compositeScore}** | ${th} | ${vh} | Highest directional efficiency & breakout follow-through |`;
+  const chars = {
+    'M&M': 'Highest relative volatility (2.44% range), highest ER (0.136), lowest chop (49.09), highest follow-through',
+    'HDFCBANK': 'Highest market turnover liquidity (₹2,324 Cr/day), lowest intraday range (1.64%), lowest ATR % (0.180%)',
+    'BHARTIARTL': 'High directional efficiency (0.130 ER), high ADX persistence (44.95% >= 25), balanced volatility (2.00%)',
+    'AXISBANK': 'Moderate volatility (2.04% range), lower trend persistence (0.121 ER), frequent VWAP mean-reversion',
+    'ICICIBANK': 'Lowest directional efficiency (0.122 ER), lowest strong trend proportion (6.98%), high VWAP oscillation'
+  };
+  return `| **#${item.rank}** | **${sym}** | **${item.compositeScore}** | ${th} | ${vh} | ${chars[sym] || 'Differentiated characteristics'} |`;
 }).join('\n')}
 
 ### 8.2 Ranking B: Strategy Performance (Variant E / Intraday Trend Following)
@@ -646,7 +652,14 @@ ${rankingB.baselineRanking.map(item => {
   const sym = item.symbol;
   const cp = rankingB.weightingSensitivity.capitalPreservation.find(x => x.symbol === sym)?.compositeScore;
   const rf = rankingB.weightingSensitivity.returnFocused.find(x => x.symbol === sym)?.compositeScore;
-  return `| **#${item.rank}** | **${sym}** | **${item.compositeScore}** | ${cp} | ${rf} | Exploratory positive return; high sample fragility |`;
+  const verdicts = {
+    'HDFCBANK': 'Exploratory positive return (+₹991.14); extreme sample fragility (N=11)',
+    'AXISBANK': 'Net negative (-₹282.82); moderate capital preservation, negative expectancy (-₹15.71)',
+    'BHARTIARTL': 'Net negative (-₹634.14); fee drag erosion, negative expectancy (-₹35.23)',
+    'M&M': 'Net negative (-₹1,022.65); poor trend capture, negative expectancy (-₹53.82)',
+    'ICICIBANK': 'Net negative (-₹2,075.51); severe directional whipsaw, negative expectancy (-₹115.31)'
+  };
+  return `| **#${item.rank}** | **${sym}** | **${item.compositeScore}** | ${cp} | ${rf} | ${verdicts[sym] || 'Empirical backtest verdict'} |`;
 }).join('\n')}
 
 ---
