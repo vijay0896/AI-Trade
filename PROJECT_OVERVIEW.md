@@ -77,6 +77,15 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   ├── package.json                    # Backend dependencies and scripts
 │   ├── package-lock.json               # Backend dependency lockfile
 │   ├── server.js                       # HTTP server listener, startup broker auth & shutdown
+│   ├── storage/
+│   │   └── historical-data/            # 5-year 5-minute OHLCV CSV archives (479,982 candles)
+│   │       ├── .checkpoint.json        # Resumable download checkpoint index
+│   │       ├── download_summary.json   # Download audit & data integrity report
+│   │       ├── AXISBANK/               # AXISBANK monthly CSVs (2021-2026)
+│   │       ├── BHARTIARTL/             # BHARTIARTL monthly CSVs (2021-2026)
+│   │       ├── HDFCBANK/               # HDFCBANK monthly CSVs (2021-2026)
+│   │       ├── ICICIBANK/              # ICICIBANK monthly CSVs (2021-2026)
+│   │       └── M&M/                    # M&M monthly CSVs (2021-2026)
 │   └── src/
 │       ├── config/
 │       │   ├── cors.js                 # Dynamic CORS whitelist validation
@@ -102,13 +111,19 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       │   │   ├── health.controller.js# System health & broker status provider
 │       │   │   └── health.routes.js    # Health check routes (/api/health)
 │       │   └── market-data/
+│       │       ├── downloader/
+│       │       │   ├── historicalDownloader.service.js # 5-year multi-stock orchestrator
+│       │       │   ├── integrityValidator.js           # OHLC/Vol validation & gap detection
+│       │       │   └── storageManager.js               # Partitioned CSV persistence & state
 │       │       ├── marketData.client.js    # Groww Historical Candle API v1 client
 │       │       ├── marketData.controller.js# Market data HTTP request/response handler
 │       │       ├── marketData.formatter.js # OHLCV normalizer, sorter & deduplicator
 │       │       ├── marketData.routes.js    # Routes (/api/v1/market-data/*)
 │       │       └── marketData.service.js   # Scope validator & Groww token orchestrator
-│       └── routes/
-│           └── index.js                # Master v1 API aggregator
+│       ├── routes/
+│       │   └── index.js                # Master v1 API aggregator
+│       └── scripts/
+│           └── downloadHistoricalData.js # Standalone CLI for 5-year historical downloader
 │
 └── frontend/
     ├── .env                            # Frontend Vite environment variables (Ignored by Git)
@@ -264,6 +279,8 @@ HTTP Request
 | `GET` | `/api/v1/groww/holdings` | `GrowwController.getHoldings` | Demat holdings + Live LTP & P&L | IMPLEMENTED |
 | `GET` | `/api/v1/groww/positions` | `GrowwController.getPositions` | Open intraday & F&O positions | IMPLEMENTED |
 | `GET` | `/api/v1/market-data/historical-candles` | `MarketDataController.getHistoricalCandles` | 5-minute historical OHLCV candles (ICICIBANK) | IMPLEMENTED |
+| `GET` | `/api/v1/market-data/historical-coverage` | `MarketDataController.validateCoverage` | Validates 5-year coverage back to Nov 2021 | IMPLEMENTED |
+| `GET` | `/api/v1/market-data/downloader-status` | `MarketDataController.getDownloaderStatus` | Returns 5-year download status & audit summary | IMPLEMENTED |
 
 ### 6.2 Endpoint Detail Specifications
 
@@ -479,23 +496,66 @@ HTTP Request
     "candleInterval": "5minute",
     "startTime": "2026-11-06T09:15:00",
     "endTime": "2026-11-06T15:30:00",
-    "candleCount": 75,
+    "candleCount": 74,
     "candles": [
       {
         "timestamp": "2026-11-06T09:15:00",
-        "open": 1285.5,
-        "high": 1290.0,
-        "low": 1284.2,
-        "close": 1288.4,
-        "volume": 245000
+        "open": 1517.1,
+        "high": 1518.1,
+        "low": 1505.2,
+        "close": 1507.2,
+        "volume": 5613541
       }
     ]
   },
   "timestamp": "2026-11-08T05:15:00.000Z"
 }
 ```
-> [!NOTE]
-> If the authenticated Groww API token lacks the `historical-basic` entitlement, Groww returns HTTP 403 (`Access forbidden for this request.`). The endpoint surfaces this transparently as an HTTP 403 `AppError` without falling back to secondary data vendors.
+
+#### 8. Validate Historical Data Coverage (2021-11-08)
+- **Path:** `GET /api/v1/market-data/historical-coverage`
+- **Controller Action:** Invokes `HistoricalDownloaderService.validateCoverage()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Groww 5-year historical data coverage verified",
+  "data": {
+    "success": true,
+    "symbol": "NSE-ICICIBANK",
+    "testDate": "2021-11-08",
+    "candleCount": 76,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-08T15:30:00",
+    "verified": true
+  },
+  "timestamp": "2026-11-08T05:44:18.000Z"
+}
+```
+
+#### 9. Get Downloader Status & Summary Report
+- **Path:** `GET /api/v1/market-data/downloader-status`
+- **Controller Action:** Invokes `HistoricalDownloaderService.getStatus()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Downloader status retrieved successfully",
+  "data": {
+    "hasCompletedRun": true,
+    "completedMonthsCount": 305,
+    "summary": {
+      "generatedAt": "2026-11-08T05:44:18.432Z",
+      "timeframe": "5minute",
+      "elapsedSeconds": 336,
+      "stocks": [...]
+    }
+  },
+  "timestamp": "2026-11-08T05:44:18.000Z"
+}
+```
 
 ---
 
@@ -572,6 +632,8 @@ HTTP Request
 | Portfolio | Demat Holdings Ledger | IMPLEMENTED | `groww.controller.js#L63`, `Holdings/index.tsx` | Lists user holdings (`GROWW`, `ITBEES`, `MAFANG`) with ISIN, quantity, free quantity, and average buy price. |
 | Market Data | Real-Time LTP & Returns | IMPLEMENTED | `groww.client.js#L139`, `Holdings/index.tsx` | Calculates live current value, absolute P&L in ₹, percentage return, and day change. |
 | Market Data | Historical 5-Minute Candles | IMPLEMENTED | `marketData.client.js`, `marketData.service.js`, `marketData.formatter.js` | Fetches, validates, and normalizes 5-minute historical OHLCV candles for ICICIBANK via Groww API v1. |
+| Market Data | 5-Year Historical Downloader | IMPLEMENTED | `historicalDownloader.service.js`, `integrityValidator.js`, `storageManager.js` | Bulk downloads 5-minute OHLCV candles (2021-11-08 to 2026-11-06) for 5 stocks (479,982 candles saved to CSV). |
+| Market Data | Historical Coverage Validation | IMPLEMENTED | `historicalDownloader.service.js#L110`, `marketData.controller.js` | Verifies whether 5-minute historical candles exist back to November 2021 before starting bulk jobs. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -785,6 +847,10 @@ sequenceDiagram
 | [`backend/src/modules/market-data/marketData.client.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/marketData.client.js) | Historical Candles client | `MarketDataClient.getHistoricalCandles()` |
 | [`backend/src/modules/market-data/marketData.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/marketData.service.js) | Historical Candles logic | `MarketDataService.getHistoricalCandles()` |
 | [`backend/src/modules/market-data/marketData.formatter.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/marketData.formatter.js) | Candle formatting & sort | `formatTimestamp()`, `normalizeSingleCandle()`, `formatCandlesResponse()` |
+| [`backend/src/modules/market-data/downloader/historicalDownloader.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/downloader/historicalDownloader.service.js) | 5-Year Downloader Orchestrator | `validateCoverage()`, `downloadStock()`, `downloadAll()`, `getStatus()` |
+| [`backend/src/modules/market-data/downloader/integrityValidator.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/downloader/integrityValidator.js) | Candle Integrity & Gaps | `validateCandle()`, `processAndValidateCandles()`, `detectMissingIntervals()` |
+| [`backend/src/modules/market-data/downloader/storageManager.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/downloader/storageManager.js) | Local CSV Persistence | `saveMonthlyCandles()`, `isMonthCompleted()`, `updateCheckpoint()` |
+| [`backend/src/scripts/downloadHistoricalData.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/downloadHistoricalData.js) | CLI Downloader Executable | Standalone CLI entrypoint with `--symbols` filter |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 

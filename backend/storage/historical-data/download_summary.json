@@ -1,0 +1,76 @@
+{
+  "generatedAt": "2026-11-08T05:44:18.432Z",
+  "timeframe": "5minute",
+  "coverageValidation": {
+    "success": true,
+    "symbol": "NSE-ICICIBANK",
+    "testDate": "2021-11-08",
+    "candleCount": 76,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-08T15:30:00",
+    "verified": true
+  },
+  "elapsedSeconds": 336,
+  "stocks": [
+    {
+      "symbol": "ICICIBANK",
+      "requestedPeriod": "2021-11-08 to 2026-11-06",
+      "actualEarliestCandle": "2021-11-08T09:15:00",
+      "actualLatestCandle": "2026-11-06T15:25:00",
+      "totalDownloadedCandles": 96118,
+      "duplicateCandlesRemoved": 0,
+      "invalidCandlesRejected": 468,
+      "missingCandleIntervalsCount": 1591,
+      "failedApiRequests": 0,
+      "downloadCompletionStatus": "COMPLETED"
+    },
+    {
+      "symbol": "HDFCBANK",
+      "requestedPeriod": "2021-11-08 to 2026-11-06",
+      "actualEarliestCandle": "2021-11-08T09:15:00",
+      "actualLatestCandle": "2026-11-06T15:25:00",
+      "totalDownloadedCandles": 96334,
+      "duplicateCandlesRemoved": 0,
+      "invalidCandlesRejected": 468,
+      "missingCandleIntervalsCount": 1567,
+      "failedApiRequests": 0,
+      "downloadCompletionStatus": "COMPLETED"
+    },
+    {
+      "symbol": "M&M",
+      "requestedPeriod": "2021-11-08 to 2026-11-06",
+      "actualEarliestCandle": "2021-11-08T09:15:00",
+      "actualLatestCandle": "2026-11-06T15:25:00",
+      "totalDownloadedCandles": 95911,
+      "duplicateCandlesRemoved": 0,
+      "invalidCandlesRejected": 468,
+      "missingCandleIntervalsCount": 1582,
+      "failedApiRequests": 0,
+      "downloadCompletionStatus": "COMPLETED"
+    },
+    {
+      "symbol": "AXISBANK",
+      "requestedPeriod": "2021-11-08 to 2026-11-06",
+      "actualEarliestCandle": "2021-11-08T09:15:00",
+      "actualLatestCandle": "2026-11-06T15:25:00",
+      "totalDownloadedCandles": 95808,
+      "duplicateCandlesRemoved": 0,
+      "invalidCandlesRejected": 468,
+      "missingCandleIntervalsCount": 1631,
+      "failedApiRequests": 0,
+      "downloadCompletionStatus": "COMPLETED"
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "requestedPeriod": "2021-11-08 to 2026-11-06",
+      "actualEarliestCandle": "2021-11-08T09:15:00",
+      "actualLatestCandle": "2026-11-06T15:25:00",
+      "totalDownloadedCandles": 95811,
+      "duplicateCandlesRemoved": 0,
+      "invalidCandlesRejected": 468,
+      "missingCandleIntervalsCount": 1625,
+      "failedApiRequests": 0,
+      "downloadCompletionStatus": "COMPLETED"
+    }
+  ]
+}

@@ -1838,5 +1838,605 @@
     "duplicatesCount": 0,
     "earliest": "2025-09-01T09:15:00",
     "latest": "2025-09-30T15:25:00"
+  },
+  "AXISBANK_2025_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:57.731Z",
+    "candleCount": 1628,
+    "duplicatesCount": 0,
+    "earliest": "2025-10-01T09:15:00",
+    "latest": "2025-10-31T15:25:00"
+  },
+  "AXISBANK_2025_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:42:58.660Z",
+    "candleCount": 1426,
+    "duplicatesCount": 0,
+    "earliest": "2025-11-03T09:15:00",
+    "latest": "2025-11-28T15:55:00"
+  },
+  "AXISBANK_2025_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:00.112Z",
+    "candleCount": 1725,
+    "duplicatesCount": 0,
+    "earliest": "2025-12-01T09:15:00",
+    "latest": "2025-12-31T15:25:00"
+  },
+  "AXISBANK_2026_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:01.052Z",
+    "candleCount": 1586,
+    "duplicatesCount": 0,
+    "earliest": "2026-01-01T09:15:00",
+    "latest": "2026-01-30T15:55:00"
+  },
+  "AXISBANK_2026_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:02.337Z",
+    "candleCount": 1662,
+    "duplicatesCount": 0,
+    "earliest": "2026-02-01T09:15:00",
+    "latest": "2026-02-27T15:55:00"
+  },
+  "AXISBANK_2026_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:03.688Z",
+    "candleCount": 1508,
+    "duplicatesCount": 0,
+    "earliest": "2026-03-02T09:15:00",
+    "latest": "2026-03-30T15:55:00"
+  },
+  "AXISBANK_2026_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:04.699Z",
+    "candleCount": 1579,
+    "duplicatesCount": 0,
+    "earliest": "2026-04-01T09:15:00",
+    "latest": "2026-04-30T15:30:00"
+  },
+  "AXISBANK_2026_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:05.812Z",
+    "candleCount": 1491,
+    "duplicatesCount": 0,
+    "earliest": "2026-05-04T09:15:00",
+    "latest": "2026-05-29T15:45:00"
+  },
+  "AXISBANK_2026_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:07.094Z",
+    "candleCount": 1642,
+    "duplicatesCount": 0,
+    "earliest": "2026-06-01T09:15:00",
+    "latest": "2026-06-30T15:25:00"
+  },
+  "AXISBANK_2026_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:08.120Z",
+    "candleCount": 1813,
+    "duplicatesCount": 0,
+    "earliest": "2026-07-01T09:15:00",
+    "latest": "2026-07-31T15:25:00"
+  },
+  "AXISBANK_2026_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:09.172Z",
+    "candleCount": 1616,
+    "duplicatesCount": 0,
+    "earliest": "2026-08-03T09:15:00",
+    "latest": "2026-08-31T15:25:00"
+  },
+  "AXISBANK_2026_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:10.232Z",
+    "candleCount": 1573,
+    "duplicatesCount": 0,
+    "earliest": "2026-09-01T09:15:00",
+    "latest": "2026-09-30T15:25:00"
+  },
+  "AXISBANK_2026_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:11.371Z",
+    "candleCount": 1515,
+    "duplicatesCount": 0,
+    "earliest": "2026-10-01T09:15:00",
+    "latest": "2026-10-30T15:55:00"
+  },
+  "AXISBANK_2026_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:11.800Z",
+    "candleCount": 378,
+    "duplicatesCount": 0,
+    "earliest": "2026-11-02T09:15:00",
+    "latest": "2026-11-06T15:25:00"
+  },
+  "BHARTIARTL_2021_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:12.792Z",
+    "candleCount": 1226,
+    "duplicatesCount": 0,
+    "earliest": "2021-11-08T09:15:00",
+    "latest": "2021-11-30T15:30:00"
+  },
+  "BHARTIARTL_2021_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:14.202Z",
+    "candleCount": 1763,
+    "duplicatesCount": 0,
+    "earliest": "2021-12-01T09:15:00",
+    "latest": "2021-12-31T15:30:00"
+  },
+  "BHARTIARTL_2022_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:15.246Z",
+    "candleCount": 1533,
+    "duplicatesCount": 0,
+    "earliest": "2022-01-03T09:15:00",
+    "latest": "2022-01-31T15:25:00"
+  },
+  "BHARTIARTL_2022_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:16.903Z",
+    "candleCount": 1532,
+    "duplicatesCount": 0,
+    "earliest": "2022-02-01T09:15:00",
+    "latest": "2022-02-28T15:30:00"
+  },
+  "BHARTIARTL_2022_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:18.491Z",
+    "candleCount": 1606,
+    "duplicatesCount": 0,
+    "earliest": "2022-03-02T09:15:00",
+    "latest": "2022-03-31T15:30:00"
+  },
+  "BHARTIARTL_2022_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:19.447Z",
+    "candleCount": 1457,
+    "duplicatesCount": 0,
+    "earliest": "2022-04-01T09:15:00",
+    "latest": "2022-04-29T15:40:00"
+  },
+  "BHARTIARTL_2022_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:20.738Z",
+    "candleCount": 1602,
+    "duplicatesCount": 0,
+    "earliest": "2022-05-02T09:15:00",
+    "latest": "2022-05-31T15:30:00"
+  },
+  "BHARTIARTL_2022_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:21.737Z",
+    "candleCount": 1680,
+    "duplicatesCount": 0,
+    "earliest": "2022-06-01T09:15:00",
+    "latest": "2022-06-30T15:30:00"
+  },
+  "BHARTIARTL_2022_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:23.619Z",
+    "candleCount": 1608,
+    "duplicatesCount": 0,
+    "earliest": "2022-07-01T09:15:00",
+    "latest": "2022-07-29T15:40:00"
+  },
+  "BHARTIARTL_2022_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:24.876Z",
+    "candleCount": 1532,
+    "duplicatesCount": 0,
+    "earliest": "2022-08-01T09:15:00",
+    "latest": "2022-08-30T15:40:00"
+  },
+  "BHARTIARTL_2022_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:25.878Z",
+    "candleCount": 1686,
+    "duplicatesCount": 0,
+    "earliest": "2022-09-01T09:15:00",
+    "latest": "2022-09-30T15:30:00"
+  },
+  "BHARTIARTL_2022_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:26.874Z",
+    "candleCount": 1392,
+    "duplicatesCount": 0,
+    "earliest": "2022-10-03T09:15:00",
+    "latest": "2022-10-31T15:25:00"
+  },
+  "BHARTIARTL_2022_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:27.936Z",
+    "candleCount": 1609,
+    "duplicatesCount": 0,
+    "earliest": "2022-11-01T09:15:00",
+    "latest": "2022-11-30T15:30:00"
+  },
+  "BHARTIARTL_2022_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:28.901Z",
+    "candleCount": 1687,
+    "duplicatesCount": 0,
+    "earliest": "2022-12-01T09:15:00",
+    "latest": "2022-12-30T15:40:00"
+  },
+  "BHARTIARTL_2023_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:29.959Z",
+    "candleCount": 1617,
+    "duplicatesCount": 0,
+    "earliest": "2023-01-02T09:15:00",
+    "latest": "2023-01-31T15:30:00"
+  },
+  "BHARTIARTL_2023_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:30.911Z",
+    "candleCount": 1522,
+    "duplicatesCount": 0,
+    "earliest": "2023-02-01T09:15:00",
+    "latest": "2023-02-28T15:25:00"
+  },
+  "BHARTIARTL_2023_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:31.921Z",
+    "candleCount": 1599,
+    "duplicatesCount": 0,
+    "earliest": "2023-03-01T09:15:00",
+    "latest": "2023-03-31T15:25:00"
+  },
+  "BHARTIARTL_2023_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:33.523Z",
+    "candleCount": 1295,
+    "duplicatesCount": 0,
+    "earliest": "2023-04-03T09:15:00",
+    "latest": "2023-04-28T15:40:00"
+  },
+  "BHARTIARTL_2023_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:34.540Z",
+    "candleCount": 1677,
+    "duplicatesCount": 0,
+    "earliest": "2023-05-02T09:15:00",
+    "latest": "2023-05-31T15:25:00"
+  },
+  "BHARTIARTL_2023_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:35.574Z",
+    "candleCount": 1606,
+    "duplicatesCount": 0,
+    "earliest": "2023-06-01T09:15:00",
+    "latest": "2023-06-30T15:30:00"
+  },
+  "BHARTIARTL_2023_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:36.606Z",
+    "candleCount": 1605,
+    "duplicatesCount": 0,
+    "earliest": "2023-07-03T09:15:00",
+    "latest": "2023-07-31T15:25:00"
+  },
+  "BHARTIARTL_2023_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:37.751Z",
+    "candleCount": 1678,
+    "duplicatesCount": 0,
+    "earliest": "2023-08-01T09:15:00",
+    "latest": "2023-08-31T15:25:00"
+  },
+  "BHARTIARTL_2023_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:38.842Z",
+    "candleCount": 1529,
+    "duplicatesCount": 0,
+    "earliest": "2023-09-01T09:15:00",
+    "latest": "2023-09-29T15:40:00"
+  },
+  "BHARTIARTL_2023_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:39.845Z",
+    "candleCount": 1526,
+    "duplicatesCount": 0,
+    "earliest": "2023-10-03T09:15:00",
+    "latest": "2023-10-31T15:25:00"
+  },
+  "BHARTIARTL_2023_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:41.334Z",
+    "candleCount": 1538,
+    "duplicatesCount": 0,
+    "earliest": "2023-11-01T09:15:00",
+    "latest": "2023-11-30T15:25:00"
+  },
+  "BHARTIARTL_2023_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:42.377Z",
+    "candleCount": 1530,
+    "duplicatesCount": 0,
+    "earliest": "2023-12-01T09:15:00",
+    "latest": "2023-12-29T15:40:00"
+  },
+  "BHARTIARTL_2024_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:43.381Z",
+    "candleCount": 1685,
+    "duplicatesCount": 0,
+    "earliest": "2024-01-01T09:15:00",
+    "latest": "2024-01-31T15:25:00"
+  },
+  "BHARTIARTL_2024_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:44.354Z",
+    "candleCount": 1605,
+    "duplicatesCount": 0,
+    "earliest": "2024-02-01T09:15:00",
+    "latest": "2024-02-29T15:30:00"
+  },
+  "BHARTIARTL_2024_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:45.301Z",
+    "candleCount": 1398,
+    "duplicatesCount": 0,
+    "earliest": "2024-03-01T09:15:00",
+    "latest": "2024-03-28T15:40:00"
+  },
+  "BHARTIARTL_2024_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:46.261Z",
+    "candleCount": 1533,
+    "duplicatesCount": 0,
+    "earliest": "2024-04-01T09:15:00",
+    "latest": "2024-04-30T15:30:00"
+  },
+  "BHARTIARTL_2024_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:47.217Z",
+    "candleCount": 1626,
+    "duplicatesCount": 0,
+    "earliest": "2024-05-02T09:15:00",
+    "latest": "2024-05-31T15:30:00"
+  },
+  "BHARTIARTL_2024_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:48.747Z",
+    "candleCount": 1459,
+    "duplicatesCount": 0,
+    "earliest": "2024-06-03T09:15:00",
+    "latest": "2024-06-28T15:40:00"
+  },
+  "BHARTIARTL_2024_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:49.718Z",
+    "candleCount": 1688,
+    "duplicatesCount": 0,
+    "earliest": "2024-07-01T09:15:00",
+    "latest": "2024-07-31T15:30:00"
+  },
+  "BHARTIARTL_2024_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:51.128Z",
+    "candleCount": 1615,
+    "duplicatesCount": 0,
+    "earliest": "2024-08-01T09:15:00",
+    "latest": "2024-08-30T15:40:00"
+  },
+  "BHARTIARTL_2024_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:52.734Z",
+    "candleCount": 1618,
+    "duplicatesCount": 0,
+    "earliest": "2024-09-02T09:15:00",
+    "latest": "2024-09-30T15:25:00"
+  },
+  "BHARTIARTL_2024_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:53.642Z",
+    "candleCount": 1678,
+    "duplicatesCount": 0,
+    "earliest": "2024-10-01T09:15:00",
+    "latest": "2024-10-31T15:30:00"
+  },
+  "BHARTIARTL_2024_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:54.560Z",
+    "candleCount": 1394,
+    "duplicatesCount": 0,
+    "earliest": "2024-11-01T18:00:00",
+    "latest": "2024-11-29T15:40:00"
+  },
+  "BHARTIARTL_2024_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:55.416Z",
+    "candleCount": 1606,
+    "duplicatesCount": 0,
+    "earliest": "2024-12-02T09:15:00",
+    "latest": "2024-12-31T15:30:00"
+  },
+  "BHARTIARTL_2025_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:56.394Z",
+    "candleCount": 1847,
+    "duplicatesCount": 0,
+    "earliest": "2025-01-01T09:15:00",
+    "latest": "2025-01-31T15:25:00"
+  },
+  "BHARTIARTL_2025_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:57.339Z",
+    "candleCount": 1622,
+    "duplicatesCount": 0,
+    "earliest": "2025-02-01T09:15:00",
+    "latest": "2025-02-28T15:25:00"
+  },
+  "BHARTIARTL_2025_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:58.276Z",
+    "candleCount": 1541,
+    "duplicatesCount": 0,
+    "earliest": "2025-03-03T09:00:00",
+    "latest": "2025-03-28T15:50:00"
+  },
+  "BHARTIARTL_2025_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:43:59.114Z",
+    "candleCount": 1531,
+    "duplicatesCount": 0,
+    "earliest": "2025-04-01T09:15:00",
+    "latest": "2025-04-30T15:30:00"
+  },
+  "BHARTIARTL_2025_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:00.121Z",
+    "candleCount": 1703,
+    "duplicatesCount": 0,
+    "earliest": "2025-05-02T09:00:00",
+    "latest": "2025-05-30T15:55:00"
+  },
+  "BHARTIARTL_2025_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:01.070Z",
+    "candleCount": 1701,
+    "duplicatesCount": 0,
+    "earliest": "2025-06-02T09:00:00",
+    "latest": "2025-06-30T15:30:00"
+  },
+  "BHARTIARTL_2025_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:01.983Z",
+    "candleCount": 1856,
+    "duplicatesCount": 0,
+    "earliest": "2025-07-01T09:15:00",
+    "latest": "2025-07-31T15:30:00"
+  },
+  "BHARTIARTL_2025_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:02.924Z",
+    "candleCount": 1541,
+    "duplicatesCount": 0,
+    "earliest": "2025-08-01T09:15:00",
+    "latest": "2025-08-29T15:50:00"
+  },
+  "BHARTIARTL_2025_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:04.028Z",
+    "candleCount": 1761,
+    "duplicatesCount": 0,
+    "earliest": "2025-09-01T09:15:00",
+    "latest": "2025-09-30T15:30:00"
+  },
+  "BHARTIARTL_2025_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:05.057Z",
+    "candleCount": 1628,
+    "duplicatesCount": 0,
+    "earliest": "2025-10-01T09:15:00",
+    "latest": "2025-10-31T15:25:00"
+  },
+  "BHARTIARTL_2025_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:05.967Z",
+    "candleCount": 1425,
+    "duplicatesCount": 0,
+    "earliest": "2025-11-03T09:15:00",
+    "latest": "2025-11-28T15:55:00"
+  },
+  "BHARTIARTL_2025_12": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:06.979Z",
+    "candleCount": 1733,
+    "duplicatesCount": 0,
+    "earliest": "2025-12-01T09:15:00",
+    "latest": "2025-12-31T15:30:00"
+  },
+  "BHARTIARTL_2026_01": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:07.960Z",
+    "candleCount": 1578,
+    "duplicatesCount": 0,
+    "earliest": "2026-01-01T09:15:00",
+    "latest": "2026-01-30T15:55:00"
+  },
+  "BHARTIARTL_2026_02": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:09.275Z",
+    "candleCount": 1663,
+    "duplicatesCount": 0,
+    "earliest": "2026-02-01T09:15:00",
+    "latest": "2026-02-27T15:55:00"
+  },
+  "BHARTIARTL_2026_03": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:10.232Z",
+    "candleCount": 1507,
+    "duplicatesCount": 0,
+    "earliest": "2026-03-02T09:15:00",
+    "latest": "2026-03-30T15:50:00"
+  },
+  "BHARTIARTL_2026_04": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:11.487Z",
+    "candleCount": 1577,
+    "duplicatesCount": 0,
+    "earliest": "2026-04-01T09:15:00",
+    "latest": "2026-04-30T15:25:00"
+  },
+  "BHARTIARTL_2026_05": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:12.748Z",
+    "candleCount": 1511,
+    "duplicatesCount": 0,
+    "earliest": "2026-05-04T09:15:00",
+    "latest": "2026-05-29T15:55:00"
+  },
+  "BHARTIARTL_2026_06": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:13.784Z",
+    "candleCount": 1648,
+    "duplicatesCount": 0,
+    "earliest": "2026-06-01T09:15:00",
+    "latest": "2026-06-30T15:25:00"
+  },
+  "BHARTIARTL_2026_07": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:14.951Z",
+    "candleCount": 1810,
+    "duplicatesCount": 0,
+    "earliest": "2026-07-01T09:15:00",
+    "latest": "2026-07-31T15:25:00"
+  },
+  "BHARTIARTL_2026_08": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:15.862Z",
+    "candleCount": 1616,
+    "duplicatesCount": 0,
+    "earliest": "2026-08-03T09:15:00",
+    "latest": "2026-08-31T15:25:00"
+  },
+  "BHARTIARTL_2026_09": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:16.803Z",
+    "candleCount": 1576,
+    "duplicatesCount": 0,
+    "earliest": "2026-09-01T09:15:00",
+    "latest": "2026-09-30T15:25:00"
+  },
+  "BHARTIARTL_2026_10": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:17.929Z",
+    "candleCount": 1518,
+    "duplicatesCount": 0,
+    "earliest": "2026-10-01T09:15:00",
+    "latest": "2026-10-30T15:55:00"
+  },
+  "BHARTIARTL_2026_11": {
+    "completed": true,
+    "timestamp": "2026-11-08T05:44:18.430Z",
+    "candleCount": 378,
+    "duplicatesCount": 0,
+    "earliest": "2026-11-02T09:15:00",
+    "latest": "2026-11-06T15:25:00"
   }
 }
