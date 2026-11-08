@@ -72,8 +72,8 @@
     "1. Strict Accounting Reconciliation: Every reported figure satisfies Theoretical Gross - Slippage - Total Charges = Net P&L.",
     "2. Real Groww Brokerage Impact: Using Groww real 0.1% (or ₹20 max, with ₹2/₹5 min floors) increases total charges compared to preliminary 0.05% estimates, proving the necessity of exact fee auditing.",
     "3. Basic Breakouts Value Destruction: Variant A remains net loss-making across all 5 stocks (-0.43% to -8.69% Net Return) due to whipsaws in sideways morning sessions.",
-    "4. Outperformer Resilience: HDFCBANK Variant E remains net profitable (+0.99% net return, 63.64% win rate, 2.18 profit factor, 0.67% max drawdown) even with revised higher brokerage and fees.",
-    "5. Slippage Resilience: HDFCBANK Variant E remains consistently profitable across all slippage scenarios from 0 bps (+1.19%) to 5 bps (+0.67%)."
+    "4. Outperformer Resilience (Exploratory / Small Sample Size): HDFCBANK Variant E remains net profitable (+0.99% net return, 63.64% win rate, 2.18 profit factor, 0.67% max drawdown) across tested fee schedules, but this is an exploratory finding with only 11 trades over 5 years (~2.2 trades/year) that is statistically fragile, not proof of a proven structural edge.",
+    "5. Slippage Resilience (Exploratory): HDFCBANK Variant E remains net profitable across tested slippage scenarios from 0 bps (+1.19%) to 5 bps (+0.67%), subject to small sample size caveat."
   ],
   "stockSummaryMatrix": {
     "ICICIBANK": [

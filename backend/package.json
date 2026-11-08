@@ -11,6 +11,7 @@
     "audit:historical": "node src/scripts/auditHistoricalData.js",
     "indicators:calculate": "node src/scripts/calculateIndicators.js",
     "backtest": "node src/scripts/runBacktest.js",
+    "research:analyze": "node src/scripts/runResearchAnalysis.js",
     "test": "node --test test/**/*.test.js"
   },
   "dependencies": {

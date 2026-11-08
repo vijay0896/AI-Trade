@@ -106,9 +106,19 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   │       ├── BACKTEST_OUTCOMES_CHATGPT.json # Consolidated 25-run canonical outcomes for LLM research
 │   │       ├── runs_index.json              # Master registry catalog of canonical (25) & superseded backtest runs
 │   │       └── runs/                        # Partitioned run outputs (trades.csv, equity_curve.csv, summary.json)
+│   │   └── research/                   # Phase 7 Quantitative Research deliverables & matrices
+│   │       ├── RESEARCH_COMPARISON_REPORT.md# Master 310-line quantitative findings report
+│   │       ├── STOCK_BEHAVIOUR_METRICS.csv  # 55 granular metrics across all 5 stocks
+│   │       ├── DAILY_SESSION_CLASSIFICATION.csv # 6,198 classified sessions across 5 years
+│   │       ├── STRATEGY_ROBUSTNESS.csv      # 25 canonical runs with Wilson CIs & bootstrap
+│   │       ├── WALK_FORWARD_RESULTS.csv     # 3 chronological walk-forward folds
+│   │       ├── PARAMETER_SENSITIVITY.csv    # Filter & slippage sensitivity grid
+│   │       ├── RESEARCH_OUTCOMES.json       # Full machine-readable outcomes payload
+│   │       └── research_run_metadata.json   # Pipeline execution metadata & duration
 │   ├── test/
 │   │   ├── backtesting.test.js         # Native Node.js test suite for backtest engine & Groww fees (17 tests)
 │   │   ├── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
+│   │   ├── research.test.js            # Native Node.js test suite for research & dual rankings (16 tests)
 │   │   └── strategy.test.js            # Native Node.js test suite for strategy & risk (23 tests)
 │   └── src/
 │       ├── config/
@@ -345,6 +355,11 @@ HTTP Request
 | `GET` | `/api/v1/backtesting/runs/:runId` | `BacktestController.getRunDetails` | Run metadata, strategy parameters, equity curve & performance summary | IMPLEMENTED |
 | `GET` | `/api/v1/backtesting/runs/:runId/trades` | `BacktestController.getRunTrades` | Paginated granular trade journal records with itemized fees & slippage | IMPLEMENTED |
 | `POST` | `/api/v1/backtesting/run` | `BacktestController.executeRun` | Executes deterministic backtest run with custom/preset configuration | IMPLEMENTED |
+| `GET` | `/api/v1/research/summary` | `ResearchController.getSummary` | High-level research summary outcomes, classification totals & dual stock rankings | IMPLEMENTED |
+| `GET` | `/api/v1/research/stocks` | `ResearchController.getStocks` | Research stock universe candidates with exchange and coverage | IMPLEMENTED |
+| `GET` | `/api/v1/research/stock-behaviour` | `ResearchController.getStockBehaviour` | 55 granular behaviour metrics per stock (volatility, directional, sideways, ORB, volume) | IMPLEMENTED |
+| `GET` | `/api/v1/research/strategy-robustness` | `ResearchController.getStrategyRobustness` | 25 canonical runs with yearly/monthly breakdowns, long vs short, and bootstrap stats | IMPLEMENTED |
+| `GET` | `/api/v1/research/period-performance` | `ResearchController.getPeriodPerformance` | Chronological walk-forward diagnostics and parameter sensitivity matrix | IMPLEMENTED |
 
 ### 6.2 Endpoint Detail Specifications
 
@@ -1029,6 +1044,7 @@ HTTP Request
 | Strategy | Strategy Specification & Config (Phase 5) | IMPLEMENTED | `strategy.config.js`, `strategy.schema.js`, `strategy.service.js` | Predefined ORB variants (A-E), retest models, Zod validation, position sizing calculator & 18+ cohort parameter matrix. |
 | Backtesting | Historical Backtesting Engine (Phase 6) | IMPLEMENTED | `backtesting.engine.js`, `backtesting.fees.js`, `backtesting.execution.js`, `runBacktest.js` | Deterministic event-driven engine with Groww fee schedule, slippage, same-bar ambiguity resolution & 25-run batch runner across 479,982 candles. |
 | Backtesting | Backtest Reconciliation & Financial Audit (Phase 6.1) | IMPLEMENTED | `BACKTEST_RECONCILIATION_REPORT.md`, `backtesting.fees.js`, `backtesting.metrics.js` | 100% reconciled ledger, Groww effective-dated 0.1% + min fee floors, NSE Circular FA64232, and slippage sensitivity across 0-5 bps. |
+| Research | Quantitative Research & Dual Stock Rankings (Phase 7) | IMPLEMENTED | `research.calculator.js`, `research.classifier.js`, `research.metrics.js`, `research.service.js`, `runResearchAnalysis.js` | 5-stock behaviour analysis, objective 5-regime session classification, walk-forward diagnostics, Wilson score CIs, bootstrap resampling & dual stock rankings across 5 years. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -1287,6 +1303,18 @@ sequenceDiagram
 | [`backend/test/backtesting.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/backtesting.test.js) | Unit Test Suite (Native `node:test`) | 17 passing unit tests verifying Groww fees, min brokerage, slippage, same-bar stops & reconciliation |
 | [`backend/storage/backtesting/BACKTEST_RECONCILIATION_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_RECONCILIATION_REPORT.md) | Financial Audit & Reconciliation Report | Master Phase 6.1 audit document certifying 100% ledger reconciliation and fee accuracy |
 | [`backend/storage/backtesting/BACKTEST_OUTCOMES_CHATGPT.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_OUTCOMES_CHATGPT.json) | LLM Research Dataset | Audited & reconciled 25-run canonical outcomes JSON for ChatGPT/LLM analysis |
+| [`backend/src/modules/research/research.constants.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.constants.js) | Research Constants & Schedules | Thresholds for 5 regimes, sensitivity grids, 3-fold walk-forward dates, Ranking A/B weights |
+| [`backend/src/modules/research/research.calculator.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.calculator.js) | Stock Behaviour Calculation Engine | Volatility (daily ranges, 5m ATR), directional ER, sideways VWAP crosses, ORB dynamics & traded value |
+| [`backend/src/modules/research/research.classifier.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.classifier.js) | Objective Multi-Factor Session Classifier | 5-regime session classification (`STRONG_TREND_UP/DOWN`, `WEAK_TREND`, `SIDEWAYS`, `MIXED_UNCLEAR`) |
+| [`backend/src/modules/research/research.metrics.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.metrics.js) | Advanced Analytics & Ranking Engine | Wilson score 95% binomial CIs, bootstrap resampling, regime attribution & dual stock rankings |
+| [`backend/src/modules/research/research.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.service.js) | Research Orchestration Service | Full pipeline execution across 5 stocks, walk-forward diagnostics, and deliverables persistence |
+| [`backend/src/modules/research/research.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.controller.js) | Research HTTP Controller | `/api/v1/research/summary`, `/stocks`, `/stock-behaviour`, `/strategy-robustness`, `/period-performance` |
+| [`backend/src/modules/research/research.routes.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.routes.js) | Research Express Router | REST route definitions for research endpoints |
+| [`backend/src/modules/research/research.formatter.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/research/research.formatter.js) | Deliverables Formatter | Markdown report generator (`RESEARCH_COMPARISON_REPORT.md`), CSV formatters & JSON serializations |
+| [`backend/src/scripts/runResearchAnalysis.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/runResearchAnalysis.js) | CLI Research Executable | Standalone CLI entrypoint (`npm run research:analyze`) executing full pipeline in ~2.2s |
+| [`backend/test/research.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/research.test.js) | Unit Test Suite (Native `node:test`) | 16 passing unit tests verifying volatility, ER, VWAP crosses, classification, CIs, bootstrap & rankings |
+| [`backend/storage/research/RESEARCH_COMPARISON_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/RESEARCH_COMPARISON_REPORT.md) | Quantitative Research Report | Master Phase 7 document with 5-stock behaviour tables, regime models, walk-forward & dual rankings |
+| [`backend/storage/research/RESEARCH_OUTCOMES.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/RESEARCH_OUTCOMES.json) | Research Outcomes Machine Dataset | Full serialized outcome payload for frontend RTK Query consumption |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 

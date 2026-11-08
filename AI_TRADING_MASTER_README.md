@@ -167,7 +167,7 @@ The two observed counts (74 and 76) differ. Do not hard-code an expected count s
 
 ### Current next task
 
-**Phase 2 — Build a safe, resumable historical downloader.** Before bulk download, run a coverage matrix for all five symbols at early, middle, and recent dates. If Groww returns an entitlement/retention/range error for any requested period, stop and report it; do not repeatedly retry a permanent 403 or pretend the full period is available.
+**Phase 8 — React Research Dashboard.** Extend existing React 19 + TypeScript frontend with RTK Query to visualize research findings, historical coverage, technical indicators, backtest trades, equity curves, drawdowns, and dual stock rankings without disrupting existing portfolio surveillance views.
 
 ## 5. Stock universe for initial research
 
@@ -414,12 +414,12 @@ Completed evidence:
   - Verified causal execution: Signal evaluated strictly on candle close $t$; fill executed at candle open $t+1$ with slippage.
   - Intrabar ambiguity resolution: Conservative worst-case stop loss assumed on simultaneous intrabar touches.
   - Gap-through-stop handling: Executed at actual candle open rather than theoretical stop.
-  - Full Groww transaction fee schedules: Brokerage ($\min(₹20, 0.05\%)$), STT (0.025% on sell turnover), Stamp Duty (0.003% on buy turnover), NSE exchange charges (pre-Oct 2024: 0.00325%, post-Oct 2024: 0.00297%), SEBI/IPFT (₹10/crore), GST (18%), and configurable slippage (default 2 bps).
+  - Full Groww transaction fee schedules: Effective-dated brokerage (0.1% or max ₹20 per executed leg with minimum floors: ₹2 pre-21 June 2025, ₹5 post-21 June 2025, guarded by SEBI 2.5% max cap), STT (0.025% on sell turnover), Stamp Duty (0.003% on buy turnover), NSE exchange charges (pre-Oct 2024: 0.00325%, post-Oct 2024: 0.00297% per Circular NSE/FA/64232), SEBI/IPFT (₹10/crore), GST (18% on service charges), and configurable slippage (default 2 bps).
   - Risk controls: 0.5% risk budgeting per trade, integer share rounding, max 2 trades/day, daily loss circuit breaker (1.0%), and mandatory 15:15 IST square-off.
 - Master Report: [`BACKTEST_ENGINE_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_ENGINE_REPORT.md).
 - Run artifacts persisted under `backend/storage/backtesting/runs/{RUN_ID}/` containing `trades.csv`, `equity_curve.csv`, `excluded_sessions.csv`, `summary.json`, `run_metadata.json`, and `config.json`.
-- Test Suite: 57 passing unit tests across 21 suites (`backend/test/backtesting.test.js`, `backend/test/strategy.test.js`, and `backend/test/indicators.test.js`).
-- Strictly non-optimistic: No live trading claims; demonstrates how basic ORB is value-destroying after costs, while progressive multi-indicator filtering (Variant E) compresses drawdown and reduces churn by ~70%.
+- Test Suite: 61 passing unit tests across 21 suites (`backend/test/backtesting.test.js`, `backend/test/strategy.test.js`, and `backend/test/indicators.test.js`).
+- Strictly non-optimistic: No live trading claims; demonstrates how basic ORB is value-destroying after costs, while progressive multi-indicator filtering (Variant E) compresses drawdown and reduces churn by ~70%. HDFCBANK Variant E is observed as an exploratory positive result with only 11 trades over 5 years (~2.2 trades/year), requiring careful sample-size qualification rather than assuming a proven structural edge.
 
 ### Phase 6.1 — Backtest reconciliation and financial accuracy audit
 
@@ -450,81 +450,37 @@ Completed evidence:
 
 ### Phase 7 — Research comparison, ranking, and robustness
 
-**Status: NOT STARTED / NEXT.**
+**Status: COMPLETED (Stock Behaviour Mapped, Objective Classification, Walk-Forward Diagnostics & Dual Rankings Certified).**
 
-Build a deterministic event-driven or candle-driven backtester that supports the defined strategy without look-ahead bias.
-
-Requirements:
-
-1. Process candles chronologically and independently by symbol/session.
-2. Signals become actionable only after a candle closes; choose and document the fill model (for example, next candle open or a conservative executable price).
-3. Never enter using information from a future candle.
-4. Define how gaps, opening gaps, missing candles, trading halts, and partial sessions are handled.
-5. If stop loss and target are both touched within the same 5-minute candle and intrabar sequence is unknowable, use a conservative/worst-case assumption or mark the trade ambiguous; do not assume the favourable order.
-6. Include slippage, brokerage, STT, exchange transaction charges, GST, SEBI charges, stamp duty, and any applicable fees through a configurable fee model. Verify current Groww/NSE fee schedules at implementation time; do not hard-code unverified rates.
-7. Do not double-count costs. Report gross and net P&L separately.
-8. Use integer quantity and capital-aware position sizing; account for lot/quantity constraints where applicable.
-9. Support long and short simulations separately and together, with a configurable restriction on simultaneous positions.
-10. Prevent duplicate signals/trades and enforce max trades/day and daily loss limits.
-11. Persist reproducible trades and backtest configuration/results to local files initially; database can be considered later.
-
-#### Required performance metrics
-
-- Total trades and trades per month.
-- Win rate.
-- Gross P&L and net P&L after costs.
-- Average win, average loss, expectancy per trade.
-- Profit factor.
-- Average realized risk/reward.
-- Maximum drawdown and drawdown duration.
-- Largest win/loss and consecutive wins/losses.
-- Exposure/time in market.
-- Monthly/yearly P&L.
-- Long vs short performance.
-- Performance by stock and market regime.
-- False breakout rate.
-- Trend-day vs sideways-day performance.
-- Slippage/cost sensitivity.
-
-### Phase 6 acceptance criteria
-
-- Unit tests for signal, entry, stop, target, position sizing, fees, and exits.
-- Tests for missing bars, ambiguous same-candle stop/target, and session boundaries.
-- A small manually inspectable sample backtest whose trades can be traced candle by candle.
-- Repeat run with the same data/config gives identical results.
-- Net results include realistic costs and documented fill assumptions.
-
-### Phase 7 — Research comparison, ranking, and robustness
-
-**Status: NOT STARTED.**
-
-The objective is to compare all five stocks objectively, not to force a winner.
-
-#### Stock ranking dimensions
-
-- Liquidity/traded value and volume consistency (where data is available from an identified source).
-- Daily and intraday volatility.
-- Directional efficiency.
-- Choppiness/sideways frequency.
-- Trend-session frequency.
-- Breakout follow-through and false-breakout rate.
-- Strategy net expectancy and profit factor.
-- Maximum drawdown and risk-adjusted performance.
-- Trading costs and slippage sensitivity.
-
-Do not equate high volatility with a good trend or high liquidity with low sideways movement.
-
-#### Train/validation/test discipline
-
-- Use chronological splits; never randomly shuffle time-series candles.
-- Keep the final test period untouched while tuning parameters.
-- Prefer walk-forward validation (for example, train on earlier periods and test on the next period, then roll forward).
-- Compare a simple baseline (e.g., ORB alone or VWAP/EMA without ADX filter) against the full strategy to establish whether filters add value.
-- Run parameter sensitivity analysis; avoid choosing one narrow parameter combination solely because it maximizes historical profit.
-- Report performance by year and market regime to expose instability.
-- Note survivorship/universe-selection bias: the five stocks were selected today, not from a historical point-in-time universe.
-
-Final ranking should show the raw metrics and methodology. It may conclude that no candidate is suitable.
+Completed evidence:
+- Module implemented in `backend/src/modules/research/`: `research.constants.js`, `research.calculator.js`, `research.classifier.js`, `research.metrics.js`, `research.service.js`, `research.controller.js`, `research.routes.js`, `research.formatter.js`.
+- REST Endpoints mounted under `/api/v1/research/*`:
+  - `GET /api/v1/research/summary`: Returns overview metadata, rankings, and classification counts.
+  - `GET /api/v1/research/stocks`: Lists universe candidates with exchange and date coverage.
+  - `GET /api/v1/research/stock-behaviour`: Granular behaviour metrics (volatility, directional, sideways, ORB, volume).
+  - `GET /api/v1/research/strategy-robustness`: 25 canonical runs with yearly/monthly breakdowns, long vs short, and bootstrap stats.
+  - `GET /api/v1/research/period-performance`: Walk-forward folds and parameter sensitivity matrix.
+- CLI Runner: `npm run research:analyze --prefix backend` (`backend/src/scripts/runResearchAnalysis.js`), executed full pipeline across all 5 stocks in 2.25 seconds.
+- 8 Deliverables persisted in `backend/storage/research/`:
+  1. [`RESEARCH_COMPARISON_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/RESEARCH_COMPARISON_REPORT.md): Comprehensive 310-line quantitative findings report.
+  2. [`STOCK_BEHAVIOUR_METRICS.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/STOCK_BEHAVIOUR_METRICS.csv): 55 granular metrics per stock across all 5 candidates.
+  3. [`DAILY_SESSION_CLASSIFICATION.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/DAILY_SESSION_CLASSIFICATION.csv): Complete classification of all 6,198 historical sessions into 5 regimes.
+  4. [`STRATEGY_ROBUSTNESS.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/STRATEGY_ROBUSTNESS.csv): Canonical run metrics, Wilson score CIs, and bootstrap percentiles.
+  5. [`WALK_FORWARD_RESULTS.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/WALK_FORWARD_RESULTS.csv): Chronological 24m-train / 12m-test walk-forward folds.
+  6. [`PARAMETER_SENSITIVITY.csv`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/PARAMETER_SENSITIVITY.csv): Parameter progression and 0 to 5 bps slippage stress testing.
+  7. [`RESEARCH_OUTCOMES.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/RESEARCH_OUTCOMES.json): Full machine-readable payload for frontend ingestion.
+  8. [`research_run_metadata.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/research/research_run_metadata.json): Pipeline execution telemetry.
+- Dual Multi-Factor Stock Rankings:
+  - **Ranking A (Intraday Price Behaviour - Strategy-Independent):**
+    #1 M&M (90.93), #2 HDFCBANK (56.66), #3 BHARTIARTL (49.00), #4 AXISBANK (28.31), #5 ICICIBANK (8.88).
+  - **Ranking B (Trading Strategy Performance - Variant E / Trend-Following):**
+    #1 HDFCBANK (95.00), #2 AXISBANK (49.09), #3 BHARTIARTL (43.70), #4 M&M (28.28), #5 ICICIBANK (14.02).
+- Statistical Rigour & Sample Fragility Disclosures:
+  - Wilson-score 95% binomial confidence interval for HDFCBANK Variant E spans **[35.4%, 84.8%]** due to small sample size ($N=11$ trades across 5 years, ~2.2 trades/year).
+  - Bootstrap resampling (1,000 iterations) indicates a **27.4% probability of experiencing a net loss**.
+  - Qualified HDFCBANK Variant E as an **exploratory positive finding**, not proof of a proven structural edge.
+  - Confirmed that no single stock/strategy pair currently satisfies criteria for unattended automated execution.
+- Test Suite: 77 passing unit tests across 28 suites (`backend/test/research.test.js`, `backend/test/backtesting.test.js`, `backend/test/indicators.test.js`, `backend/test/strategy.test.js`).
 
 ### Phase 8 — React research dashboard
 
@@ -634,10 +590,11 @@ Update this table whenever a phase changes. Add the completion date and evidence
 | 2 | Coverage matrix + resumable 5-year downloader | COMPLETED | 479,982 5-min candles across 5 stocks (2021-11-08 to 2026-11-06) downloaded to partitioned CSVs with 0 API failures |
 | 3 | Dataset audit and session calendar correction | COMPLETED | Session classifications corrected (Muhurat, DR split, post-market); certified PASS in `DATA_QUALITY_AUDIT.md` |
 | 4 | Indicator and intraday-behaviour engine | COMPLETED | Production-grade indicator engine (EMA20/50, VWAP, ATR14, ADX14, Chop14, ER14, VolSMA20, RVOL) implemented; 21 unit tests pass; derived CSVs generated |
-| 5 | Strategy specification and configuration | NEXT | Ready to commence (Opening Range Breakout + VWAP + EMA strategy) |
-| 6 | Backtesting engine | NOT STARTED | Not started |
-| 7 | Research comparison and robustness | NOT STARTED | Not started |
-| 8 | React research dashboard | NOT STARTED | Not started |
+| 5 | Strategy specification and configuration | COMPLETED | Comprehensive specification, Zod schemas, 5 variants, 18+ cohort parameter matrix in `STRATEGY_SPECIFICATION.md` & 44 tests pass |
+| 6 | Backtesting engine | COMPLETED | Deterministic event-driven engine with Groww fee schedule, slippage, same-bar ambiguity handling & 25 canonical runs across 479,982 candles in `BACKTEST_ENGINE_REPORT.md` |
+| 6.1 | Backtest reconciliation and financial accuracy audit | COMPLETED | 100% reconciled ledger, Groww effective-dated 0.1% + min fee floors, NSE Circular FA64232, and slippage sensitivity in `BACKTEST_RECONCILIATION_REPORT.md` (61 tests pass) |
+| 7 | Research comparison, ranking, and robustness | COMPLETED | Comprehensive stock behaviour metrics, objective session classification, chronological walk-forward diagnostics, dual stock rankings & 77 tests pass in `RESEARCH_COMPARISON_REPORT.md` |
+| 8 | React research dashboard | NEXT | Ready to commence (React 19 + TypeScript frontend with RTK Query for historical data, indicators, backtest results & research visualizer) |
 | 9 | Paper trading and operational hardening | NOT STARTED | Not started |
 | 10 | Optional persistence/production improvements | NOT STARTED | Not started |
 
@@ -647,7 +604,11 @@ Update this table whenever a phase changes. Add the completion date and evidence
 - **2026-11-08 — Phase 2:** Full 5-year historical coverage validated for all 5 stocks back to November 2021. Resumable downloader executed across 305 monthly chunks (61 months × 5 stocks), successfully storing 479,982 candles in `backend/storage/historical-data/` with zero HTTP failures and zero duplicates.
 - **2026-11-08 — Phase 3 (Session Calendar Correction & Audit):** Session classifications updated with official exchange circulars (2025-10-21 classified as MUHURAT_SPECIAL per Circular NSE/CMTR/70319; 2024-03-02 and 2024-05-18 classified as DR_SPLIT; 2025-09-26 classified as UNVERIFIED). Confirmed 99.92% regular continuous completeness (09:15–15:25) across all 5 stocks in `DATA_QUALITY_AUDIT.md`.
 - **2026-11-08 — Phase 4 (Technical Indicator Engine):** Modular Indicator Engine built (`backend/src/modules/indicators/`). Implemented EMA20, EMA50, VWAP, ATR14, ADX14, +DI14, -DI14, Choppiness Index 14, Kaufman Efficiency Ratio 14, Volume SMA 20, and Relative Volume 20. Zero look-ahead bias, SMA warm-up initialization, daily session VWAP resets, and non-bridging of special sessions. 21 automated unit tests pass in 71ms. Full dataset of 479,982 candles processed and saved to `backend/storage/derived/indicators/` in 2.24s with full report at `INDICATOR_ENGINE_REPORT.md`.
-- **Next action:** Proceed to Phase 5 (Strategy specification and configuration — ORB + VWAP + EMA trend-following rules with risk parameters).
+- **2026-11-08 — Phase 5 (Strategy Specification & Configuration):** Formalized Opening Range Breakout (ORB) + VWAP + EMA strategy with 5 predefined variants (A–E). Built Zod validation schemas, risk budgeting (0.5% risk/trade, max daily loss 1.0%), and experimental parameter matrix cohorts. Persisted specification to `backend/storage/strategy/STRATEGY_SPECIFICATION.md` with 44 passing unit tests.
+- **2026-11-08 — Phase 6 (Historical Backtesting Engine):** Developed deterministic event-driven engine in `backend/src/modules/backtesting/` with causal execution ($t+1$ candle open fill), conservative intrabar worst-case stop handling, and full Groww fee schedule. Completed 25 canonical runs across 5 stocks and 5 variants (479,982 candles). Master report in `BACKTEST_ENGINE_REPORT.md`.
+- **2026-11-08 — Phase 6.1 (Backtest Reconciliation & Financial Audit):** Certified 100% accounting reconciliation ($\text{Net P\&L} = \text{Theoretical Gross} - \text{Slippage} - \text{Charges}$). Verified effective-dated Groww brokerage (0.1% max ₹20, min ₹2 pre-June 2025 / min ₹5 post-June 2025, SEBI 2.5% cap), NSE circular FA64232 (₹2.97/lakh), GST base strictly excluding STT/Stamp Duty. Unit tests expanded to 61 passing tests. Certified in `BACKTEST_RECONCILIATION_REPORT.md`.
+- **2026-11-08 — Phase 7 (Quantitative Research, Stock Ranking & Strategy Robustness):** Completed comprehensive research pipeline (`backend/src/modules/research/`) across all 5 stocks and 479,982 candles. Formulated objective 5-regime classification model, chronological walk-forward folds, Wilson score 95% binomial confidence intervals, and bootstrap resampling. Generated Ranking A (Price Behaviour: #1 M&M, #2 HDFCBANK, #3 BHARTIARTL) and Ranking B (Strategy Performance: #1 HDFCBANK, #2 AXISBANK, #3 BHARTIARTL). Qualified HDFCBANK Variant E as exploratory positive finding ($N=11$ trades, [35.4%, 84.8%] 95% CI, 27.4% bootstrap loss probability). Delivered all 8 storage files in `backend/storage/research/` and certified 77 passing unit tests across 28 suites.
+- **Next action:** Proceed to Phase 8 (React research dashboard — UI visualization for historical data, indicators, backtest results, and research comparisons).
 
 ## 13. Instructions for Antigravity — master operating prompt
 

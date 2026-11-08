@@ -1,0 +1,21 @@
+{
+  "pipeline": "Phase 7: Quantitative Research, Stock Ranking & Strategy Robustness",
+  "version": "1.0.0",
+  "executedAt": "2026-11-08T08:01:42.026Z",
+  "durationMs": 2245,
+  "dataset": {
+    "universe": [
+      "ICICIBANK",
+      "HDFCBANK",
+      "M&M",
+      "AXISBANK",
+      "BHARTIARTL"
+    ],
+    "startDate": "2021-11-08",
+    "endDate": "2026-11-06",
+    "totalCandles": 479982,
+    "regularMarketCoveragePercent": 99.92
+  },
+  "feeSchedule": "Groww Effective-Dated Brokerage (0.1% max Rs.20, min Rs.2/Rs.5) + NSE Circular FA64232 (Rs.2.97/lakh)",
+  "slippageBaselineBps": 2
+}

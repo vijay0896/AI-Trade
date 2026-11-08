@@ -142,7 +142,7 @@ Initial Capital: ₹100,000 | Strategy: Full Trend Confirmation (ADX $\ge$ 25, R
 | **5.0 bps per side (High Stress)** | 11 | 63.64% | 1,735.75 | 426.11 | 1,309.64 | 634.81 | **+₹674.83** | **+0.67%** | **1.74** | 0.70% |
 
 ### 5.2 Key Sensitivity Observations
-1. **Resilience in HDFCBANK:** HDFCBANK under Variant E retains positive net profitability across **all** tested slippage scenarios up to 5.0 bps per side (+₹674.83 net gain, 1.74 profit factor), demonstrating genuine structural edge independent of execution frictions.
+1. **Resilience in HDFCBANK (Exploratory / Small Sample Size):** HDFCBANK under Variant E retains positive net profitability across **all** tested slippage scenarios up to 5.0 bps per side (+₹674.83 net gain, 1.74 profit factor). However, this result is based on only 11 total trades over 5 years (~2.2 trades/year); it represents an exploratory positive finding that is statistically fragile, rather than definitive proof of a persistent structural edge.
 2. **Slippage Impact on Low Margin Stocks:** For stocks near breakeven (e.g. AXISBANK Variant E), increasing slippage from 0 bps to 2 bps shifts Net P&L from -₹29.92 to -₹282.82, highlighting that execution friction is a decisive determinant of profitability for lower-momentum stocks.
 
 ---
