@@ -87,17 +87,22 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   │   │       ├── HDFCBANK/           # HDFCBANK derived indicator CSVs (2021-2026)
 │   │   │       ├── ICICIBANK/          # ICICIBANK derived indicator CSVs (2021-2026)
 │   │   │       └── M&M/                # M&M derived indicator CSVs (2021-2026)
-│   │   └── historical-data/            # 5-year 5-minute OHLCV CSV archives (479,982 candles)
-│   │       ├── .checkpoint.json        # Resumable download checkpoint index
-│   │       ├── download_summary.json   # Download audit & data integrity report
-│   │       ├── DATA_QUALITY_AUDIT.md   # Part A certified session calendar & audit report
-│   │       ├── AXISBANK/               # AXISBANK monthly CSVs (2021-2026)
-│   │       ├── BHARTIARTL/             # BHARTIARTL monthly CSVs (2021-2026)
-│   │       ├── HDFCBANK/               # HDFCBANK monthly CSVs (2021-2026)
-│   │       ├── ICICIBANK/              # ICICIBANK monthly CSVs (2021-2026)
-│   │       └── M&M/                    # M&M monthly CSVs (2021-2026)
+│   │   ├── historical-data/            # 5-year 5-minute OHLCV CSV archives (479,982 candles)
+│   │   │   ├── .checkpoint.json        # Resumable download checkpoint index
+│   │   │   ├── download_summary.json   # Download audit & data integrity report
+│   │   │   ├── DATA_QUALITY_AUDIT.md   # Part A certified session calendar & audit report
+│   │   │   ├── AXISBANK/               # AXISBANK monthly CSVs (2021-2026)
+│   │   │   ├── BHARTIARTL/             # BHARTIARTL monthly CSVs (2021-2026)
+│   │   │   ├── HDFCBANK/               # HDFCBANK monthly CSVs (2021-2026)
+│   │   │   ├── ICICIBANK/              # ICICIBANK monthly CSVs (2021-2026)
+│   │   │   └── M&M/                    # M&M monthly CSVs (2021-2026)
+│   │   └── strategy/                   # Strategy specification, configurations & parameter matrix
+│   │       ├── STRATEGY_CONFIGURATIONS.json # Validated core strategy variant presets (A through E)
+│   │       ├── STRATEGY_PARAMETER_MATRIX.md # Orthogonal research cohorts for backtesting
+│   │       └── STRATEGY_SPECIFICATION.md    # Master quantitative trading strategy specification
 │   ├── test/
-│   │   └── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
+│   │   ├── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
+│   │   └── strategy.test.js            # Native Node.js test suite for strategy & risk (23 tests)
 │   └── src/
 │       ├── config/
 │       │   ├── cors.js                 # Dynamic CORS whitelist validation
@@ -129,16 +134,24 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       │   │   ├── indicators.routes.js     # Routes (/api/v1/indicators/*)
 │       │   │   ├── indicators.service.js    # File pipeline, reporting & service orchestration
 │       │   │   └── indicators.validator.js  # Session calendar classification & math guards
-│       │   └── market-data/
-│       │       ├── downloader/
-│       │       │   ├── historicalDownloader.service.js # 5-year multi-stock orchestrator
-│       │       │   ├── integrityValidator.js           # OHLC/Vol validation & gap detection
-│       │       │   └── storageManager.js               # Partitioned CSV persistence & state
-│       │       ├── marketData.client.js    # Groww Historical Candle API v1 client
-│       │       ├── marketData.controller.js# Market data HTTP request/response handler
-│       │       ├── marketData.formatter.js # OHLCV normalizer, sorter & deduplicator
-│       │       ├── marketData.routes.js    # Routes (/api/v1/market-data/*)
-│       │       └── marketData.service.js   # Scope validator & Groww token orchestrator
+│       │   ├── market-data/
+│       │   │   ├── downloader/
+│       │   │   │   ├── historicalDownloader.service.js # 5-year multi-stock orchestrator
+│       │   │   │   ├── integrityValidator.js           # OHLC/Vol validation & gap detection
+│       │   │   │   └── storageManager.js               # Partitioned CSV persistence & state
+│       │   │   ├── marketData.client.js    # Groww Historical Candle API v1 client
+│       │   │   ├── marketData.controller.js# Market data HTTP request/response handler
+│       │   │   ├── marketData.formatter.js # OHLCV normalizer, sorter & deduplicator
+│       │   │   ├── marketData.routes.js    # Routes (/api/v1/market-data/*)
+│       │   │   └── marketData.service.js   # Scope validator & Groww token orchestrator
+│       │   └── strategy/
+│       │       ├── strategy.config.js      # Core variant presets (A through E) & experimental cohorts
+│       │       ├── strategy.constants.js   # Enums, default limits, session times & indicator maps
+│       │       ├── strategy.controller.js  # Strategy HTTP request/response handler
+│       │       ├── strategy.formatter.js   # DTO normalization for configs, matrix & position sizing
+│       │       ├── strategy.routes.js      # Routes (/api/v1/strategy/*)
+│       │       ├── strategy.schema.js      # Strict Zod schemas with time/risk cross-field guards
+│       │       └── strategy.service.js     # Registry queries, position sizing math & JSON exporter
 │       ├── routes/
 │       │   └── index.js                # Master v1 API aggregator
 │       └── scripts/
@@ -303,6 +316,11 @@ HTTP Request
 | `GET` | `/api/v1/market-data/downloader-status` | `MarketDataController.getDownloaderStatus` | Returns 5-year download status & audit summary | IMPLEMENTED |
 | `GET` | `/api/v1/indicators/status` | `IndicatorsController.getStatus` | Technical Indicator Engine status & calculation metrics | IMPLEMENTED |
 | `GET` | `/api/v1/indicators/latest` | `IndicatorsController.getLatestIndicators` | Latest calculated indicators for symbol (e.g. ICICIBANK) | IMPLEMENTED |
+| `GET` | `/api/v1/strategy/configs` | `StrategyController.getAllConfigs` | Returns all 5 predefined strategy variant configurations (A-E) | IMPLEMENTED |
+| `GET` | `/api/v1/strategy/configs/:variantId` | `StrategyController.getVariantConfig` | Returns single variant configuration by ID or variant key | IMPLEMENTED |
+| `GET` | `/api/v1/strategy/matrix` | `StrategyController.getParameterMatrix` | Returns 7 orthogonal research cohorts with 18+ experiments | IMPLEMENTED |
+| `POST` | `/api/v1/strategy/validate` | `StrategyController.validateConfig` | Validates custom strategy configuration against strict Zod schema | IMPLEMENTED |
+| `POST` | `/api/v1/strategy/position-size` | `StrategyController.calculatePositionSize` | Risk-budgeted position sizing with integer shares & capital guards | IMPLEMENTED |
 
 ### 6.2 Endpoint Detail Specifications
 
@@ -660,6 +678,87 @@ HTTP Request
 }
 ```
 
+#### 12. Get Predefined Strategy Configurations
+- **Path:** `GET /api/v1/strategy/configs`
+- **Controller Action:** Invokes `StrategyController.getAllConfigs()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Strategy configurations retrieved successfully",
+  "data": {
+    "totalVariants": 5,
+    "configs": [
+      {
+        "id": "STRAT-ORB-VAR-A",
+        "name": "Variant A: Basic Opening Range Breakout",
+        "variant": "A_BASIC_ORB",
+        "openingRange": { "startTime": "09:15:00", "endTime": "09:30:00", "expectedBars": 3 },
+        "entry": { "entryType": "BREAKOUT_CLOSE", "direction": "BOTH" },
+        "exit": { "stopLossMode": "OR_OPPOSITE", "targetMode": "FIXED_RR_1_5" },
+        "risk": { "accountCapital": 100000, "riskPerTradePercent": 0.5, "dailyMaxLossPercent": 1.0 }
+      }
+    ]
+  },
+  "timestamp": "2026-11-08T06:40:00.000Z"
+}
+```
+
+#### 13. Calculate Risk-Budgeted Position Size
+- **Path:** `POST /api/v1/strategy/position-size`
+- **Body:** `{ "capital": 100000, "riskPercent": 0.5, "entryPrice": 1520.0, "stopLossPrice": 1508.0, "leverage": 1 }`
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Position size calculated successfully",
+  "data": {
+    "capital": 100000,
+    "riskPercent": 0.5,
+    "riskBudget": 500,
+    "entryPrice": 1520,
+    "stopLossPrice": 1508,
+    "stopDistance": 12,
+    "stopDistancePercent": 0.79,
+    "rawQuantity": 41.6667,
+    "quantity": 41,
+    "positionValue": 62320,
+    "capitalUtilizationPercent": 62.32,
+    "isExecutable": true,
+    "executionWarning": null
+  },
+  "timestamp": "2026-11-08T06:41:22.096Z"
+}
+```
+
+#### 14. Get Parameter Matrix Cohorts
+- **Path:** `GET /api/v1/strategy/matrix`
+- **Controller Action:** Invokes `StrategyController.getParameterMatrix()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Parameter matrix retrieved successfully",
+  "data": {
+    "totalExperiments": 18,
+    "cohortCount": 7,
+    "cohorts": {
+      "Execution Mechanics": [...],
+      "Directional Bias": [...],
+      "ADX Filter Sensitivity": [...],
+      "Volume Surge Sensitivity": [...],
+      "Stop Loss Geometry": [...],
+      "Risk/Reward Targets": [...],
+      "Daily Trade Frequency": [...]
+    }
+  },
+  "timestamp": "2026-11-08T06:41:27.300Z"
+}
+```
+
 ---
 
 ## 7. Storage Architecture & Historical Market Data
@@ -758,7 +857,8 @@ HTTP Request
 | Market Data | 5-Year Historical Downloader | IMPLEMENTED | `historicalDownloader.service.js`, `integrityValidator.js`, `storageManager.js` | Bulk downloads 5-minute OHLCV candles (2021-11-08 to 2026-11-06) for 5 stocks (479,982 candles saved to CSV). |
 | Market Data | Historical Coverage Validation | IMPLEMENTED | `historicalDownloader.service.js#L110`, `marketData.controller.js` | Verifies whether 5-minute historical candles exist back to November 2021 before starting bulk jobs. |
 | Market Data | Data Quality Audit (Task 2.1) | IMPLEMENTED | `DATA_QUALITY_AUDIT.md`, `auditHistoricalData.js` | 100% audit of 479,982 candles across 305 files; certifies 0 OHLC violations, 0 duplicates, and PASS status. |
-| Indicators | Technical Indicator Engine (Phase 3) | IMPLEMENTED | `indicators.calculator.js`, `indicators.service.js`, `indicators.validator.js` | Streaming causal calculation for EMA20/50, VWAP, ATR14, ADX14, Choppiness14, ER14, VolSMA20 & RVOL across 479,982 candles. |
+| Indicators | Technical Indicator Engine (Phase 4) | IMPLEMENTED | `indicators.calculator.js`, `indicators.service.js`, `indicators.validator.js` | Streaming causal calculation for EMA20/50, VWAP, ATR14, ADX14, Choppiness14, ER14, VolSMA20 & RVOL across 479,982 candles. |
+| Strategy | Strategy Specification & Config (Phase 5) | IMPLEMENTED | `strategy.config.js`, `strategy.schema.js`, `strategy.service.js` | Predefined ORB variants (A-E), retest models, Zod validation, position sizing calculator & 18+ cohort parameter matrix. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -990,6 +1090,12 @@ sequenceDiagram
 | [`backend/src/modules/indicators/indicators.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/indicators/indicators.controller.js) | HTTP Controller for Indicators | `getStatus()`, `getLatestIndicators()` |
 | [`backend/src/scripts/calculateIndicators.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/calculateIndicators.js) | CLI Indicator Calculator | Standalone CLI entrypoint (`npm run indicators:calculate`) |
 | [`backend/test/indicators.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/indicators.test.js) | Unit Test Suite (Native `node:test`) | 21 passing unit tests verifying indicators and session classification |
+| [`backend/test/strategy.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/strategy.test.js) | Unit Test Suite (Native `node:test`) | 23 passing unit tests verifying strategy schema, presets, risk & matrix |
+| [`backend/src/modules/strategy/strategy.schema.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.schema.js) | Strategy Zod Validation Schemas | `StrategyConfigSchema`, `OpeningRangeConfigSchema`, `RiskConfigSchema`, `PositionSizeParamsSchema` |
+| [`backend/src/modules/strategy/strategy.config.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.config.js) | Strategy Configurations & Presets | `VARIANT_A_CONFIG` to `VARIANT_E_CONFIG`, `PARAMETER_MATRIX_COHORTS` |
+| [`backend/src/modules/strategy/strategy.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.service.js) | Strategy Business Logic & Risk Sizing | `getAllConfigs()`, `validateCustomConfig()`, `calculatePositionSize()`, `exportConfigurationsToFile()` |
+| [`backend/src/modules/strategy/strategy.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.controller.js) | Strategy HTTP Controller | `getAllConfigs`, `getVariantConfig`, `validateConfig`, `calculatePositionSize`, `getParameterMatrix` |
+| [`backend/src/modules/strategy/strategy.routes.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.routes.js) | Strategy Express Router | `/api/v1/strategy/*` endpoints |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 

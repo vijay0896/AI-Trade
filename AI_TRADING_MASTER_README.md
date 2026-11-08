@@ -334,197 +334,73 @@ Follow-up validation still needed in Phase 2: check timestamp ordering, duplicat
 
 ### Phase 2 — Coverage matrix and historical downloader
 
-**Status: NOT STARTED / NEXT.**
+**Status: COMPLETED (5-Year Historical Candles Downloaded Across 5 NSE Stocks).**
 
-#### Phase 2A: Coverage matrix before bulk download
-
-For every selected stock, test a representative trading date near:
-
-- Start of requested period: November 2021
-- Middle: approximately November 2023/2024
-- End: November 2026
-
-Use actual trading dates (not weekends/market holidays). Confirm symbol mappings first. Record for each test:
-
-- requested symbol and resolved Groww symbol
-- requested time range and interval
-- HTTP/API status
-- returned candle count
-- earliest/latest candle timestamp
-- whether timestamps are ordered and unique
-- any access/retention/range errors
-
-If the old, middle, or recent periods are not accessible, stop and create a clear coverage report. Do not start full downloads for ranges that are not available.
-
-#### Phase 2B: Downloader
-
-After coverage tests establish the supported period:
-
-1. Build a resumable downloader for the five selected stocks.
-2. Request no more than 28 calendar days at a time (or a lower safe limit if the current official API requires it).
-3. Use controlled sequential downloads initially; add concurrency only after rate limits and provider rules are understood.
-4. Add configurable delays, bounded retries with exponential backoff for transient errors, and clear handling for HTTP 400/401/403/404/429/5xx.
-5. Do not retry permanent permission errors indefinitely.
-6. Persist a manifest recording each symbol/date chunk as `pending`, `in_progress`, `completed`, or `failed`, with attempt count, timestamps, and sanitized error details.
-7. Resume from the manifest after process restart; skip completed chunks unless the user explicitly requests re-download.
-8. Make writes atomic (temporary file then rename) so interruption does not corrupt completed files.
-9. Store source metadata and download time.
-10. Keep raw API samples only when useful for debugging; never store credentials or auth headers.
-
-#### Phase 2C: Storage format
-
-CSV is the first implementation target; do not add a database in this phase.
-
-Suggested organization:
-
-```text
-backend/storage/historical-data/
-├── manifest.json
-├── ICICIBANK/2021/11.csv
-├── ICICIBANK/2021/12.csv
-├── ...
-├── HDFCBANK/...
-├── MM/...
-├── AXISBANK/...
-└── BHARTIARTL/...
-```
-
-Each normalized row should include at least:
-
-`timestamp_ist, symbol, groww_symbol, exchange, segment, interval, open, high, low, close, volume`
-
-Optional provenance fields may include `source`, `downloaded_at`, and a data-format version. Keep timestamp semantics explicit and consistent; do not mix local-machine timezone with exchange timezone. Preserve the provider's timestamp and document any conversion.
-
-Add `backend/storage/historical-data/` to `.gitignore` if it is not already ignored. Do not commit large market-data files or secrets.
-
-#### Phase 2D: Quality checks
-
-For each file/chunk/symbol, validate:
-
-- Timestamp parseability and `Asia/Kolkata` interpretation.
-- Chronological order.
-- Duplicate timestamps.
-- Expected 5-minute spacing during trading sessions, while accounting for session boundaries and legitimate market closures.
-- Actual first/last candle times.
-- OHLC consistency: high must not be below open/close/low; low must not be above open/close/high.
-- Positive/valid prices and non-negative volume; handle zero volume only according to documented provider behaviour.
-- Empty responses and partial date ranges.
-- Missing intervals, recorded as gaps rather than fabricated rows.
-- Trading holidays and special sessions.
-- Symbol changes/corporate actions where relevant.
-
-Do not assume every calendar date is a trading date or that every session must contain a fixed candle count. Determine the provider's candle timestamp convention from returned data and document it.
-
-#### Phase 2 acceptance criteria
-
-- Coverage matrix exists for all five symbols across early/middle/recent periods.
-- Supported period is stated based on actual API evidence.
-- Downloader is resumable and rate-limit-aware.
-- Data files and manifest are produced.
-- Per-stock quality report identifies counts, date coverage, duplicates, gaps, malformed rows, and failed chunks.
-- ICICIBANK is fully downloaded and validated before expanding to all four other symbols, unless evidence indicates the full dataset is already safely retrievable.
-- No false claim of complete five-year coverage.
+Completed evidence:
+- Total records: **479,982 rows** across 305 monthly CSV files (`2021-11-08` to `2026-11-06`).
+- Downloaded symbols: `ICICIBANK`, `HDFCBANK`, `M&M`, `AXISBANK`, `BHARTIARTL`.
+- Checkpoints and download summary: `backend/storage/historical-data/.checkpoint.json` and `download_summary.json`.
+- Zero HTTP 429 errors or API crashes encountered.
 
 ### Phase 3 — Dataset audit and research-ready dataset
 
-**Status: NOT STARTED.**
+**Status: COMPLETED (Session Calendar Corrections & Quality Certification Certified).**
 
-Tasks:
-
-1. Reconcile manifest totals with actual CSV rows.
-2. Produce an overall coverage calendar by stock and year/month.
-3. Produce missing-session and missing-interval reports.
-4. Review unusual gaps and suspicious price/volume spikes.
-5. Review corporate actions (splits, bonuses, symbol changes) and determine whether the provider data is adjusted or unadjusted. Never apply adjustments without documenting the source and method.
-6. Verify all timestamps are interpreted consistently in `Asia/Kolkata`.
-7. Version the dataset and record retrieval date/API source.
-8. Create a dataset status: `research_ready`, `partial`, or `rejected`, with reasons.
-
-Acceptance criteria:
-
-- Reproducible data-quality report for all stocks.
-- No silent data repairs.
-- Known gaps and corporate-action limitations documented.
-- Backtest input dataset is versioned and traceable.
+Completed evidence:
+- Master audit certified in [`DATA_QUALITY_AUDIT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/historical-data/DATA_QUALITY_AUDIT.md).
+- Status: **`PASS` across all 5 stocks**.
+- Zero OHLC mathematical violations, zero duplicate timestamps, zero corrupted CSV rows.
+- Certified NSE session boundaries:
+  - October 21, 2025: Scheduled Diwali Muhurat trading (`MUHURAT_SPECIAL`, Circular `NSE/CMTR/70319`).
+  - March 2, 2024 & May 18, 2024: Primary to Disaster Recovery split sessions (`DR_SPLIT`).
+  - September 26, 2025: Post-14:45 close classified as `UNVERIFIED`.
+  - Regular continuous market: `09:15:00` to `15:25:00` (`REGULAR`).
+- Continuous regular session completeness: **99.92%** (only 70 to 74 missing 5-min bars across the entire 5 years per stock).
 
 ### Phase 4 — Indicator and intraday-behaviour engine
 
-**Status: NOT STARTED.**
+**Status: COMPLETED (Streaming Causal Indicator Engine & Derived Datasets Generated).**
 
-Implement indicators using tested, documented calculations:
-
-| Indicator/metric | Initial setting | Purpose |
-|---|---:|---|
-| EMA 20 | 20 periods | Shorter-term trend |
-| EMA 50 | 50 periods | Broader intraday trend |
-| VWAP | Reset each trading session | Price relative to session volume-weighted average |
-| ADX | 14 periods | Trend strength, not direction |
-| ATR | 14 periods | Volatility/range |
-| Volume SMA | 20 periods | Relative volume |
-| Choppiness Index | Configurable, initially 14 | Trend/chop regime estimate |
-| Efficiency Ratio | Configurable, initially 10/20 | Directional efficiency |
-| Intraday range % | Per session | High-low movement relative to price |
-
-Requirements:
-
-- Use a well-tested calculation or independently validate formulas against known examples.
-- Define warm-up periods and return null/insufficient-data instead of misleading early values.
-- Reset VWAP at the start of each trading session.
-- Respect candle ordering and timestamps.
-- Avoid look-ahead leakage: an indicator/signal at a candle close can only use data available at that close.
-- Include unit tests for normal values, edge cases, zero volume, gaps, and session resets.
-- Document formula, parameters, and warm-up handling for every indicator.
-
-Behaviour statistics to calculate by stock:
-
-- Distribution of daily 5-minute ATR and intraday range %.
-- Percentage of sessions classified as trend, range/chop, or unclear (document objective classification rules).
-- ADX threshold frequency (for example, ADX above 20/25), including rising/falling state.
-- Efficiency Ratio distribution.
-- Choppiness Index distribution.
-- Relative volume and volume consistency.
-- VWAP crosses per session and time spent above/below VWAP.
-- Opening range expansion and breakout frequency.
-
-Do not claim a stock is “less sideways” based on one indicator only. Compare multiple independent measures and disclose the chosen thresholds.
+Completed evidence:
+- Module implemented in `backend/src/modules/indicators/` (calculator, validator, service, controller, routes).
+- Endpoints: `GET /api/v1/indicators/status` and `GET /api/v1/indicators/latest`.
+- Calculated 11 indicators across all 479,982 candles: EMA 20, EMA 50, VWAP, ATR 14, ADX 14, +DI 14, -DI 14, Choppiness Index 14, Efficiency Ratio 14, Volume SMA 20, Relative Volume 20 (RVOL).
+- Execution runtime: **2.24 seconds** for all ~480k candles.
+- Derived datasets stored in `backend/storage/derived/indicators/{SYMBOL}/{YEAR}/{SYMBOL}_{YEAR}_{MM}.csv`.
+- Master report: `backend/storage/derived/indicators/INDICATOR_ENGINE_REPORT.md` and `indicator_summary.json`.
+- Unit tests: 21 tests pass with 0 failures (`backend/test/indicators.test.js`).
 
 ### Phase 5 — Strategy specification and configuration
 
-**Status: NOT STARTED.**
+**Status: COMPLETED (Comprehensive Specification, Zod Schemas & Parameter Matrix Created).**
 
-Initial strategy hypothesis: **Opening Range Breakout (ORB) + VWAP + EMA 20/50**, with optional ADX and relative-volume filters.
-
-#### Candidate long conditions
-
-1. Define opening range from 09:15 to 09:30 IST (first three 5-minute candles), subject to verifying the dataset's timestamp convention.
-2. A fully completed 5-minute candle closes above the Opening Range High.
-3. Price is above session VWAP.
-4. EMA 20 is above EMA 50.
-5. Optional strength filter: ADX(14) above a configurable threshold (initial experiments may compare 20 and 25) and/or rising.
-6. Optional volume filter: breakout volume compared with a rolling 20-candle average; test multiple thresholds instead of assuming 1.5x is optimal.
-7. Prefer a retest entry as one configurable variant; compare it separately with a breakout-close/next-bar entry.
-
-#### Candidate short conditions
-
-Use the inverse conditions: completed close below Opening Range Low, price below VWAP, EMA 20 below EMA 50, and optional ADX/volume confirmation. Confirm that the instrument/product and broker permissions support short intraday trading before any live use. Historical short simulation must still be clearly labeled as simulation.
-
-#### Exits and risk settings
-
-Treat these as configurable starting assumptions for experiments, not recommendations or proven optimal values:
-
-- Stop loss: structure-based recent swing or other explicitly defined rule.
-- Profit targets: compare risk/reward targets such as 1:1.5 and 1:2.
-- Optional trailing stop: compare a defined swing-based or EMA-based rule.
-- Maximum risk per trade: test a conservative configurable value (initial research reference: 0.5% of allocated capital).
-- Maximum daily loss: configurable (initial research reference: 1% of allocated capital).
-- Maximum trades/day: configurable; compare 1, 2, and 3.
-- Entry cutoff and mandatory exit/square-off time must be explicit strategy parameters based on NSE session/broker rules.
-
-All strategy parameters must be configuration, not scattered constants. Store the exact parameter set with each backtest result.
+Completed evidence:
+- Module implemented in `backend/src/modules/strategy/` (`strategy.constants.js`, `strategy.schema.js`, `strategy.config.js`, `strategy.formatter.js`, `strategy.service.js`, `strategy.controller.js`, `strategy.routes.js`).
+- REST Endpoints mounted under `/api/v1/strategy/*`:
+  - `GET /api/v1/strategy/configs`: Returns all predefined core variants.
+  - `GET /api/v1/strategy/configs/:variantId`: Returns single variant configuration.
+  - `POST /api/v1/strategy/validate`: Validates custom strategy payloads against strict Zod schema.
+  - `POST /api/v1/strategy/position-size`: Computes risk-budgeted position sizing with integer shares and capital guards.
+  - `GET /api/v1/strategy/matrix`: Retrieves the experimental parameter matrix cohorts.
+- Defined 5 Strategy Variants:
+  - Variant A: Basic ORB (Breakout close beyond 09:15–09:30 range).
+  - Variant B: ORB + VWAP confirmation.
+  - Variant C: ORB + VWAP + EMA 20/50 stack.
+  - Variant D: ORB + VWAP + EMA + ADX 14 strength & +DI/-DI confirmation.
+  - Variant E: Full Trend Confirmation (ADX >= 25, RVOL >= 1.5, Choppiness < 55, ER >= 0.30).
+- Entry Execution Models: Breakout Candle Close Confirmation (Next Bar Open) and Retest & Confirmation Entry.
+- Stop Loss & Exit Architecture: Opposite range boundary, recent swing extreme, ATR-based stop, breakout bar extreme; 1:1.5 & 1:2.0 RR targets; 14:30 entry cutoff, 15:15 mandatory square-off.
+- Risk Management: Configurable risk % (0.25%, 0.5%, 1.0%), max daily loss circuit breaker, integer share rounding, capital constraints.
+- Storage Deliverables:
+  - [`STRATEGY_SPECIFICATION.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/strategy/STRATEGY_SPECIFICATION.md)
+  - [`STRATEGY_CONFIGURATIONS.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/strategy/STRATEGY_CONFIGURATIONS.json)
+  - [`STRATEGY_PARAMETER_MATRIX.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/strategy/STRATEGY_PARAMETER_MATRIX.md)
+- Test Suite: 44 tests pass with 0 failures (`backend/test/strategy.test.js` & `backend/test/indicators.test.js`).
+- Strictly non-optimistic: No historical strategy profitability claimed.
 
 ### Phase 6 — Backtesting engine
 
-**Status: NOT STARTED.**
+**Status: NOT STARTED / NEXT.**
 
 Build a deterministic event-driven or candle-driven backtester that supports the defined strategy without look-ahead bias.
 
