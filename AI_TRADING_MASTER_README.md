@@ -703,11 +703,11 @@ Update this table whenever a phase changes. Add the completion date and evidence
 
 | Phase | Description | Status | Completion evidence |
 |---:|---|---|---|
-| 0 | Repository baseline and safety | IN PROGRESS / RE-VERIFY | Original `PROJECT_OVERVIEW.md` exists; re-check current repo before further work |
+| 0 | Repository baseline and safety | COMPLETED | Architecture and repository baseline established in `PROJECT_OVERVIEW.md` |
 | 1 | Historical API proof of integration | COMPLETED | HTTP 200 for ICICIBANK on 2026-11-06 (74 candles) and 2021-11-08 (76 candles) |
-| 2 | Coverage matrix + resumable 5-year downloader | NEXT | Not started |
-| 3 | Dataset audit and research-ready dataset | NOT STARTED | Not started |
-| 4 | Indicator and intraday-behaviour engine | NOT STARTED | Not started |
+| 2 | Coverage matrix + resumable 5-year downloader | COMPLETED | 479,982 5-min candles across 5 stocks (2021-11-08 to 2026-11-06) downloaded to partitioned CSVs with 0 API failures |
+| 3 | Dataset audit and research-ready dataset | COMPLETED | Comprehensive quality audit in `backend/storage/historical-data/DATA_QUALITY_AUDIT.md`; all 5 stocks classified PASS |
+| 4 | Indicator and intraday-behaviour engine | NEXT | Ready to commence |
 | 5 | Strategy specification and configuration | NOT STARTED | Not started |
 | 6 | Backtesting engine | NOT STARTED | Not started |
 | 7 | Research comparison and robustness | NOT STARTED | Not started |
@@ -717,8 +717,10 @@ Update this table whenever a phase changes. Add the completion date and evidence
 
 ### Phase completion notes
 
-- **2026-11-08 — Phase 1:** User tested the local historical-candles endpoint. Recent ICICIBANK sample returned HTTP 200 and 74 candles for 2026-11-06. Older ICICIBANK sample returned HTTP 200 and 76 candles for 2021-11-08. Full historical coverage remains unverified.
-- **Next action:** Complete Phase 2A coverage matrix for all five symbols at early, middle, and recent valid NSE trading dates. Only then start the resumable downloader.
+- **2026-11-08 — Phase 1:** User tested the local historical-candles endpoint. Recent ICICIBANK sample returned HTTP 200 and 74 candles for 2026-11-06. Older ICICIBANK sample returned HTTP 200 and 76 candles for 2021-11-08.
+- **2026-11-08 — Phase 2:** Full 5-year historical coverage validated for all 5 stocks back to November 2021. Resumable downloader executed across 305 monthly chunks (61 months × 5 stocks), successfully storing 479,982 candles in `backend/storage/historical-data/` with zero HTTP failures and zero duplicates.
+- **2026-11-08 — Phase 3 (Task 2.1 Audit):** Independent line-by-line audit completed for all 479,982 records. Confirmed 0 corrupted rows, 0 OHLC violations, 0 negative volumes, 0 duplicate timestamps, and 99.86% continuous trading session completeness (09:15–15:25). Identified that reported gaps were predominantly post-market settlement intervals (15:30/15:40/16:00). All 5 stocks certified PASS in `DATA_QUALITY_AUDIT.md`.
+- **Next action:** Proceed to Phase 4 (Indicator and intraday-behaviour engine — ORB, VWAP, EMA, ATR, ADX calculation without look-ahead bias).
 
 ## 13. Instructions for Antigravity — master operating prompt
 

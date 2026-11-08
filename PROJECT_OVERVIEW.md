@@ -559,9 +559,9 @@ HTTP Request
 
 ---
 
-## 7. Database Analysis
+## 7. Storage Architecture & Historical Market Data
 
-### Current Implementation Finding
+### 7.1 Database Analysis Finding
 > [!IMPORTANT]
 > **No Database Installed or Configured.**  
 > Codebase inspection confirms there are **zero** database drivers, ORMs, schemas, models, or migration scripts installed in this repository.
@@ -570,7 +570,20 @@ HTTP Request
 > - No `mysql2`, `pg`, `sqlite3`, `mongodb`, or `mongoose` packages are present in `backend/package.json`.
 > - No `sequelize`, `typeorm`, `prisma`, or raw SQL query files (`*.queries.js` / `*.repository.js`) exist.
 
-### Data Storage Model
+### 7.2 Historical Data Local CSV Storage & Quality Certification
+1. **Partitioned Local Storage:** 5-year 5-minute OHLCV datasets are organized in [`backend/storage/historical-data/`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/historical-data/) partitioned by stock and month/year (`{SYMBOL}/{YEAR}/{SYMBOL}_{YEAR}_{MM}.csv`).
+2. **Certified Data Quality (Task 2.1 Audit):** Complete independent audit performed and recorded in [`backend/storage/historical-data/DATA_QUALITY_AUDIT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/historical-data/DATA_QUALITY_AUDIT.md):
+   - **Total Records:** 479,982 rows across 305 files.
+   - **Quality Status:** **`PASS` across all 5 stocks** (`ICICIBANK`, `HDFCBANK`, `M&M`, `AXISBANK`, `BHARTIARTL`).
+   - **OHLCV Violations:** 0 (High $\ge$ max(O,C), Low $\le$ min(O,C), all prices $> 0$, all volume $\ge 0$).
+   - **Duplicate Timestamps:** 0.
+   - **Corrupted Rows:** 0.
+   - **Trading Days:** 1,240 trading sessions recorded (100% of expected NSE calendar sessions).
+   - **Continuous Session Completeness:** 99.86% across 09:15–15:25 continuous market hours.
+   - **Gap Root Cause:** Over 91.5% of reported gaps are post-market closing auctions and settlement timestamps (`15:30`, `15:40`, `16:00`), not missing trading candles.
+   - **Corporate Actions:** Zero unadjusted stock split or bonus discontinuities detected; maximum overnight gap across all 5 stocks was 8.20%.
+
+### 7.3 Data Storage & State Model
 1. **Stateless Broker Proxy:** The application operates as a live reverse-proxy to the Groww Trading API.
 2. **In-Memory Session Caching:** Active session state (`token`, `expiry`, `tokenRefId`, `sessionName`, `lastConnectedAt`) is stored strictly in memory within the private static class variable `#session` in [`backend/src/modules/groww/groww.service.js#L17-L24`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/groww/groww.service.js#L17-L24).
 3. **Session Volatility:** When the backend process terminates or restarts, the in-memory token is cleared, and a fresh token is negotiated at startup via `server.js#L21`.
@@ -634,6 +647,7 @@ HTTP Request
 | Market Data | Historical 5-Minute Candles | IMPLEMENTED | `marketData.client.js`, `marketData.service.js`, `marketData.formatter.js` | Fetches, validates, and normalizes 5-minute historical OHLCV candles for ICICIBANK via Groww API v1. |
 | Market Data | 5-Year Historical Downloader | IMPLEMENTED | `historicalDownloader.service.js`, `integrityValidator.js`, `storageManager.js` | Bulk downloads 5-minute OHLCV candles (2021-11-08 to 2026-11-06) for 5 stocks (479,982 candles saved to CSV). |
 | Market Data | Historical Coverage Validation | IMPLEMENTED | `historicalDownloader.service.js#L110`, `marketData.controller.js` | Verifies whether 5-minute historical candles exist back to November 2021 before starting bulk jobs. |
+| Market Data | Data Quality Audit (Task 2.1) | IMPLEMENTED | `DATA_QUALITY_AUDIT.md`, `auditHistoricalData.js` | 100% audit of 479,982 candles across 305 files; certifies 0 OHLC violations, 0 duplicates, and PASS status. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
