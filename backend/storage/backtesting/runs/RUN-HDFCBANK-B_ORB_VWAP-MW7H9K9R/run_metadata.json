@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-HDFCBANK-B_ORB_VWAP-MW7H9K9R",
+  "symbol": "HDFCBANK",
+  "strategyId": "STRAT-ORB-VAR-B",
+  "strategyName": "Variant B: ORB with VWAP Filter",
+  "variant": "B_ORB_VWAP",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 96334,
+  "totalRegularBars": 92477,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1216,
+  "initialCapital": 100000,
+  "endingCapital": 99728.02,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T06:55:08.006Z",
+  "runtimeMs": 263
+}

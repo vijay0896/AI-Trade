@@ -1,0 +1,183 @@
+{
+  "overview": {
+    "initialCapital": 100000,
+    "endingCapital": 101065.16,
+    "netReturnPercent": 1.07,
+    "grossPnL": 1633.4,
+    "netPnL": 1065.16,
+    "totalCharges": 568.24,
+    "brokerage": 347.05,
+    "statutoryCharges": 153.39,
+    "gst": 67.79,
+    "slippageCost": 176.9,
+    "costsPercentOfGross": 25.44
+  },
+  "tradingPerformance": {
+    "totalTrades": 11,
+    "winningTrades": 7,
+    "losingTrades": 4,
+    "scratchTrades": 0,
+    "winRate": 63.64,
+    "averageWin": 269.51,
+    "averageLoss": 205.36,
+    "expectancy": 96.85,
+    "profitFactor": 2.3,
+    "averageRealizedRR": 1.31
+  },
+  "riskPerformance": {
+    "maxDrawdown": 672.32,
+    "maxDrawdownPercent": 0.66,
+    "drawdownDurationDays": 8,
+    "largestWin": 553.64,
+    "largestLoss": -374.4,
+    "maxConsecutiveWins": 3,
+    "maxConsecutiveLosses": 2,
+    "dailyLossLimitTriggers": 0,
+    "timeInMarketPercent": 0.41
+  },
+  "directionalAnalysis": {
+    "long": {
+      "totalTrades": 7,
+      "winningTrades": 4,
+      "winRate": 57.14,
+      "netPnL": 509.82,
+      "profitFactor": 1.97,
+      "avgTrade": 72.83
+    },
+    "short": {
+      "totalTrades": 4,
+      "winningTrades": 3,
+      "winRate": 75,
+      "netPnL": 555.34,
+      "profitFactor": 2.86,
+      "avgTrade": 138.83
+    }
+  },
+  "exitReasonBreakdown": {
+    "MAX_HOLDING_TIME": 7,
+    "SQUARE_OFF": 4
+  },
+  "periodicBreakdown": {
+    "monthly": {
+      "2021-12": {
+        "period": "2021-12",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -87.5,
+        "netPnL": -144.49,
+        "charges": 56.99,
+        "winRate": 0
+      },
+      "2022-09": {
+        "period": "2022-09",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 42.66,
+        "netPnL": 22.97,
+        "charges": 19.69,
+        "winRate": 100
+      },
+      "2022-10": {
+        "period": "2022-10",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": 662.5,
+        "netPnL": 549.03,
+        "charges": 113.47,
+        "winRate": 50
+      },
+      "2022-12": {
+        "period": "2022-12",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 505.2,
+        "netPnL": 440.17,
+        "charges": 65.03,
+        "winRate": 100
+      },
+      "2023-06": {
+        "period": "2023-06",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 358.28,
+        "netPnL": 280.56,
+        "charges": 77.72,
+        "winRate": 100
+      },
+      "2026-08": {
+        "period": "2026-08",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 156.64,
+        "netPnL": 132.53,
+        "charges": 24.11,
+        "winRate": 100
+      },
+      "2026-09": {
+        "period": "2026-09",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -549.43,
+        "netPnL": -672.32,
+        "charges": 122.89,
+        "winRate": 0
+      },
+      "2026-10": {
+        "period": "2026-10",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 397.42,
+        "netPnL": 334.29,
+        "charges": 63.13,
+        "winRate": 100
+      },
+      "2026-11": {
+        "period": "2026-11",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 147.63,
+        "netPnL": 122.42,
+        "charges": 25.21,
+        "winRate": 100
+      }
+    },
+    "yearly": {
+      "2021": {
+        "period": "2021",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -87.5,
+        "netPnL": -144.49,
+        "charges": 56.99,
+        "winRate": 0
+      },
+      "2022": {
+        "period": "2022",
+        "trades": 4,
+        "wins": 3,
+        "grossPnL": 1210.36,
+        "netPnL": 1012.17,
+        "charges": 198.19,
+        "winRate": 75
+      },
+      "2023": {
+        "period": "2023",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 358.28,
+        "netPnL": 280.56,
+        "charges": 77.72,
+        "winRate": 100
+      },
+      "2026": {
+        "period": "2026",
+        "trades": 5,
+        "wins": 3,
+        "grossPnL": 152.26,
+        "netPnL": -83.08,
+        "charges": 235.34,
+        "winRate": 60
+      }
+    }
+  }
+}

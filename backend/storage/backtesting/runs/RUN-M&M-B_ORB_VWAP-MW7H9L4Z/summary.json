@@ -1,0 +1,329 @@
+{
+  "overview": {
+    "initialCapital": 100000,
+    "endingCapital": 92458.08,
+    "netReturnPercent": -7.54,
+    "grossPnL": -4796.97,
+    "netPnL": -7541.92,
+    "totalCharges": 2744.95,
+    "brokerage": 1739.09,
+    "statutoryCharges": 669.35,
+    "gst": 336.5,
+    "slippageCost": 771.12,
+    "costsPercentOfGross": 66.1
+  },
+  "tradingPerformance": {
+    "totalTrades": 55,
+    "winningTrades": 18,
+    "losingTrades": 37,
+    "scratchTrades": 0,
+    "winRate": 32.73,
+    "averageWin": 180.77,
+    "averageLoss": 291.78,
+    "expectancy": -137.11,
+    "profitFactor": 0.3,
+    "averageRealizedRR": 0.62
+  },
+  "riskPerformance": {
+    "maxDrawdown": 8235.1,
+    "maxDrawdownPercent": 8.18,
+    "drawdownDurationDays": 26,
+    "largestWin": 656.16,
+    "largestLoss": -567.09,
+    "maxConsecutiveWins": 3,
+    "maxConsecutiveLosses": 6,
+    "dailyLossLimitTriggers": 3,
+    "timeInMarketPercent": 1.72
+  },
+  "directionalAnalysis": {
+    "long": {
+      "totalTrades": 32,
+      "winningTrades": 11,
+      "winRate": 34.38,
+      "netPnL": -2524.31,
+      "profitFactor": 0.5,
+      "avgTrade": -78.88
+    },
+    "short": {
+      "totalTrades": 23,
+      "winningTrades": 7,
+      "winRate": 30.43,
+      "netPnL": -5017.61,
+      "profitFactor": 0.13,
+      "avgTrade": -218.16
+    }
+  },
+  "exitReasonBreakdown": {
+    "MAX_HOLDING_TIME": 24,
+    "SQUARE_OFF": 18,
+    "STOP_LOSS": 12,
+    "PROFIT_TARGET": 1
+  },
+  "periodicBreakdown": {
+    "monthly": {
+      "2021-11": {
+        "period": "2021-11",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": 132.34,
+        "netPnL": 60.85,
+        "charges": 71.49,
+        "winRate": 50
+      },
+      "2021-12": {
+        "period": "2021-12",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -246.7,
+        "netPnL": -356.77,
+        "charges": 110.07,
+        "winRate": 0
+      },
+      "2022-02": {
+        "period": "2022-02",
+        "trades": 2,
+        "wins": 2,
+        "grossPnL": 727.02,
+        "netPnL": 646.48,
+        "charges": 80.54,
+        "winRate": 100
+      },
+      "2022-03": {
+        "period": "2022-03",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": 220.95,
+        "netPnL": 139.99,
+        "charges": 80.96,
+        "winRate": 50
+      },
+      "2022-09": {
+        "period": "2022-09",
+        "trades": 4,
+        "wins": 3,
+        "grossPnL": 118.07,
+        "netPnL": -115.36,
+        "charges": 233.43,
+        "winRate": 75
+      },
+      "2023-02": {
+        "period": "2023-02",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -410.96,
+        "netPnL": -479.65,
+        "charges": 68.69,
+        "winRate": 0
+      },
+      "2023-03": {
+        "period": "2023-03",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -1003.36,
+        "netPnL": -1129.69,
+        "charges": 126.33,
+        "winRate": 0
+      },
+      "2023-06": {
+        "period": "2023-06",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": 534.16,
+        "netPnL": 432.49,
+        "charges": 101.67,
+        "winRate": 50
+      },
+      "2023-07": {
+        "period": "2023-07",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -527.43,
+        "netPnL": -658.34,
+        "charges": 130.91,
+        "winRate": 0
+      },
+      "2023-08": {
+        "period": "2023-08",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -498.4,
+        "netPnL": -565.56,
+        "charges": 67.16,
+        "winRate": 0
+      },
+      "2023-09": {
+        "period": "2023-09",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": -250.18,
+        "netPnL": -376.61,
+        "charges": 126.43,
+        "winRate": 50
+      },
+      "2023-11": {
+        "period": "2023-11",
+        "trades": 3,
+        "wins": 0,
+        "grossPnL": -203.61,
+        "netPnL": -341.61,
+        "charges": 138,
+        "winRate": 0
+      },
+      "2023-12": {
+        "period": "2023-12",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -269.1,
+        "netPnL": -308.87,
+        "charges": 39.77,
+        "winRate": 0
+      },
+      "2024-01": {
+        "period": "2024-01",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -367.04,
+        "netPnL": -499.08,
+        "charges": 132.04,
+        "winRate": 0
+      },
+      "2024-02": {
+        "period": "2024-02",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": 198.78,
+        "netPnL": 127.15,
+        "charges": 71.63,
+        "winRate": 50
+      },
+      "2024-04": {
+        "period": "2024-04",
+        "trades": 3,
+        "wins": 0,
+        "grossPnL": -416.52,
+        "netPnL": -548.69,
+        "charges": 132.17,
+        "winRate": 0
+      },
+      "2024-05": {
+        "period": "2024-05",
+        "trades": 3,
+        "wins": 1,
+        "grossPnL": 198.2,
+        "netPnL": 82.63,
+        "charges": 115.57,
+        "winRate": 33.33
+      },
+      "2024-07": {
+        "period": "2024-07",
+        "trades": 3,
+        "wins": 0,
+        "grossPnL": -1210.45,
+        "netPnL": -1395.31,
+        "charges": 184.86,
+        "winRate": 0
+      },
+      "2024-09": {
+        "period": "2024-09",
+        "trades": 2,
+        "wins": 2,
+        "grossPnL": 146.98,
+        "netPnL": 84.71,
+        "charges": 62.27,
+        "winRate": 100
+      },
+      "2026-04": {
+        "period": "2026-04",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -353.78,
+        "netPnL": -458.13,
+        "charges": 104.35,
+        "winRate": 0
+      },
+      "2026-08": {
+        "period": "2026-08",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 166.04,
+        "netPnL": 102.22,
+        "charges": 63.82,
+        "winRate": 100
+      },
+      "2026-09": {
+        "period": "2026-09",
+        "trades": 6,
+        "wins": 2,
+        "grossPnL": -1143.26,
+        "netPnL": -1492.04,
+        "charges": 348.78,
+        "winRate": 33.33
+      },
+      "2026-10": {
+        "period": "2026-10",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": -342.72,
+        "netPnL": -456.94,
+        "charges": 114.22,
+        "winRate": 50
+      },
+      "2026-11": {
+        "period": "2026-11",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": 4,
+        "netPnL": -35.79,
+        "charges": 39.79,
+        "winRate": 50
+      }
+    },
+    "yearly": {
+      "2021": {
+        "period": "2021",
+        "trades": 4,
+        "wins": 1,
+        "grossPnL": -114.36,
+        "netPnL": -295.92,
+        "charges": 181.56,
+        "winRate": 25
+      },
+      "2022": {
+        "period": "2022",
+        "trades": 8,
+        "wins": 6,
+        "grossPnL": 1066.04,
+        "netPnL": 671.11,
+        "charges": 394.93,
+        "winRate": 75
+      },
+      "2023": {
+        "period": "2023",
+        "trades": 15,
+        "wins": 2,
+        "grossPnL": -2628.88,
+        "netPnL": -3427.84,
+        "charges": 798.96,
+        "winRate": 13.33
+      },
+      "2024": {
+        "period": "2024",
+        "trades": 15,
+        "wins": 4,
+        "grossPnL": -1450.05,
+        "netPnL": -2148.59,
+        "charges": 698.54,
+        "winRate": 26.67
+      },
+      "2026": {
+        "period": "2026",
+        "trades": 13,
+        "wins": 5,
+        "grossPnL": -1669.72,
+        "netPnL": -2340.68,
+        "charges": 670.96,
+        "winRate": 38.46
+      }
+    }
+  }
+}

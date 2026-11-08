@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-BHARTIARTL-D_ORB_VWAP_EMA_ADX-MW7H9N7Z",
+  "symbol": "BHARTIARTL",
+  "strategyId": "STRAT-ORB-VAR-D",
+  "strategyName": "Variant D: ORB with VWAP, EMA and ADX/DI Filter",
+  "variant": "D_ORB_VWAP_EMA_ADX",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95811,
+  "totalRegularBars": 92478,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1203,
+  "initialCapital": 100000,
+  "endingCapital": 96354.49,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T06:55:11.773Z",
+  "runtimeMs": 206
+}

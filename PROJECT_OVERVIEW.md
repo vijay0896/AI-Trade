@@ -96,11 +96,16 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   │   │   ├── HDFCBANK/               # HDFCBANK monthly CSVs (2021-2026)
 │   │   │   ├── ICICIBANK/              # ICICIBANK monthly CSVs (2021-2026)
 │   │   │   └── M&M/                    # M&M monthly CSVs (2021-2026)
-│   │   └── strategy/                   # Strategy specification, configurations & parameter matrix
-│   │       ├── STRATEGY_CONFIGURATIONS.json # Validated core strategy variant presets (A through E)
-│   │       ├── STRATEGY_PARAMETER_MATRIX.md # Orthogonal research cohorts for backtesting
-│   │       └── STRATEGY_SPECIFICATION.md    # Master quantitative trading strategy specification
+│   │   ├── strategy/                   # Strategy specification, configurations & parameter matrix
+│   │   │   ├── STRATEGY_CONFIGURATIONS.json # Validated core strategy variant presets (A through E)
+│   │   │   ├── STRATEGY_PARAMETER_MATRIX.md # Orthogonal research cohorts for backtesting
+│   │   │   └── STRATEGY_SPECIFICATION.md    # Master quantitative trading strategy specification
+│   │   └── backtesting/                # Historical backtesting engine runs, journals & master reports
+│   │       ├── BACKTEST_ENGINE_REPORT.md    # Master quantitative report across 25 batch runs
+│   │       ├── runs_index.json              # Master registry catalog of all completed backtest runs
+│   │       └── runs/                        # Partitioned run outputs (trades.csv, equity_curve.csv, summary.json)
 │   ├── test/
+│   │   ├── backtesting.test.js         # Native Node.js test suite for backtest engine & Groww fees (13 tests)
 │   │   ├── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
 │   │   └── strategy.test.js            # Native Node.js test suite for strategy & risk (23 tests)
 │   └── src/
@@ -118,6 +123,18 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       │       ├── response.utils.js   # Standardized ApiResponse envelope
 │       │       └── totp.utils.js       # Native crypto RFC 6238 TOTP generator
 │       ├── modules/
+│       │   ├── backtesting/
+│       │   │   ├── backtesting.constants.js # Fee schedules, default parameters, enums & directories
+│       │   │   ├── backtesting.controller.js# HTTP controller for backtesting runs and trade journals
+│       │   │   ├── backtesting.engine.js    # Event-driven backtester core loop & candle processor
+│       │   │   ├── backtesting.execution.js # Fill simulation, slippage, same-bar ambiguity & exits
+│       │   │   ├── backtesting.fees.js      # Groww transaction cost & statutory tax calculator
+│       │   │   ├── backtesting.metrics.js   # Performance metrics (Gross/Net P&L, Sharpe, DD, streaks)
+│       │   │   ├── backtesting.risk.js      # Position sizing delegation, circuit breakers & capital bounds
+│       │   │   ├── backtesting.routes.js    # Routes (/api/v1/backtesting/*)
+│       │   │   ├── backtesting.schema.js    # Zod schemas for backtesting request payloads
+│       │   │   ├── backtesting.service.js   # Run orchestrator, batch evaluation & catalog queries
+│       │   │   └── backtesting.storage.js   # Run artifact persistence (CSVs, metadata, index)
 │       │   ├── groww/
 │       │   │   ├── groww.client.js     # Groww Trade API v1 HTTP client & quote fallback
 │       │   │   ├── groww.controller.js # HTTP request/response handlers
@@ -156,7 +173,8 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       │   └── index.js                # Master v1 API aggregator
 │       └── scripts/
 │           ├── calculateIndicators.js  # Standalone CLI for technical indicator calculations
-│           └── downloadHistoricalData.js # Standalone CLI for 5-year historical downloader
+│           ├── downloadHistoricalData.js # Standalone CLI for 5-year historical downloader
+│           └── runBacktest.js          # Standalone CLI for historical backtesting & batch matrix
 │
 └── frontend/
     ├── .env                            # Frontend Vite environment variables (Ignored by Git)
@@ -321,6 +339,10 @@ HTTP Request
 | `GET` | `/api/v1/strategy/matrix` | `StrategyController.getParameterMatrix` | Returns 7 orthogonal research cohorts with 18+ experiments | IMPLEMENTED |
 | `POST` | `/api/v1/strategy/validate` | `StrategyController.validateConfig` | Validates custom strategy configuration against strict Zod schema | IMPLEMENTED |
 | `POST` | `/api/v1/strategy/position-size` | `StrategyController.calculatePositionSize` | Risk-budgeted position sizing with integer shares & capital guards | IMPLEMENTED |
+| `GET` | `/api/v1/backtesting/runs` | `BacktestController.getRuns` | Catalog of past backtest runs with high-level performance metrics | IMPLEMENTED |
+| `GET` | `/api/v1/backtesting/runs/:runId` | `BacktestController.getRunDetails` | Run metadata, strategy parameters, equity curve & performance summary | IMPLEMENTED |
+| `GET` | `/api/v1/backtesting/runs/:runId/trades` | `BacktestController.getRunTrades` | Paginated granular trade journal records with itemized fees & slippage | IMPLEMENTED |
+| `POST` | `/api/v1/backtesting/run` | `BacktestController.executeRun` | Executes deterministic backtest run with custom/preset configuration | IMPLEMENTED |
 
 ### 6.2 Endpoint Detail Specifications
 
@@ -759,6 +781,140 @@ HTTP Request
 }
 ```
 
+#### 15. Get Backtest Runs Catalog
+- **Path:** `GET /api/v1/backtesting/runs`
+- **Controller Action:** Invokes `BacktestController.getRuns()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Backtest runs catalog retrieved successfully",
+  "data": {
+    "totalRuns": 25,
+    "runs": [
+      {
+        "runId": "RUN-HDFCBANK-E_FULL_CONFIRMATION-MW7H97L0",
+        "symbol": "HDFCBANK",
+        "variant": "E_FULL_CONFIRMATION",
+        "totalTrades": 11,
+        "winRate": 63.64,
+        "netPnl": 1065.16,
+        "returnPercent": 1.07,
+        "profitFactor": 2.30,
+        "maxDrawdownPercent": 0.66,
+        "completedAt": "2026-11-08T06:50:37.000Z"
+      }
+    ]
+  },
+  "timestamp": "2026-11-08T06:51:00.000Z"
+}
+```
+
+#### 16. Get Backtest Run Details
+- **Path:** `GET /api/v1/backtesting/runs/:runId`
+- **Controller Action:** Invokes `BacktestController.getRunDetails()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Backtest run details retrieved successfully",
+  "data": {
+    "runId": "RUN-HDFCBANK-E_FULL_CONFIRMATION-MW7H97L0",
+    "metadata": { "engineVersion": "1.0.0", "durationMs": 242 },
+    "config": {
+      "symbol": "HDFCBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "initialCapital": 100000,
+      "riskPerTradePercent": 0.5,
+      "slippageBps": 2.0
+    },
+    "metrics": {
+      "totalTrades": 11,
+      "winningTrades": 7,
+      "losingTrades": 4,
+      "winRate": 63.64,
+      "grossPnl": 1633.40,
+      "totalCharges": 568.24,
+      "netPnl": 1065.16,
+      "returnPercent": 1.07,
+      "profitFactor": 2.30,
+      "maxDrawdownPercent": 0.66
+    }
+  },
+  "timestamp": "2026-11-08T06:51:15.000Z"
+}
+```
+
+#### 17. Get Backtest Run Trades Journal
+- **Path:** `GET /api/v1/backtesting/runs/:runId/trades`
+- **Controller Action:** Invokes `BacktestController.getRunTrades()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Run trades retrieved successfully",
+  "data": {
+    "runId": "RUN-ICICIBANK-A_BASIC_ORB-MW7H8YX4",
+    "totalTrades": 58,
+    "trades": [
+      {
+        "tradeId": "TRD-ICICIBANK-00004",
+        "date": "2022-05-31",
+        "side": "LONG",
+        "entryTime": "10:00:00",
+        "entryPrice": 748.25,
+        "exitTime": "13:00:00",
+        "exitPrice": 751.80,
+        "quantity": 63,
+        "grossPnl": 223.65,
+        "charges": {
+          "brokerage": 40.00,
+          "stt": 11.84,
+          "stampDuty": 1.41,
+          "exchange": 2.79,
+          "sebi": 0.09,
+          "ipft": 0.09,
+          "gst": 8.08,
+          "totalCharges": 64.30
+        },
+        "netPnl": 159.35,
+        "exitReason": "TIME_STOP_BARS"
+      }
+    ]
+  },
+  "timestamp": "2026-11-08T06:51:30.000Z"
+}
+```
+
+#### 18. Trigger Backtest Execution Run
+- **Path:** `POST /api/v1/backtesting/run`
+- **Body:** `{ "symbol": "ICICIBANK", "variant": "A_BASIC_ORB", "capital": 100000, "slippageBps": 2.0 }`
+- **Controller Action:** Invokes `BacktestController.executeRun()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Backtest execution completed successfully",
+  "data": {
+    "runId": "RUN-ICICIBANK-A_BASIC_ORB-MW7H8YX4",
+    "symbol": "ICICIBANK",
+    "variant": "A_BASIC_ORB",
+    "metrics": {
+      "totalTrades": 58,
+      "winRate": 27.59,
+      "grossPnl": -4867.74,
+      "netPnl": -8508.57,
+      "maxDrawdownPercent": 10.55
+    }
+  },
+  "timestamp": "2026-11-08T06:51:45.000Z"
+}
+```
+
 ---
 
 ## 7. Storage Architecture & Historical Market Data
@@ -781,6 +937,16 @@ HTTP Request
    - **OHLCV Violations:** 0 (High $\ge$ max(O,C), Low $\le$ min(O,C), all prices $> 0$, all volume $\ge 0$).
    - **Duplicate Timestamps:** 0.
    - **Corrupted Rows:** 0.
+
+### 7.3 Backtesting Runs & Artifact Storage
+1. **Partitioned Run Storage:** Every completed backtest run persists its outputs to [`backend/storage/backtesting/runs/{RUN_ID}/`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/runs/):
+   - `trades.csv`: Detailed chronological journal of all simulated executions with itemized Groww transaction charges (brokerage, STT, Stamp Duty, exchange fees, SEBI/IPFT, GST), slippage, gross/net P&L, and exit triggers.
+   - `equity_curve.csv`: Bar-by-bar portfolio mark-to-market equity curve, open trade state, and percentage drawdown.
+   - `excluded_sessions.csv`: Audit log of dates skipped due to special sessions (`MUHURAT_SPECIAL`, `DR_SPLIT`) or opening range invalidity.
+   - `summary.json`: Complete statistical summary (Win Rate, Profit Factor, Expectancy, Max Drawdown, Streak counts).
+   - `run_metadata.json` & `config.json`: Environment and execution parameter provenance.
+2. **Catalog Index:** [`backend/storage/backtesting/runs_index.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/runs_index.json) maintains an instant-access registry of all executions.
+3. **Master Evaluation Report:** [`backend/storage/backtesting/BACKTEST_ENGINE_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_ENGINE_REPORT.md) records the full 25-run matrix and quantitative insights.
    - **Trading Days:** 1,240 trading sessions recorded (100% of expected NSE calendar sessions).
    - **Session Classification Breakdown:**
      - `REGULAR` (09:15–15:25 continuous market): 92,401 to 92,480 candles per stock.
@@ -859,6 +1025,7 @@ HTTP Request
 | Market Data | Data Quality Audit (Task 2.1) | IMPLEMENTED | `DATA_QUALITY_AUDIT.md`, `auditHistoricalData.js` | 100% audit of 479,982 candles across 305 files; certifies 0 OHLC violations, 0 duplicates, and PASS status. |
 | Indicators | Technical Indicator Engine (Phase 4) | IMPLEMENTED | `indicators.calculator.js`, `indicators.service.js`, `indicators.validator.js` | Streaming causal calculation for EMA20/50, VWAP, ATR14, ADX14, Choppiness14, ER14, VolSMA20 & RVOL across 479,982 candles. |
 | Strategy | Strategy Specification & Config (Phase 5) | IMPLEMENTED | `strategy.config.js`, `strategy.schema.js`, `strategy.service.js` | Predefined ORB variants (A-E), retest models, Zod validation, position sizing calculator & 18+ cohort parameter matrix. |
+| Backtesting | Historical Backtesting Engine (Phase 6) | IMPLEMENTED | `backtesting.engine.js`, `backtesting.fees.js`, `backtesting.execution.js`, `runBacktest.js` | Deterministic event-driven engine with Groww fee schedule, slippage, same-bar ambiguity resolution & 25-run batch runner across 479,982 candles. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -896,7 +1063,7 @@ HTTP Request
 2. **Fallback Quote Rate Limits:**
    - `getFallbackLiveQuote` calls Yahoo Finance's unauthenticated chart API. In high-frequency environments, requests may get throttled without a dedicated broker market-data feed.
 3. **Automated Test Coverage Progress:**
-   - Unit testing is implemented for the Technical Indicator Engine and session validation using the native Node.js test runner (`node --test`, 21 tests passing). Broader controller integration and end-to-end tests remain to be added.
+   - Comprehensive unit testing is implemented using the native Node.js test runner (`node --test`), with 57 tests passing across 21 test suites covering technical indicators, session classification, strategy schema/risk, and the backtesting engine (fees, slippage, gap fills, ambiguity resolution, and determinism).
 4. **Volatile Session Storage:**
    - Broker session tokens are cached in Node.js process memory. Multi-instance scaling or server restarts require re-authenticating with Groww.
 
@@ -941,7 +1108,13 @@ npm run dev:frontend  # Starts Vite dev server on port 5173
 cd /Users/vijaychoudhary/AI-TRADING/backend
 npm run indicators:calculate
 
-# Run Unit Tests (Native Node.js Test Runner):
+# Run Historical Backtesting Engine CLI:
+cd /Users/vijaychoudhary/AI-TRADING/backend
+npm run backtest -- --symbol ICICIBANK --variant A_BASIC_ORB
+# Or execute the complete 25-run matrix batch (5 stocks x 5 variants):
+npm run backtest -- --batch
+
+# Run Unit Tests (Native Node.js Test Runner - 57 passing tests):
 cd /Users/vijaychoudhary/AI-TRADING/backend
 npm test
 
@@ -1096,6 +1269,19 @@ sequenceDiagram
 | [`backend/src/modules/strategy/strategy.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.service.js) | Strategy Business Logic & Risk Sizing | `getAllConfigs()`, `validateCustomConfig()`, `calculatePositionSize()`, `exportConfigurationsToFile()` |
 | [`backend/src/modules/strategy/strategy.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.controller.js) | Strategy HTTP Controller | `getAllConfigs`, `getVariantConfig`, `validateConfig`, `calculatePositionSize`, `getParameterMatrix` |
 | [`backend/src/modules/strategy/strategy.routes.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.routes.js) | Strategy Express Router | `/api/v1/strategy/*` endpoints |
+| [`backend/src/modules/backtesting/backtesting.constants.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.constants.js) | Backtesting Constants & Schedules | Fee schedules (pre/post Oct 2024), default parameters & storage paths |
+| [`backend/src/modules/backtesting/backtesting.fees.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.fees.js) | Groww Fees & Statutory Tax Calculator | Brokerage ($\min(₹20, 0.05\%)$), STT, Stamp Duty, NSE, SEBI, IPFT, GST |
+| [`backend/src/modules/backtesting/backtesting.execution.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.execution.js) | Execution Simulator & Ambiguity Resolver | Slippage (2 bps), gap fills, conservative same-bar stop priority & exits |
+| [`backend/src/modules/backtesting/backtesting.risk.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.risk.js) | Backtest Risk & Position Constraints | Position size integration, daily loss circuit breaker & max daily trades |
+| [`backend/src/modules/backtesting/backtesting.metrics.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.metrics.js) | Performance & Statistical Engine | Win Rate, Gross/Net P&L, Profit Factor, Expectancy, Drawdown & Streaks |
+| [`backend/src/modules/backtesting/backtesting.engine.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.engine.js) | Core Event-Driven Backtesting Loop | Session exclusion, Opening Range locking, signal-to-order-to-fill flow |
+| [`backend/src/modules/backtesting/backtesting.storage.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.storage.js) | Run Persistence & Registry Index | `trades.csv`, `equity_curve.csv`, `summary.json` & `runs_index.json` |
+| [`backend/src/modules/backtesting/backtesting.schema.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.schema.js) | Backtest Request Validation Schemas | Zod validation for backtest execution requests |
+| [`backend/src/modules/backtesting/backtesting.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.service.js) | Backtesting Business Orchestrator | Single runs, batch evaluation, and run journal catalog queries |
+| [`backend/src/modules/backtesting/backtesting.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.controller.js) | Backtest HTTP Request/Response Handler | `getRuns()`, `getRunDetails()`, `getRunTrades()`, `executeRun()` |
+| [`backend/src/modules/backtesting/backtesting.routes.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.routes.js) | Backtesting Express Router | `/api/v1/backtesting/*` endpoints |
+| [`backend/src/scripts/runBacktest.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/runBacktest.js) | CLI Backtest Executable | Standalone CLI entrypoint (`npm run backtest`) with `--batch` support |
+| [`backend/test/backtesting.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/backtesting.test.js) | Unit Test Suite (Native `node:test`) | 13 passing unit tests verifying Groww fees, slippage, same-bar stops & determinism |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 

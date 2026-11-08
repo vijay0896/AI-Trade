@@ -1,0 +1,62 @@
+{
+  "id": "STRAT-ORB-VAR-A",
+  "name": "Variant A: Basic Opening Range Breakout",
+  "version": "1.0.0",
+  "variant": "A_BASIC_ORB",
+  "description": "Pure ORB strategy executing on 5-minute candle close beyond the 09:15-09:30 range with opposite range boundary stop loss.",
+  "universe": [
+    "ICICIBANK",
+    "HDFCBANK",
+    "M&M",
+    "AXISBANK",
+    "BHARTIARTL"
+  ],
+  "timeframe": "5minute",
+  "timezone": "Asia/Kolkata",
+  "openingRange": {
+    "startTime": "09:15:00",
+    "endTime": "09:30:00",
+    "candleInterval": "5minute",
+    "expectedBars": 3,
+    "minWidthPercent": 0.1,
+    "maxWidthPercent": 3.5
+  },
+  "entry": {
+    "entryType": "BREAKOUT_CLOSE",
+    "direction": "BOTH",
+    "entryStartTime": "09:30:00",
+    "entryCutoffTime": "14:30:00",
+    "retestTolerancePercent": 0.2,
+    "retestMaxBars": 6,
+    "requireRetestConfirmationBar": true
+  },
+  "exit": {
+    "stopLossMode": "OR_OPPOSITE",
+    "atrMultiplierSL": 1.5,
+    "swingLookbackBars": 5,
+    "targetMode": "FIXED_RR_1_5",
+    "riskRewardRatio": 1.5,
+    "squareOffTime": "15:15:00",
+    "maxHoldingDurationBars": 36,
+    "gapThroughStopModel": "WORST_PRICE"
+  },
+  "filters": {
+    "adxThreshold": 0,
+    "adxRequireRising": false,
+    "diDirectionalConfirm": false,
+    "rvolThreshold": 0,
+    "choppinessMaxThreshold": 55,
+    "efficiencyRatioMin": 0.3,
+    "maxVwapCrossesInFirstHour": 4
+  },
+  "risk": {
+    "accountCapital": 100000,
+    "riskPerTradePercent": 0.5,
+    "dailyMaxLossPercent": 1,
+    "maxTradesPerDay": 2,
+    "maxActivePositionsPerStock": 1,
+    "maxPortfolioExposurePercent": 100,
+    "leverageMultiplier": 1
+  },
+  "specialSessions": "SUPPRESS_ALL"
+}

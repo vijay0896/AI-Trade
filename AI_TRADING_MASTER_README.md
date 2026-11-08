@@ -400,6 +400,29 @@ Completed evidence:
 
 ### Phase 6 — Backtesting engine
 
+**Status: COMPLETED (Deterministic Event-Driven Engine, Full Groww Fee Model & 25-Run Matrix Executed).**
+
+Completed evidence:
+- Module implemented in `backend/src/modules/backtesting/` (`backtesting.constants.js`, `backtesting.fees.js`, `backtesting.execution.js`, `backtesting.risk.js`, `backtesting.metrics.js`, `backtesting.engine.js`, `backtesting.storage.js`, `backtesting.schema.js`, `backtesting.service.js`, `backtesting.controller.js`, `backtesting.routes.js`).
+- REST Endpoints mounted under `/api/v1/backtesting/*`:
+  - `GET /api/v1/backtesting/runs`: Returns list of past backtest runs and summary statistics.
+  - `GET /api/v1/backtesting/runs/:runId`: Detailed run overview with configurations and metrics.
+  - `GET /api/v1/backtesting/runs/:runId/trades`: Returns granular trade journal for a specific run.
+  - `POST /api/v1/backtesting/run`: Triggers a synchronous or asynchronous backtest run.
+- Standalone CLI Runner: `backend/src/scripts/runBacktest.js` supporting `--symbol`, `--variant`, `--capital`, `--slippage`, `--direction`, and `--batch` (executed all 25 pairs across 5 years in 5.92 seconds).
+- Full batch evaluation across 5 stocks × 5 variants (479,982 candles, 5 years):
+  - Verified causal execution: Signal evaluated strictly on candle close $t$; fill executed at candle open $t+1$ with slippage.
+  - Intrabar ambiguity resolution: Conservative worst-case stop loss assumed on simultaneous intrabar touches.
+  - Gap-through-stop handling: Executed at actual candle open rather than theoretical stop.
+  - Full Groww transaction fee schedules: Brokerage ($\min(₹20, 0.05\%)$), STT (0.025% on sell turnover), Stamp Duty (0.003% on buy turnover), NSE exchange charges (pre-Oct 2024: 0.00325%, post-Oct 2024: 0.00297%), SEBI/IPFT (₹10/crore), GST (18%), and configurable slippage (default 2 bps).
+  - Risk controls: 0.5% risk budgeting per trade, integer share rounding, max 2 trades/day, daily loss circuit breaker (1.0%), and mandatory 15:15 IST square-off.
+- Master Report: [`BACKTEST_ENGINE_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_ENGINE_REPORT.md).
+- Run artifacts persisted under `backend/storage/backtesting/runs/{RUN_ID}/` containing `trades.csv`, `equity_curve.csv`, `excluded_sessions.csv`, `summary.json`, `run_metadata.json`, and `config.json`.
+- Test Suite: 57 passing unit tests across 21 suites (`backend/test/backtesting.test.js`, `backend/test/strategy.test.js`, and `backend/test/indicators.test.js`).
+- Strictly non-optimistic: No live trading claims; demonstrates how basic ORB is value-destroying after costs, while progressive multi-indicator filtering (Variant E) compresses drawdown and reduces churn by ~70%.
+
+### Phase 7 — Research comparison, ranking, and robustness
+
 **Status: NOT STARTED / NEXT.**
 
 Build a deterministic event-driven or candle-driven backtester that supports the defined strategy without look-ahead bias.

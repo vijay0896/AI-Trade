@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-BHARTIARTL-C_ORB_VWAP_EMA-MW7H9N0Z",
+  "symbol": "BHARTIARTL",
+  "strategyId": "STRAT-ORB-VAR-C",
+  "strategyName": "Variant C: ORB with VWAP and EMA 20/50",
+  "variant": "C_ORB_VWAP_EMA",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95811,
+  "totalRegularBars": 92478,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1203,
+  "initialCapital": 100000,
+  "endingCapital": 95297.37,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T06:55:11.565Z",
+  "runtimeMs": 250
+}

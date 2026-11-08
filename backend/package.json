@@ -10,6 +10,7 @@
     "download:historical": "node src/scripts/downloadHistoricalData.js",
     "audit:historical": "node src/scripts/auditHistoricalData.js",
     "indicators:calculate": "node src/scripts/calculateIndicators.js",
+    "backtest": "node src/scripts/runBacktest.js",
     "test": "node --test test/**/*.test.js"
   },
   "dependencies": {

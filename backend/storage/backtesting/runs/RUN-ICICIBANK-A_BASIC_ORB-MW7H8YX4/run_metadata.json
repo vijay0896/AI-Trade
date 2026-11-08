@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-ICICIBANK-A_BASIC_ORB-MW7H8YX4",
+  "symbol": "ICICIBANK",
+  "strategyId": "STRAT-ORB-VAR-A",
+  "strategyName": "Variant A: Basic Opening Range Breakout",
+  "variant": "A_BASIC_ORB",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 96118,
+  "totalRegularBars": 92476,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1207,
+  "initialCapital": 100000,
+  "endingCapital": 91491.43,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T06:54:40.308Z",
+  "runtimeMs": 236
+}

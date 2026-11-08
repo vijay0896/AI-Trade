@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-AXISBANK-E_FULL_CONFIRMATION-MW7H9MHM",
+  "symbol": "AXISBANK",
+  "strategyId": "STRAT-ORB-VAR-E",
+  "strategyName": "Variant E: Full Trend Confirmation Strategy",
+  "variant": "E_FULL_CONFIRMATION",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95808,
+  "totalRegularBars": 92401,
+  "totalTradingDays": 1239,
+  "excludedSessionsCount": 1204,
+  "initialCapital": 100000,
+  "endingCapital": 99859.36,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T06:55:10.822Z",
+  "runtimeMs": 204
+}

@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-BHARTIARTL-A_BASIC_ORB-MW7H9MNC",
+  "symbol": "BHARTIARTL",
+  "strategyId": "STRAT-ORB-VAR-A",
+  "strategyName": "Variant A: Basic Opening Range Breakout",
+  "variant": "A_BASIC_ORB",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95811,
+  "totalRegularBars": 92478,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1203,
+  "initialCapital": 100000,
+  "endingCapital": 93273.55,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T06:55:11.079Z",
+  "runtimeMs": 255
+}
