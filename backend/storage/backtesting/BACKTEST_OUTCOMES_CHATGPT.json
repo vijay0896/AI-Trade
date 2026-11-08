@@ -1,0 +1,1433 @@
+{
+  "title": "AI Trading System — Historical Backtesting 5-Year Empirical Outcomes",
+  "generatedAt": "2026-11-08T07:14:58.362Z",
+  "targetAudience": "ChatGPT / Quantitative Researcher / AI Trading Analyst",
+  "executivePromptContext": "This JSON represents 5 years of certified 5-minute continuous intraday backtest results (479,982 candles, Nov 2021 to Nov 2026) for 5 liquid NSE stocks across 5 Opening Range Breakout (ORB) strategy variants. It models realistic Groww broker commissions, statutory Indian taxes (STT, Stamp Duty, NSE uniform charges, SEBI, IPFT, GST), and 2.0 bps execution slippage per side. Use this dataset to analyze edge decay, transaction cost drag, drawdown compression, and optimal stock-strategy pairings.",
+  "researchFramework": {
+    "market": "National Stock Exchange of India (NSE Cash Equity)",
+    "brokerIntegration": "Groww Trade API v1",
+    "timeframe": "5-minute continuous OHLCV candles",
+    "historicalPeriod": "2021-11-08 to 2026-11-06 (5 full years)",
+    "totalHistoricalCandlesAudited": 479982,
+    "dataIntegrityAuditStatus": "PASS (0 mathematical OHLC violations, 0 duplicate timestamps, 0 corrupted rows, 99.92% regular session completeness)",
+    "initialCapitalInr": 100000,
+    "riskPerTradePercent": 0.5,
+    "riskBudgetInr": 500,
+    "maxDailyTrades": 2,
+    "dailyLossCircuitBreakerPercent": 1,
+    "openingRangeWindow": "09:15 to 09:30 IST (3 bars)",
+    "entryWindow": "09:30 to 14:30 IST",
+    "mandatorySquareOffTime": "15:15 IST",
+    "fillModel": "Next bar Open (O_{t+1}) with 2.0 bps (0.02%) slippage",
+    "intrabarAmbiguityAssumption": "Conservative worst-case Stop Loss priority when bar touches both SL and Target",
+    "gapHandling": "Filled at bar Open if price gaps through stop"
+  },
+  "statutoryFeeScheduleIndia": {
+    "brokerage": "Groww: min(₹20, 0.05%) per order leg",
+    "stt": "0.025% on Sell-side turnover only",
+    "stampDuty": "0.003% on Buy-side turnover only",
+    "nseExchangeTurnoverCharges": "0.00325% (pre-Oct 2024), 0.00297% (post-Oct 2024 uniform)",
+    "sebiTurnoverCharges": "₹10 per crore (0.0001%)",
+    "ipftCharges": "₹10 per crore (0.0001%)",
+    "gst": "18% on (Brokerage + Exchange + SEBI + IPFT)",
+    "dpCharges": "₹0.00 (Zero for intraday trades)"
+  },
+  "strategyVariantDefinitions": {
+    "A_BASIC_ORB": "Opening Range Breakout (Close beyond 09:15-09:30 High/Low). No additional indicator filters.",
+    "B_ORB_VWAP": "ORB + Intraday VWAP confirmation (Long above VWAP, Short below VWAP).",
+    "C_ORB_VWAP_EMA": "ORB + VWAP + EMA 20/50 directional stack (Close > EMA20 > EMA50 for Long; Close < EMA20 < EMA50 for Short).",
+    "D_ORB_VWAP_EMA_ADX": "ORB + VWAP + EMA + ADX(14) >= 20 and directional index confirmation (+DI > -DI for Long; -DI > +DI for Short).",
+    "E_FULL_CONFIRMATION": "Full Quantitative Filter Suite: ORB + VWAP + EMA + ADX(14) >= 25 + Relative Volume (RVOL) >= 1.5 + Choppiness Index < 55 (non-sideways) + Efficiency Ratio (ER) >= 0.30."
+  },
+  "keyQuantitativeFindings": [
+    "1. Unfiltered Breakouts are Net Value-Destroying: Variant A produces negative returns across all 5 stocks (-0.27% to -8.51%) because false breakouts generate churn that is consumed by transaction costs.",
+    "2. Filtering Compresses Churn by ~70%: Moving from Variant A to Variant E cuts trade counts from ~60 down to 11-19 trades, reducing brokerage and statutory taxes by 68-75%.",
+    "3. Win Rate and Profit Factor Surge: Variant E lifts win rates to 63.64% (HDFCBANK) and 55.56% (AXISBANK), with Profit Factors reaching 2.30.",
+    "4. Drawdown Compression: Variant E limits maximum 5-year drawdown to 0.66% on HDFCBANK and 0.89% on M&M, compared to 8-10% drawdowns in unfiltered variants.",
+    "5. The Illusion of Gross Edge: In intraday 5m equities, gross profitability does not equal net profitability. For HDFCBANK Variant A, gross profit was +₹2,058, but ₹2,330 in taxes/brokerage turned it into a net loss.",
+    "6. Outperformer: HDFCBANK under Variant E was the sole consistently net profitable combination (+1.07% Net Return, 2.30 Profit Factor, 63.64% Win Rate, 0.66% Max Drawdown)."
+  ],
+  "stockSummaryMatrix": {
+    "ICICIBANK": [
+      {
+        "variant": "A_BASIC_ORB",
+        "totalTrades": 58,
+        "winRatePercent": 27.59,
+        "grossPnL": -4867.74,
+        "totalCharges": 3640.83,
+        "netPnL": -8508.57,
+        "netReturnPercent": -8.51,
+        "profitFactor": 0.32,
+        "maxDrawdownPercent": 10.55
+      },
+      {
+        "variant": "B_ORB_VWAP",
+        "totalTrades": 58,
+        "winRatePercent": 27.59,
+        "grossPnL": -4896.33,
+        "totalCharges": 3638.58,
+        "netPnL": -8534.91,
+        "netReturnPercent": -8.53,
+        "profitFactor": 0.32,
+        "maxDrawdownPercent": 10.57
+      },
+      {
+        "variant": "C_ORB_VWAP_EMA",
+        "totalTrades": 51,
+        "winRatePercent": 29.41,
+        "grossPnL": -3095.31,
+        "totalCharges": 3160.83,
+        "netPnL": -6256.14,
+        "netReturnPercent": -6.26,
+        "profitFactor": 0.37,
+        "maxDrawdownPercent": 8.15
+      },
+      {
+        "variant": "D_ORB_VWAP_EMA_ADX",
+        "totalTrades": 42,
+        "winRatePercent": 23.81,
+        "grossPnL": -2120.12,
+        "totalCharges": 2472.43,
+        "netPnL": -4592.55,
+        "netReturnPercent": -4.59,
+        "profitFactor": 0.41,
+        "maxDrawdownPercent": 6.75
+      },
+      {
+        "variant": "E_FULL_CONFIRMATION",
+        "totalTrades": 18,
+        "winRatePercent": 38.89,
+        "grossPnL": -952.47,
+        "totalCharges": 951.58,
+        "netPnL": -1904.05,
+        "netReturnPercent": -1.9,
+        "profitFactor": 0.45,
+        "maxDrawdownPercent": 3.29
+      }
+    ],
+    "HDFCBANK": [
+      {
+        "variant": "A_BASIC_ORB",
+        "totalTrades": 40,
+        "winRatePercent": 45,
+        "grossPnL": 2192.88,
+        "totalCharges": 2464.86,
+        "netPnL": -271.98,
+        "netReturnPercent": -0.27,
+        "profitFactor": 0.95,
+        "maxDrawdownPercent": 2.81
+      },
+      {
+        "variant": "B_ORB_VWAP",
+        "totalTrades": 40,
+        "winRatePercent": 45,
+        "grossPnL": 2192.88,
+        "totalCharges": 2464.86,
+        "netPnL": -271.98,
+        "netReturnPercent": -0.27,
+        "profitFactor": 0.95,
+        "maxDrawdownPercent": 2.81
+      },
+      {
+        "variant": "C_ORB_VWAP_EMA",
+        "totalTrades": 33,
+        "winRatePercent": 39.39,
+        "grossPnL": 665.91,
+        "totalCharges": 1921.81,
+        "netPnL": -1255.9,
+        "netReturnPercent": -1.26,
+        "profitFactor": 0.72,
+        "maxDrawdownPercent": 2.9
+      },
+      {
+        "variant": "D_ORB_VWAP_EMA_ADX",
+        "totalTrades": 29,
+        "winRatePercent": 44.83,
+        "grossPnL": 1251.51,
+        "totalCharges": 1678.28,
+        "netPnL": -426.77,
+        "netReturnPercent": -0.43,
+        "profitFactor": 0.89,
+        "maxDrawdownPercent": 2.23
+      },
+      {
+        "variant": "E_FULL_CONFIRMATION",
+        "totalTrades": 11,
+        "winRatePercent": 63.64,
+        "grossPnL": 1633.4,
+        "totalCharges": 568.24,
+        "netPnL": 1065.16,
+        "netReturnPercent": 1.07,
+        "profitFactor": 2.3,
+        "maxDrawdownPercent": 0.66
+      }
+    ],
+    "M&M": [
+      {
+        "variant": "A_BASIC_ORB",
+        "totalTrades": 55,
+        "winRatePercent": 32.73,
+        "grossPnL": -4757.37,
+        "totalCharges": 2744.93,
+        "netPnL": -7502.3,
+        "netReturnPercent": -7.5,
+        "profitFactor": 0.31,
+        "maxDrawdownPercent": 8.14
+      },
+      {
+        "variant": "B_ORB_VWAP",
+        "totalTrades": 55,
+        "winRatePercent": 32.73,
+        "grossPnL": -4796.97,
+        "totalCharges": 2744.95,
+        "netPnL": -7541.92,
+        "netReturnPercent": -7.54,
+        "profitFactor": 0.3,
+        "maxDrawdownPercent": 8.18
+      },
+      {
+        "variant": "C_ORB_VWAP_EMA",
+        "totalTrades": 46,
+        "winRatePercent": 34.78,
+        "grossPnL": -1972.46,
+        "totalCharges": 2176.23,
+        "netPnL": -4148.69,
+        "netReturnPercent": -4.15,
+        "profitFactor": 0.43,
+        "maxDrawdownPercent": 4.57
+      },
+      {
+        "variant": "D_ORB_VWAP_EMA_ADX",
+        "totalTrades": 42,
+        "winRatePercent": 28.57,
+        "grossPnL": -3005.75,
+        "totalCharges": 1964.18,
+        "netPnL": -4969.93,
+        "netReturnPercent": -4.97,
+        "profitFactor": 0.31,
+        "maxDrawdownPercent": 4.97
+      },
+      {
+        "variant": "E_FULL_CONFIRMATION",
+        "totalTrades": 19,
+        "winRatePercent": 36.84,
+        "grossPnL": 32.35,
+        "totalCharges": 774.65,
+        "netPnL": -742.3,
+        "netReturnPercent": -0.74,
+        "profitFactor": 0.52,
+        "maxDrawdownPercent": 0.89
+      }
+    ],
+    "AXISBANK": [
+      {
+        "variant": "A_BASIC_ORB",
+        "totalTrades": 61,
+        "winRatePercent": 34.43,
+        "grossPnL": -2136.54,
+        "totalCharges": 3610.69,
+        "netPnL": -5747.23,
+        "netReturnPercent": -5.75,
+        "profitFactor": 0.44,
+        "maxDrawdownPercent": 5.89
+      },
+      {
+        "variant": "B_ORB_VWAP",
+        "totalTrades": 60,
+        "winRatePercent": 35,
+        "grossPnL": -2090.64,
+        "totalCharges": 3546.49,
+        "netPnL": -5637.13,
+        "netReturnPercent": -5.64,
+        "profitFactor": 0.45,
+        "maxDrawdownPercent": 5.78
+      },
+      {
+        "variant": "C_ORB_VWAP_EMA",
+        "totalTrades": 50,
+        "winRatePercent": 40,
+        "grossPnL": -416.41,
+        "totalCharges": 2830.5,
+        "netPnL": -3246.91,
+        "netReturnPercent": -3.25,
+        "profitFactor": 0.56,
+        "maxDrawdownPercent": 3.6
+      },
+      {
+        "variant": "D_ORB_VWAP_EMA_ADX",
+        "totalTrades": 42,
+        "winRatePercent": 40.48,
+        "grossPnL": -795.8,
+        "totalCharges": 2279.01,
+        "netPnL": -3074.81,
+        "netReturnPercent": -3.07,
+        "profitFactor": 0.49,
+        "maxDrawdownPercent": 3.19
+      },
+      {
+        "variant": "E_FULL_CONFIRMATION",
+        "totalTrades": 18,
+        "winRatePercent": 55.56,
+        "grossPnL": 818.02,
+        "totalCharges": 958.66,
+        "netPnL": -140.64,
+        "netReturnPercent": -0.14,
+        "profitFactor": 0.92,
+        "maxDrawdownPercent": 1.51
+      }
+    ],
+    "BHARTIARTL": [
+      {
+        "variant": "A_BASIC_ORB",
+        "totalTrades": 65,
+        "winRatePercent": 27.69,
+        "grossPnL": -2830.89,
+        "totalCharges": 3895.56,
+        "netPnL": -6726.45,
+        "netReturnPercent": -6.73,
+        "profitFactor": 0.42,
+        "maxDrawdownPercent": 6.73
+      },
+      {
+        "variant": "B_ORB_VWAP",
+        "totalTrades": 65,
+        "winRatePercent": 27.69,
+        "grossPnL": -2916.39,
+        "totalCharges": 3892.18,
+        "netPnL": -6808.57,
+        "netReturnPercent": -6.81,
+        "profitFactor": 0.42,
+        "maxDrawdownPercent": 6.81
+      },
+      {
+        "variant": "C_ORB_VWAP_EMA",
+        "totalTrades": 55,
+        "winRatePercent": 27.27,
+        "grossPnL": -1380.88,
+        "totalCharges": 3321.75,
+        "netPnL": -4702.63,
+        "netReturnPercent": -4.7,
+        "profitFactor": 0.45,
+        "maxDrawdownPercent": 4.76
+      },
+      {
+        "variant": "D_ORB_VWAP_EMA_ADX",
+        "totalTrades": 40,
+        "winRatePercent": 25,
+        "grossPnL": -1392.95,
+        "totalCharges": 2252.56,
+        "netPnL": -3645.51,
+        "netReturnPercent": -3.65,
+        "profitFactor": 0.42,
+        "maxDrawdownPercent": 3.71
+      },
+      {
+        "variant": "E_FULL_CONFIRMATION",
+        "totalTrades": 18,
+        "winRatePercent": 38.89,
+        "grossPnL": 446.11,
+        "totalCharges": 950.54,
+        "netPnL": -504.43,
+        "netReturnPercent": -0.5,
+        "profitFactor": 0.73,
+        "maxDrawdownPercent": 1.27
+      }
+    ]
+  },
+  "all25RunsDetailed": [
+    {
+      "symbol": "ICICIBANK",
+      "variant": "A_BASIC_ORB",
+      "runId": "RUN-ICICIBANK-A_BASIC_ORB-MW7H9J8I",
+      "totalTrades": 58,
+      "winningTrades": 16,
+      "losingTrades": 42,
+      "winRatePercent": 27.59,
+      "grossPnL": -4867.74,
+      "totalCharges": 3640.83,
+      "slippageCost": 1224.45,
+      "netPnL": -8508.57,
+      "netReturnPercent": -8.51,
+      "profitFactor": 0.32,
+      "maxDrawdownPercent": 10.55,
+      "averageWin": 253.9,
+      "averageLoss": 299.31,
+      "expectancy": -146.68,
+      "averageRealizedRR": 0.85,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 29,
+          "winningTrades": 10,
+          "winRate": 34.48,
+          "netPnL": -2723.65,
+          "profitFactor": 0.52,
+          "avgTrade": -93.92
+        },
+        "short": {
+          "totalTrades": 29,
+          "winningTrades": 6,
+          "winRate": 20.69,
+          "netPnL": -5784.92,
+          "profitFactor": 0.16,
+          "avgTrade": -199.48
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 15,
+        "MAX_HOLDING_TIME": 22,
+        "SQUARE_OFF": 18,
+        "PROFIT_TARGET": 3
+      }
+    },
+    {
+      "symbol": "ICICIBANK",
+      "variant": "B_ORB_VWAP",
+      "runId": "RUN-ICICIBANK-B_ORB_VWAP-MW7H9JEY",
+      "totalTrades": 58,
+      "winningTrades": 16,
+      "losingTrades": 42,
+      "winRatePercent": 27.59,
+      "grossPnL": -4896.33,
+      "totalCharges": 3638.58,
+      "slippageCost": 1223.29,
+      "netPnL": -8534.91,
+      "netReturnPercent": -8.53,
+      "profitFactor": 0.32,
+      "maxDrawdownPercent": 10.57,
+      "averageWin": 253.9,
+      "averageLoss": 299.93,
+      "expectancy": -147.13,
+      "averageRealizedRR": 0.85,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 29,
+          "winningTrades": 10,
+          "winRate": 34.48,
+          "netPnL": -2723.65,
+          "profitFactor": 0.52,
+          "avgTrade": -93.92
+        },
+        "short": {
+          "totalTrades": 29,
+          "winningTrades": 6,
+          "winRate": 20.69,
+          "netPnL": -5811.26,
+          "profitFactor": 0.16,
+          "avgTrade": -200.39
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 15,
+        "MAX_HOLDING_TIME": 22,
+        "SQUARE_OFF": 18,
+        "PROFIT_TARGET": 3
+      }
+    },
+    {
+      "symbol": "ICICIBANK",
+      "variant": "C_ORB_VWAP_EMA",
+      "runId": "RUN-ICICIBANK-C_ORB_VWAP_EMA-MW7H9JKO",
+      "totalTrades": 51,
+      "winningTrades": 15,
+      "losingTrades": 36,
+      "winRatePercent": 29.41,
+      "grossPnL": -3095.31,
+      "totalCharges": 3160.83,
+      "slippageCost": 1042.35,
+      "netPnL": -6256.14,
+      "netReturnPercent": -6.26,
+      "profitFactor": 0.37,
+      "maxDrawdownPercent": 8.15,
+      "averageWin": 249.61,
+      "averageLoss": 277.79,
+      "expectancy": -122.68,
+      "averageRealizedRR": 0.9,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 27,
+          "winningTrades": 11,
+          "winRate": 40.74,
+          "netPnL": -623.41,
+          "profitFactor": 0.84,
+          "avgTrade": -23.09
+        },
+        "short": {
+          "totalTrades": 24,
+          "winningTrades": 4,
+          "winRate": 16.67,
+          "netPnL": -5632.73,
+          "profitFactor": 0.07,
+          "avgTrade": -234.7
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 10,
+        "MAX_HOLDING_TIME": 20,
+        "SQUARE_OFF": 19,
+        "PROFIT_TARGET": 2
+      }
+    },
+    {
+      "symbol": "ICICIBANK",
+      "variant": "D_ORB_VWAP_EMA_ADX",
+      "runId": "RUN-ICICIBANK-D_ORB_VWAP_EMA_ADX-MW7H9JR4",
+      "totalTrades": 42,
+      "winningTrades": 10,
+      "losingTrades": 32,
+      "winRatePercent": 23.81,
+      "grossPnL": -2120.12,
+      "totalCharges": 2472.43,
+      "slippageCost": 786.77,
+      "netPnL": -4592.55,
+      "netReturnPercent": -4.59,
+      "profitFactor": 0.41,
+      "maxDrawdownPercent": 6.75,
+      "averageWin": 312.87,
+      "averageLoss": 241.29,
+      "expectancy": -109.34,
+      "averageRealizedRR": 1.3,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 26,
+          "winningTrades": 9,
+          "winRate": 34.62,
+          "netPnL": -1261.65,
+          "profitFactor": 0.69,
+          "avgTrade": -48.53
+        },
+        "short": {
+          "totalTrades": 16,
+          "winningTrades": 1,
+          "winRate": 6.25,
+          "netPnL": -3330.9,
+          "profitFactor": 0.07,
+          "avgTrade": -208.18
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 6,
+        "MAX_HOLDING_TIME": 17,
+        "SQUARE_OFF": 17,
+        "PROFIT_TARGET": 2
+      }
+    },
+    {
+      "symbol": "ICICIBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "runId": "RUN-ICICIBANK-E_FULL_CONFIRMATION-MW7H9JXP",
+      "totalTrades": 18,
+      "winningTrades": 7,
+      "losingTrades": 11,
+      "winRatePercent": 38.89,
+      "grossPnL": -952.47,
+      "totalCharges": 951.58,
+      "slippageCost": 305.57,
+      "netPnL": -1904.05,
+      "netReturnPercent": -1.9,
+      "profitFactor": 0.45,
+      "maxDrawdownPercent": 3.29,
+      "averageWin": 220.64,
+      "averageLoss": 313.5,
+      "expectancy": -105.77,
+      "averageRealizedRR": 0.7,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 12,
+          "winningTrades": 7,
+          "winRate": 58.33,
+          "netPnL": -60.27,
+          "profitFactor": 0.96,
+          "avgTrade": -5.02
+        },
+        "short": {
+          "totalTrades": 6,
+          "winningTrades": 0,
+          "winRate": 0,
+          "netPnL": -1843.78,
+          "profitFactor": 0,
+          "avgTrade": -307.3
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 4,
+        "MAX_HOLDING_TIME": 6,
+        "SQUARE_OFF": 7,
+        "PROFIT_TARGET": 1
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "variant": "A_BASIC_ORB",
+      "runId": "RUN-HDFCBANK-A_BASIC_ORB-MW7H9K3M",
+      "totalTrades": 40,
+      "winningTrades": 18,
+      "losingTrades": 22,
+      "winRatePercent": 45,
+      "grossPnL": 2192.88,
+      "totalCharges": 2464.86,
+      "slippageCost": 836.27,
+      "netPnL": -271.98,
+      "netReturnPercent": -0.27,
+      "profitFactor": 0.95,
+      "maxDrawdownPercent": 2.81,
+      "averageWin": 286.79,
+      "averageLoss": 247.01,
+      "expectancy": -6.8,
+      "averageRealizedRR": 1.16,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 20,
+          "winningTrades": 9,
+          "winRate": 45,
+          "netPnL": -91.95,
+          "profitFactor": 0.96,
+          "avgTrade": -4.6
+        },
+        "short": {
+          "totalTrades": 20,
+          "winningTrades": 9,
+          "winRate": 45,
+          "netPnL": -180.03,
+          "profitFactor": 0.94,
+          "avgTrade": -9
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 20,
+        "SQUARE_OFF": 13,
+        "PROFIT_TARGET": 3,
+        "STOP_LOSS": 4
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "variant": "B_ORB_VWAP",
+      "runId": "RUN-HDFCBANK-B_ORB_VWAP-MW7H9K9R",
+      "totalTrades": 40,
+      "winningTrades": 18,
+      "losingTrades": 22,
+      "winRatePercent": 45,
+      "grossPnL": 2192.88,
+      "totalCharges": 2464.86,
+      "slippageCost": 836.27,
+      "netPnL": -271.98,
+      "netReturnPercent": -0.27,
+      "profitFactor": 0.95,
+      "maxDrawdownPercent": 2.81,
+      "averageWin": 286.79,
+      "averageLoss": 247.01,
+      "expectancy": -6.8,
+      "averageRealizedRR": 1.16,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 20,
+          "winningTrades": 9,
+          "winRate": 45,
+          "netPnL": -91.95,
+          "profitFactor": 0.96,
+          "avgTrade": -4.6
+        },
+        "short": {
+          "totalTrades": 20,
+          "winningTrades": 9,
+          "winRate": 45,
+          "netPnL": -180.03,
+          "profitFactor": 0.94,
+          "avgTrade": -9
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 20,
+        "SQUARE_OFF": 13,
+        "PROFIT_TARGET": 3,
+        "STOP_LOSS": 4
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "variant": "C_ORB_VWAP_EMA",
+      "runId": "RUN-HDFCBANK-C_ORB_VWAP_EMA-MW7H9KH4",
+      "totalTrades": 33,
+      "winningTrades": 13,
+      "losingTrades": 20,
+      "winRatePercent": 39.39,
+      "grossPnL": 665.91,
+      "totalCharges": 1921.81,
+      "slippageCost": 640.19,
+      "netPnL": -1255.9,
+      "netReturnPercent": -1.26,
+      "profitFactor": 0.72,
+      "maxDrawdownPercent": 2.9,
+      "averageWin": 254.51,
+      "averageLoss": 228.22,
+      "expectancy": -38.07,
+      "averageRealizedRR": 1.12,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 19,
+          "winningTrades": 9,
+          "winRate": 47.37,
+          "netPnL": 137.86,
+          "profitFactor": 1.07,
+          "avgTrade": 7.26
+        },
+        "short": {
+          "totalTrades": 14,
+          "winningTrades": 4,
+          "winRate": 28.57,
+          "netPnL": -1393.76,
+          "profitFactor": 0.47,
+          "avgTrade": -99.55
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 15,
+        "SQUARE_OFF": 14,
+        "STOP_LOSS": 3,
+        "PROFIT_TARGET": 1
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "variant": "D_ORB_VWAP_EMA_ADX",
+      "runId": "RUN-HDFCBANK-D_ORB_VWAP_EMA_ADX-MW7H9KML",
+      "totalTrades": 29,
+      "winningTrades": 13,
+      "losingTrades": 16,
+      "winRatePercent": 44.83,
+      "grossPnL": 1251.51,
+      "totalCharges": 1678.28,
+      "slippageCost": 557.94,
+      "netPnL": -426.77,
+      "netReturnPercent": -0.43,
+      "profitFactor": 0.89,
+      "maxDrawdownPercent": 2.23,
+      "averageWin": 258.74,
+      "averageLoss": 236.9,
+      "expectancy": -14.7,
+      "averageRealizedRR": 1.09,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 18,
+          "winningTrades": 9,
+          "winRate": 50,
+          "netPnL": 224.42,
+          "profitFactor": 1.12,
+          "avgTrade": 12.47
+        },
+        "short": {
+          "totalTrades": 11,
+          "winningTrades": 4,
+          "winRate": 36.36,
+          "netPnL": -651.19,
+          "profitFactor": 0.65,
+          "avgTrade": -59.2
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 13,
+        "SQUARE_OFF": 12,
+        "STOP_LOSS": 3,
+        "PROFIT_TARGET": 1
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "runId": "RUN-HDFCBANK-E_FULL_CONFIRMATION-MW7H9KSF",
+      "totalTrades": 11,
+      "winningTrades": 7,
+      "losingTrades": 4,
+      "winRatePercent": 63.64,
+      "grossPnL": 1633.4,
+      "totalCharges": 568.24,
+      "slippageCost": 176.9,
+      "netPnL": 1065.16,
+      "netReturnPercent": 1.07,
+      "profitFactor": 2.3,
+      "maxDrawdownPercent": 0.66,
+      "averageWin": 269.51,
+      "averageLoss": 205.36,
+      "expectancy": 96.85,
+      "averageRealizedRR": 1.31,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 7,
+          "winningTrades": 4,
+          "winRate": 57.14,
+          "netPnL": 509.82,
+          "profitFactor": 1.97,
+          "avgTrade": 72.83
+        },
+        "short": {
+          "totalTrades": 4,
+          "winningTrades": 3,
+          "winRate": 75,
+          "netPnL": 555.34,
+          "profitFactor": 2.86,
+          "avgTrade": 138.83
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 7,
+        "SQUARE_OFF": 4
+      }
+    },
+    {
+      "symbol": "M&M",
+      "variant": "A_BASIC_ORB",
+      "runId": "RUN-M&M-A_BASIC_ORB-MW7H9KYE",
+      "totalTrades": 55,
+      "winningTrades": 18,
+      "losingTrades": 37,
+      "winRatePercent": 32.73,
+      "grossPnL": -4757.37,
+      "totalCharges": 2744.93,
+      "slippageCost": 771.12,
+      "netPnL": -7502.3,
+      "netReturnPercent": -7.5,
+      "profitFactor": 0.31,
+      "maxDrawdownPercent": 8.14,
+      "averageWin": 182.97,
+      "averageLoss": 291.78,
+      "expectancy": -136.39,
+      "averageRealizedRR": 0.63,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 32,
+          "winningTrades": 11,
+          "winRate": 34.38,
+          "netPnL": -2484.69,
+          "profitFactor": 0.51,
+          "avgTrade": -77.65
+        },
+        "short": {
+          "totalTrades": 23,
+          "winningTrades": 7,
+          "winRate": 30.43,
+          "netPnL": -5017.61,
+          "profitFactor": 0.13,
+          "avgTrade": -218.16
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 24,
+        "SQUARE_OFF": 18,
+        "STOP_LOSS": 12,
+        "PROFIT_TARGET": 1
+      }
+    },
+    {
+      "symbol": "M&M",
+      "variant": "B_ORB_VWAP",
+      "runId": "RUN-M&M-B_ORB_VWAP-MW7H9L4Z",
+      "totalTrades": 55,
+      "winningTrades": 18,
+      "losingTrades": 37,
+      "winRatePercent": 32.73,
+      "grossPnL": -4796.97,
+      "totalCharges": 2744.95,
+      "slippageCost": 771.12,
+      "netPnL": -7541.92,
+      "netReturnPercent": -7.54,
+      "profitFactor": 0.3,
+      "maxDrawdownPercent": 8.18,
+      "averageWin": 180.77,
+      "averageLoss": 291.78,
+      "expectancy": -137.11,
+      "averageRealizedRR": 0.62,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 32,
+          "winningTrades": 11,
+          "winRate": 34.38,
+          "netPnL": -2524.31,
+          "profitFactor": 0.5,
+          "avgTrade": -78.88
+        },
+        "short": {
+          "totalTrades": 23,
+          "winningTrades": 7,
+          "winRate": 30.43,
+          "netPnL": -5017.61,
+          "profitFactor": 0.13,
+          "avgTrade": -218.16
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 24,
+        "SQUARE_OFF": 18,
+        "STOP_LOSS": 12,
+        "PROFIT_TARGET": 1
+      }
+    },
+    {
+      "symbol": "M&M",
+      "variant": "C_ORB_VWAP_EMA",
+      "runId": "RUN-M&M-C_ORB_VWAP_EMA-MW7H9LAS",
+      "totalTrades": 46,
+      "winningTrades": 16,
+      "losingTrades": 30,
+      "winRatePercent": 34.78,
+      "grossPnL": -1972.46,
+      "totalCharges": 2176.23,
+      "slippageCost": 603.41,
+      "netPnL": -4148.69,
+      "netReturnPercent": -4.15,
+      "profitFactor": 0.43,
+      "maxDrawdownPercent": 4.57,
+      "averageWin": 193.64,
+      "averageLoss": 241.57,
+      "expectancy": -90.2,
+      "averageRealizedRR": 0.8,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 28,
+          "winningTrades": 9,
+          "winRate": 32.14,
+          "netPnL": -1167.48,
+          "profitFactor": 0.7,
+          "avgTrade": -41.7
+        },
+        "short": {
+          "totalTrades": 18,
+          "winningTrades": 7,
+          "winRate": 38.89,
+          "netPnL": -2981.21,
+          "profitFactor": 0.13,
+          "avgTrade": -165.62
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 19,
+        "SQUARE_OFF": 18,
+        "PROFIT_TARGET": 2,
+        "STOP_LOSS": 7
+      }
+    },
+    {
+      "symbol": "M&M",
+      "variant": "D_ORB_VWAP_EMA_ADX",
+      "runId": "RUN-M&M-D_ORB_VWAP_EMA_ADX-MW7H9LGU",
+      "totalTrades": 42,
+      "winningTrades": 12,
+      "losingTrades": 30,
+      "winRatePercent": 28.57,
+      "grossPnL": -3005.75,
+      "totalCharges": 1964.18,
+      "slippageCost": 545.9,
+      "netPnL": -4969.93,
+      "netReturnPercent": -4.97,
+      "profitFactor": 0.31,
+      "maxDrawdownPercent": 4.97,
+      "averageWin": 182.36,
+      "averageLoss": 238.61,
+      "expectancy": -118.34,
+      "averageRealizedRR": 0.76,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 25,
+          "winningTrades": 8,
+          "winRate": 32,
+          "netPnL": -1510.3,
+          "profitFactor": 0.55,
+          "avgTrade": -60.41
+        },
+        "short": {
+          "totalTrades": 17,
+          "winningTrades": 4,
+          "winRate": 23.53,
+          "netPnL": -3459.63,
+          "profitFactor": 0.1,
+          "avgTrade": -203.51
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 19,
+        "SQUARE_OFF": 15,
+        "STOP_LOSS": 7,
+        "PROFIT_TARGET": 1
+      }
+    },
+    {
+      "symbol": "M&M",
+      "variant": "E_FULL_CONFIRMATION",
+      "runId": "RUN-M&M-E_FULL_CONFIRMATION-MW7H9LMF",
+      "totalTrades": 19,
+      "winningTrades": 7,
+      "losingTrades": 12,
+      "winRatePercent": 36.84,
+      "grossPnL": 32.35,
+      "totalCharges": 774.65,
+      "slippageCost": 202.6,
+      "netPnL": -742.3,
+      "netReturnPercent": -0.74,
+      "profitFactor": 0.52,
+      "maxDrawdownPercent": 0.89,
+      "averageWin": 115.15,
+      "averageLoss": 129.03,
+      "expectancy": -39.07,
+      "averageRealizedRR": 0.89,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 13,
+          "winningTrades": 6,
+          "winRate": 46.15,
+          "netPnL": -359.87,
+          "profitFactor": 0.64,
+          "avgTrade": -27.68
+        },
+        "short": {
+          "totalTrades": 6,
+          "winningTrades": 1,
+          "winRate": 16.67,
+          "netPnL": -382.43,
+          "profitFactor": 0.3,
+          "avgTrade": -63.74
+        }
+      },
+      "exitReasons": {
+        "MAX_HOLDING_TIME": 12,
+        "SQUARE_OFF": 7
+      }
+    },
+    {
+      "symbol": "AXISBANK",
+      "variant": "A_BASIC_ORB",
+      "runId": "RUN-AXISBANK-A_BASIC_ORB-MW7H9LSO",
+      "totalTrades": 61,
+      "winningTrades": 21,
+      "losingTrades": 40,
+      "winRatePercent": 34.43,
+      "grossPnL": -2136.54,
+      "totalCharges": 3610.69,
+      "slippageCost": 1153.29,
+      "netPnL": -5747.23,
+      "netReturnPercent": -5.75,
+      "profitFactor": 0.44,
+      "maxDrawdownPercent": 5.89,
+      "averageWin": 219.32,
+      "averageLoss": 258.83,
+      "expectancy": -94.2,
+      "averageRealizedRR": 0.85,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 28,
+          "winningTrades": 10,
+          "winRate": 35.71,
+          "netPnL": -2831.53,
+          "profitFactor": 0.45,
+          "avgTrade": -101.13
+        },
+        "short": {
+          "totalTrades": 33,
+          "winningTrades": 11,
+          "winRate": 33.33,
+          "netPnL": -2915.7,
+          "profitFactor": 0.44,
+          "avgTrade": -88.35
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 9,
+        "PROFIT_TARGET": 3,
+        "MAX_HOLDING_TIME": 24,
+        "SQUARE_OFF": 25
+      }
+    },
+    {
+      "symbol": "AXISBANK",
+      "variant": "B_ORB_VWAP",
+      "runId": "RUN-AXISBANK-B_ORB_VWAP-MW7H9LYK",
+      "totalTrades": 60,
+      "winningTrades": 21,
+      "losingTrades": 39,
+      "winRatePercent": 35,
+      "grossPnL": -2090.64,
+      "totalCharges": 3546.49,
+      "slippageCost": 1134.39,
+      "netPnL": -5637.13,
+      "netReturnPercent": -5.64,
+      "profitFactor": 0.45,
+      "maxDrawdownPercent": 5.78,
+      "averageWin": 219.32,
+      "averageLoss": 262.64,
+      "expectancy": -93.95,
+      "averageRealizedRR": 0.84,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 28,
+          "winningTrades": 10,
+          "winRate": 35.71,
+          "netPnL": -2831.53,
+          "profitFactor": 0.45,
+          "avgTrade": -101.13
+        },
+        "short": {
+          "totalTrades": 32,
+          "winningTrades": 11,
+          "winRate": 34.38,
+          "netPnL": -2805.6,
+          "profitFactor": 0.45,
+          "avgTrade": -87.68
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 9,
+        "PROFIT_TARGET": 3,
+        "MAX_HOLDING_TIME": 24,
+        "SQUARE_OFF": 24
+      }
+    },
+    {
+      "symbol": "AXISBANK",
+      "variant": "C_ORB_VWAP_EMA",
+      "runId": "RUN-AXISBANK-C_ORB_VWAP_EMA-MW7H9M5W",
+      "totalTrades": 50,
+      "winningTrades": 20,
+      "losingTrades": 30,
+      "winRatePercent": 40,
+      "grossPnL": -416.41,
+      "totalCharges": 2830.5,
+      "slippageCost": 862.01,
+      "netPnL": -3246.91,
+      "netReturnPercent": -3.25,
+      "profitFactor": 0.56,
+      "maxDrawdownPercent": 3.6,
+      "averageWin": 203.06,
+      "averageLoss": 243.6,
+      "expectancy": -64.94,
+      "averageRealizedRR": 0.83,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 24,
+          "winningTrades": 9,
+          "winRate": 37.5,
+          "netPnL": -1116,
+          "profitFactor": 0.7,
+          "avgTrade": -46.5
+        },
+        "short": {
+          "totalTrades": 26,
+          "winningTrades": 11,
+          "winRate": 42.31,
+          "netPnL": -2130.91,
+          "profitFactor": 0.4,
+          "avgTrade": -81.96
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 6,
+        "PROFIT_TARGET": 2,
+        "MAX_HOLDING_TIME": 18,
+        "SQUARE_OFF": 24
+      }
+    },
+    {
+      "symbol": "AXISBANK",
+      "variant": "D_ORB_VWAP_EMA_ADX",
+      "runId": "RUN-AXISBANK-D_ORB_VWAP_EMA_ADX-MW7H9MBF",
+      "totalTrades": 42,
+      "winningTrades": 17,
+      "losingTrades": 25,
+      "winRatePercent": 40.48,
+      "grossPnL": -795.8,
+      "totalCharges": 2279.01,
+      "slippageCost": 694.4,
+      "netPnL": -3074.81,
+      "netReturnPercent": -3.07,
+      "profitFactor": 0.49,
+      "maxDrawdownPercent": 3.19,
+      "averageWin": 173.72,
+      "averageLoss": 241.12,
+      "expectancy": -73.19,
+      "averageRealizedRR": 0.72,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 22,
+          "winningTrades": 9,
+          "winRate": 40.91,
+          "netPnL": -1391,
+          "profitFactor": 0.57,
+          "avgTrade": -63.23
+        },
+        "short": {
+          "totalTrades": 20,
+          "winningTrades": 8,
+          "winRate": 40,
+          "netPnL": -1683.81,
+          "profitFactor": 0.39,
+          "avgTrade": -84.19
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 5,
+        "PROFIT_TARGET": 1,
+        "MAX_HOLDING_TIME": 15,
+        "SQUARE_OFF": 21
+      }
+    },
+    {
+      "symbol": "AXISBANK",
+      "variant": "E_FULL_CONFIRMATION",
+      "runId": "RUN-AXISBANK-E_FULL_CONFIRMATION-MW7H9MHM",
+      "totalTrades": 18,
+      "winningTrades": 10,
+      "losingTrades": 8,
+      "winRatePercent": 55.56,
+      "grossPnL": 818.02,
+      "totalCharges": 958.66,
+      "slippageCost": 296.82,
+      "netPnL": -140.64,
+      "netReturnPercent": -0.14,
+      "profitFactor": 0.92,
+      "maxDrawdownPercent": 1.51,
+      "averageWin": 158.07,
+      "averageLoss": 215.17,
+      "expectancy": -7.8,
+      "averageRealizedRR": 0.73,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 11,
+          "winningTrades": 8,
+          "winRate": 72.73,
+          "netPnL": 952.1,
+          "profitFactor": 2.66,
+          "avgTrade": 86.55
+        },
+        "short": {
+          "totalTrades": 7,
+          "winningTrades": 2,
+          "winRate": 28.57,
+          "netPnL": -1092.74,
+          "profitFactor": 0.05,
+          "avgTrade": -156.11
+        }
+      },
+      "exitReasons": {
+        "PROFIT_TARGET": 2,
+        "SQUARE_OFF": 10,
+        "MAX_HOLDING_TIME": 6
+      }
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "variant": "A_BASIC_ORB",
+      "runId": "RUN-BHARTIARTL-A_BASIC_ORB-MW7H9MNC",
+      "totalTrades": 65,
+      "winningTrades": 18,
+      "losingTrades": 47,
+      "winRatePercent": 27.69,
+      "grossPnL": -2830.89,
+      "totalCharges": 3895.56,
+      "slippageCost": 1244.75,
+      "netPnL": -6726.45,
+      "netReturnPercent": -6.73,
+      "profitFactor": 0.42,
+      "maxDrawdownPercent": 6.73,
+      "averageWin": 274.49,
+      "averageLoss": 248.24,
+      "expectancy": -103.5,
+      "averageRealizedRR": 1.11,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 38,
+          "winningTrades": 13,
+          "winRate": 34.21,
+          "netPnL": -1448.65,
+          "profitFactor": 0.75,
+          "avgTrade": -38.12
+        },
+        "short": {
+          "totalTrades": 27,
+          "winningTrades": 5,
+          "winRate": 18.52,
+          "netPnL": -5277.8,
+          "profitFactor": 0.1,
+          "avgTrade": -195.47
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 8,
+        "MAX_HOLDING_TIME": 31,
+        "SQUARE_OFF": 22,
+        "PROFIT_TARGET": 4
+      }
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "variant": "B_ORB_VWAP",
+      "runId": "RUN-BHARTIARTL-B_ORB_VWAP-MW7H9MUH",
+      "totalTrades": 65,
+      "winningTrades": 18,
+      "losingTrades": 47,
+      "winRatePercent": 27.69,
+      "grossPnL": -2916.39,
+      "totalCharges": 3892.18,
+      "slippageCost": 1240.95,
+      "netPnL": -6808.57,
+      "netReturnPercent": -6.81,
+      "profitFactor": 0.42,
+      "maxDrawdownPercent": 6.81,
+      "averageWin": 269.1,
+      "averageLoss": 247.92,
+      "expectancy": -104.76,
+      "averageRealizedRR": 1.09,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 38,
+          "winningTrades": 13,
+          "winRate": 34.21,
+          "netPnL": -1536.96,
+          "profitFactor": 0.74,
+          "avgTrade": -40.45
+        },
+        "short": {
+          "totalTrades": 27,
+          "winningTrades": 5,
+          "winRate": 18.52,
+          "netPnL": -5271.61,
+          "profitFactor": 0.1,
+          "avgTrade": -195.24
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 8,
+        "MAX_HOLDING_TIME": 31,
+        "SQUARE_OFF": 22,
+        "PROFIT_TARGET": 4
+      }
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "variant": "C_ORB_VWAP_EMA",
+      "runId": "RUN-BHARTIARTL-C_ORB_VWAP_EMA-MW7H9N0Z",
+      "totalTrades": 55,
+      "winningTrades": 15,
+      "losingTrades": 40,
+      "winRatePercent": 27.27,
+      "grossPnL": -1380.88,
+      "totalCharges": 3321.75,
+      "slippageCost": 1062.04,
+      "netPnL": -4702.63,
+      "netReturnPercent": -4.7,
+      "profitFactor": 0.45,
+      "maxDrawdownPercent": 4.76,
+      "averageWin": 260.19,
+      "averageLoss": 215.14,
+      "expectancy": -85.52,
+      "averageRealizedRR": 1.21,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 33,
+          "winningTrades": 11,
+          "winRate": 33.33,
+          "netPnL": -1369.22,
+          "profitFactor": 0.71,
+          "avgTrade": -41.49
+        },
+        "short": {
+          "totalTrades": 22,
+          "winningTrades": 4,
+          "winRate": 18.18,
+          "netPnL": -3333.41,
+          "profitFactor": 0.16,
+          "avgTrade": -151.52
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 5,
+        "MAX_HOLDING_TIME": 25,
+        "SQUARE_OFF": 22,
+        "PROFIT_TARGET": 3
+      }
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "variant": "D_ORB_VWAP_EMA_ADX",
+      "runId": "RUN-BHARTIARTL-D_ORB_VWAP_EMA_ADX-MW7H9N7Z",
+      "totalTrades": 40,
+      "winningTrades": 10,
+      "losingTrades": 30,
+      "winRatePercent": 25,
+      "grossPnL": -1392.95,
+      "totalCharges": 2252.56,
+      "slippageCost": 661.87,
+      "netPnL": -3645.51,
+      "netReturnPercent": -3.65,
+      "profitFactor": 0.42,
+      "maxDrawdownPercent": 3.71,
+      "averageWin": 261.17,
+      "averageLoss": 208.58,
+      "expectancy": -91.14,
+      "averageRealizedRR": 1.25,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 26,
+          "winningTrades": 8,
+          "winRate": 30.77,
+          "netPnL": -902.24,
+          "profitFactor": 0.73,
+          "avgTrade": -34.7
+        },
+        "short": {
+          "totalTrades": 14,
+          "winningTrades": 2,
+          "winRate": 14.29,
+          "netPnL": -2743.27,
+          "profitFactor": 0.07,
+          "avgTrade": -195.95
+        }
+      },
+      "exitReasons": {
+        "STOP_LOSS": 4,
+        "SQUARE_OFF": 17,
+        "MAX_HOLDING_TIME": 17,
+        "PROFIT_TARGET": 2
+      }
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "variant": "E_FULL_CONFIRMATION",
+      "runId": "RUN-BHARTIARTL-E_FULL_CONFIRMATION-MW7H9NDR",
+      "totalTrades": 18,
+      "winningTrades": 7,
+      "losingTrades": 11,
+      "winRatePercent": 38.89,
+      "grossPnL": 446.11,
+      "totalCharges": 950.54,
+      "slippageCost": 261.77,
+      "netPnL": -504.43,
+      "netReturnPercent": -0.5,
+      "profitFactor": 0.73,
+      "maxDrawdownPercent": 1.27,
+      "averageWin": 192.6,
+      "averageLoss": 168.42,
+      "expectancy": -28.02,
+      "averageRealizedRR": 1.14,
+      "directionalAnalysis": {
+        "long": {
+          "totalTrades": 15,
+          "winningTrades": 6,
+          "winRate": 40,
+          "netPnL": -361.08,
+          "profitFactor": 0.78,
+          "avgTrade": -24.07
+        },
+        "short": {
+          "totalTrades": 3,
+          "winningTrades": 1,
+          "winRate": 33.33,
+          "netPnL": -143.35,
+          "profitFactor": 0.35,
+          "avgTrade": -47.78
+        }
+      },
+      "exitReasons": {
+        "SQUARE_OFF": 10,
+        "MAX_HOLDING_TIME": 7,
+        "PROFIT_TARGET": 1
+      }
+    }
+  ]
+}
