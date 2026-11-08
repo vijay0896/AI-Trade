@@ -78,14 +78,26 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   ├── package-lock.json               # Backend dependency lockfile
 │   ├── server.js                       # HTTP server listener, startup broker auth & shutdown
 │   ├── storage/
+│   │   ├── derived/
+│   │   │   └── indicators/             # Derived indicator CSVs (479,982 rows), summary & report
+│   │   │       ├── INDICATOR_ENGINE_REPORT.md
+│   │   │       ├── indicator_summary.json
+│   │   │       ├── AXISBANK/           # AXISBANK derived indicator CSVs (2021-2026)
+│   │   │       ├── BHARTIARTL/         # BHARTIARTL derived indicator CSVs (2021-2026)
+│   │   │       ├── HDFCBANK/           # HDFCBANK derived indicator CSVs (2021-2026)
+│   │   │       ├── ICICIBANK/          # ICICIBANK derived indicator CSVs (2021-2026)
+│   │   │       └── M&M/                # M&M derived indicator CSVs (2021-2026)
 │   │   └── historical-data/            # 5-year 5-minute OHLCV CSV archives (479,982 candles)
 │   │       ├── .checkpoint.json        # Resumable download checkpoint index
 │   │       ├── download_summary.json   # Download audit & data integrity report
+│   │       ├── DATA_QUALITY_AUDIT.md   # Part A certified session calendar & audit report
 │   │       ├── AXISBANK/               # AXISBANK monthly CSVs (2021-2026)
 │   │       ├── BHARTIARTL/             # BHARTIARTL monthly CSVs (2021-2026)
 │   │       ├── HDFCBANK/               # HDFCBANK monthly CSVs (2021-2026)
 │   │       ├── ICICIBANK/              # ICICIBANK monthly CSVs (2021-2026)
 │   │       └── M&M/                    # M&M monthly CSVs (2021-2026)
+│   ├── test/
+│   │   └── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
 │   └── src/
 │       ├── config/
 │       │   ├── cors.js                 # Dynamic CORS whitelist validation
@@ -110,6 +122,13 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       │   ├── health/
 │       │   │   ├── health.controller.js# System health & broker status provider
 │       │   │   └── health.routes.js    # Health check routes (/api/health)
+│       │   ├── indicators/
+│       │   │   ├── indicators.calculator.js # Causal streaming indicator calculation engine
+│       │   │   ├── indicators.config.js     # Constants, periods, headers & session enums
+│       │   │   ├── indicators.controller.js # Indicators HTTP request/response handler
+│       │   │   ├── indicators.routes.js     # Routes (/api/v1/indicators/*)
+│       │   │   ├── indicators.service.js    # File pipeline, reporting & service orchestration
+│       │   │   └── indicators.validator.js  # Session calendar classification & math guards
 │       │   └── market-data/
 │       │       ├── downloader/
 │       │       │   ├── historicalDownloader.service.js # 5-year multi-stock orchestrator
@@ -123,6 +142,7 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       ├── routes/
 │       │   └── index.js                # Master v1 API aggregator
 │       └── scripts/
+│           ├── calculateIndicators.js  # Standalone CLI for technical indicator calculations
 │           └── downloadHistoricalData.js # Standalone CLI for 5-year historical downloader
 │
 └── frontend/
@@ -281,6 +301,8 @@ HTTP Request
 | `GET` | `/api/v1/market-data/historical-candles` | `MarketDataController.getHistoricalCandles` | 5-minute historical OHLCV candles (ICICIBANK) | IMPLEMENTED |
 | `GET` | `/api/v1/market-data/historical-coverage` | `MarketDataController.validateCoverage` | Validates 5-year coverage back to Nov 2021 | IMPLEMENTED |
 | `GET` | `/api/v1/market-data/downloader-status` | `MarketDataController.getDownloaderStatus` | Returns 5-year download status & audit summary | IMPLEMENTED |
+| `GET` | `/api/v1/indicators/status` | `IndicatorsController.getStatus` | Technical Indicator Engine status & calculation metrics | IMPLEMENTED |
+| `GET` | `/api/v1/indicators/latest` | `IndicatorsController.getLatestIndicators` | Latest calculated indicators for symbol (e.g. ICICIBANK) | IMPLEMENTED |
 
 ### 6.2 Endpoint Detail Specifications
 
@@ -557,6 +579,87 @@ HTTP Request
 }
 ```
 
+#### 10. Get Technical Indicator Engine Status
+- **Path:** `GET /api/v1/indicators/status`
+- **Controller Action:** Invokes `IndicatorsController.getStatus()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Indicators status retrieved successfully",
+  "data": {
+    "isEngineReady": true,
+    "summary": {
+      "generatedAt": "2026-11-08T06:17:34.428Z",
+      "stocks": [
+        {
+          "symbol": "ICICIBANK",
+          "totalCandles": 95764,
+          "regularCandles": 92476,
+          "filesProcessed": 61,
+          "nanCount": 0,
+          "latestBar": {
+            "timestamp": "2026-11-06T15:25:00",
+            "close": 1506.7,
+            "ema20": 1509.31,
+            "ema50": 1511.08,
+            "vwap": 1510.96,
+            "atr14": 1.43,
+            "adx14": 26.63,
+            "plusDI14": 15.65,
+            "minusDI14": 30.01,
+            "choppiness14": 52.88,
+            "efficiencyRatio14": 0.443,
+            "volumeSma20": 634421,
+            "rvol": 0.69
+          }
+        }
+      ]
+    }
+  },
+  "timestamp": "2026-11-08T06:18:00.000Z"
+}
+```
+
+#### 11. Get Latest Technical Indicators by Symbol
+- **Path:** `GET /api/v1/indicators/latest?symbol=ICICIBANK`
+- **Controller Action:** Invokes `IndicatorsController.getLatestIndicators()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Latest indicators retrieved successfully",
+  "data": {
+    "symbol": "ICICIBANK",
+    "timestamp": "2026-11-06T15:25:00",
+    "sessionType": "REGULAR",
+    "price": {
+      "open": 1507.0,
+      "high": 1507.8,
+      "low": 1506.2,
+      "close": 1506.7,
+      "volume": 438112
+    },
+    "indicators": {
+      "ema20": 1509.31,
+      "ema50": 1511.08,
+      "vwap": 1510.96,
+      "atr14": 1.43,
+      "adx14": 26.63,
+      "plusDI14": 15.65,
+      "minusDI14": 30.01,
+      "choppiness14": 52.88,
+      "efficiencyRatio14": 0.443,
+      "volumeSma20": 634421,
+      "rvol": 0.69
+    }
+  },
+  "timestamp": "2026-11-08T06:18:00.000Z"
+}
+```
+
 ---
 
 ## 7. Storage Architecture & Historical Market Data
@@ -572,15 +675,22 @@ HTTP Request
 
 ### 7.2 Historical Data Local CSV Storage & Quality Certification
 1. **Partitioned Local Storage:** 5-year 5-minute OHLCV datasets are organized in [`backend/storage/historical-data/`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/historical-data/) partitioned by stock and month/year (`{SYMBOL}/{YEAR}/{SYMBOL}_{YEAR}_{MM}.csv`).
-2. **Certified Data Quality (Task 2.1 Audit):** Complete independent audit performed and recorded in [`backend/storage/historical-data/DATA_QUALITY_AUDIT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/historical-data/DATA_QUALITY_AUDIT.md):
+2. **Derived Indicator Datasets:** Continuous streaming-calculated indicators are persisted in [`backend/storage/derived/indicators/`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/derived/indicators/) partitioned identically, leaving raw historical data 100% unaltered.
+3. **Certified Data Quality & Session Corrections (Task 2.1 & Phase 2.2):** Full independent audit performed and recorded in [`backend/storage/historical-data/DATA_QUALITY_AUDIT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/historical-data/DATA_QUALITY_AUDIT.md):
    - **Total Records:** 479,982 rows across 305 files.
    - **Quality Status:** **`PASS` across all 5 stocks** (`ICICIBANK`, `HDFCBANK`, `M&M`, `AXISBANK`, `BHARTIARTL`).
    - **OHLCV Violations:** 0 (High $\ge$ max(O,C), Low $\le$ min(O,C), all prices $> 0$, all volume $\ge 0$).
    - **Duplicate Timestamps:** 0.
    - **Corrupted Rows:** 0.
    - **Trading Days:** 1,240 trading sessions recorded (100% of expected NSE calendar sessions).
-   - **Continuous Session Completeness:** 99.86% across 09:15–15:25 continuous market hours.
-   - **Gap Root Cause:** Over 91.5% of reported gaps are post-market closing auctions and settlement timestamps (`15:30`, `15:40`, `16:00`), not missing trading candles.
+   - **Session Classification Breakdown:**
+     - `REGULAR` (09:15–15:25 continuous market): 92,401 to 92,480 candles per stock.
+     - `CLOSING_AUCTION` (15:30): 705 to 922 candles per stock.
+     - `POST_MARKET` (>15:30): 2,133 to 2,439 candles per stock.
+     - `MUHURAT_SPECIAL` (Oct 21, 2025 Diwali session 13:45–14:45 per Circular NSE/CMTR/70319): 56–58 candles.
+     - `DR_SPLIT` (Mar 2, 2024 & May 18, 2024 Disaster Recovery split sessions 09:15–10:00 & 11:30–12:30): 44–47 candles.
+     - `UNVERIFIED` (Pre-market 09:00/09:05 and post-14:45 close on 2025-09-26): 393 candles.
+   - **Continuous Regular Session Completeness:** **99.92%** across 09:15–15:25 continuous regular market hours (only 70 to 74 missing 5-minute bars over the entire 5 years per stock).
    - **Corporate Actions:** Zero unadjusted stock split or bonus discontinuities detected; maximum overnight gap across all 5 stocks was 8.20%.
 
 ### 7.3 Data Storage & State Model
@@ -648,6 +758,7 @@ HTTP Request
 | Market Data | 5-Year Historical Downloader | IMPLEMENTED | `historicalDownloader.service.js`, `integrityValidator.js`, `storageManager.js` | Bulk downloads 5-minute OHLCV candles (2021-11-08 to 2026-11-06) for 5 stocks (479,982 candles saved to CSV). |
 | Market Data | Historical Coverage Validation | IMPLEMENTED | `historicalDownloader.service.js#L110`, `marketData.controller.js` | Verifies whether 5-minute historical candles exist back to November 2021 before starting bulk jobs. |
 | Market Data | Data Quality Audit (Task 2.1) | IMPLEMENTED | `DATA_QUALITY_AUDIT.md`, `auditHistoricalData.js` | 100% audit of 479,982 candles across 305 files; certifies 0 OHLC violations, 0 duplicates, and PASS status. |
+| Indicators | Technical Indicator Engine (Phase 3) | IMPLEMENTED | `indicators.calculator.js`, `indicators.service.js`, `indicators.validator.js` | Streaming causal calculation for EMA20/50, VWAP, ATR14, ADX14, Choppiness14, ER14, VolSMA20 & RVOL across 479,982 candles. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -684,8 +795,8 @@ HTTP Request
    - **`groww.formatter.js`:** `static formatHoldings()` is declared twice ([lines 117–144](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/groww/groww.formatter.js#L117-L144) and [lines 176–226](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/groww/groww.formatter.js#L176-L226)). The second declaration overrides the first.
 2. **Fallback Quote Rate Limits:**
    - `getFallbackLiveQuote` calls Yahoo Finance's unauthenticated chart API. In high-frequency environments, requests may get throttled without a dedicated broker market-data feed.
-3. **Lack of Automated Test Coverage:**
-   - No unit tests (`jest`, `vitest`) or end-to-end test suites (`playwright`, `cypress`) exist.
+3. **Automated Test Coverage Progress:**
+   - Unit testing is implemented for the Technical Indicator Engine and session validation using the native Node.js test runner (`node --test`, 21 tests passing). Broader controller integration and end-to-end tests remain to be added.
 4. **Volatile Session Storage:**
    - Broker session tokens are cached in Node.js process memory. Multi-instance scaling or server restarts require re-authenticating with Groww.
 
@@ -725,6 +836,14 @@ npm run dev:backend   # Starts server.js via nodemon on port 5001
 
 # Run Frontend independently:
 npm run dev:frontend  # Starts Vite dev server on port 5173
+
+# Run Technical Indicator Engine CLI:
+cd /Users/vijaychoudhary/AI-TRADING/backend
+npm run indicators:calculate
+
+# Run Unit Tests (Native Node.js Test Runner):
+cd /Users/vijaychoudhary/AI-TRADING/backend
+npm test
 
 # Compile production bundle:
 npm run build         # Runs 'tsc -b && vite build' in frontend/
@@ -865,6 +984,12 @@ sequenceDiagram
 | [`backend/src/modules/market-data/downloader/integrityValidator.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/downloader/integrityValidator.js) | Candle Integrity & Gaps | `validateCandle()`, `processAndValidateCandles()`, `detectMissingIntervals()` |
 | [`backend/src/modules/market-data/downloader/storageManager.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/downloader/storageManager.js) | Local CSV Persistence | `saveMonthlyCandles()`, `isMonthCompleted()`, `updateCheckpoint()` |
 | [`backend/src/scripts/downloadHistoricalData.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/downloadHistoricalData.js) | CLI Downloader Executable | Standalone CLI entrypoint with `--symbols` filter |
+| [`backend/src/modules/indicators/indicators.calculator.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/indicators/indicators.calculator.js) | Causal Technical Indicator Engine | `IndicatorCalculator`, `update()`, EMA/VWAP/ATR/ADX/Chop/ER/RVOL |
+| [`backend/src/modules/indicators/indicators.validator.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/indicators/indicators.validator.js) | Session & Math Validation | `classifySession()`, `validateIndicatorValues()` |
+| [`backend/src/modules/indicators/indicators.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/indicators/indicators.service.js) | Indicators Pipeline & Derived Storage | `calculateForStock()`, `calculateAll()`, `getStatus()`, report writer |
+| [`backend/src/modules/indicators/indicators.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/indicators/indicators.controller.js) | HTTP Controller for Indicators | `getStatus()`, `getLatestIndicators()` |
+| [`backend/src/scripts/calculateIndicators.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/calculateIndicators.js) | CLI Indicator Calculator | Standalone CLI entrypoint (`npm run indicators:calculate`) |
+| [`backend/test/indicators.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/indicators.test.js) | Unit Test Suite (Native `node:test`) | 21 passing unit tests verifying indicators and session classification |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 

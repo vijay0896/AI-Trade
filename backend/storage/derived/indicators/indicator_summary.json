@@ -1,0 +1,418 @@
+{
+  "generatedAt": "2026-11-08T06:19:19.340Z",
+  "elapsedSeconds": 2.24,
+  "universe": [
+    "ICICIBANK",
+    "HDFCBANK",
+    "M&M",
+    "AXISBANK",
+    "BHARTIARTL"
+  ],
+  "stocks": [
+    {
+      "symbol": "ICICIBANK",
+      "totalCandles": 96118,
+      "sessionCounts": {
+        "regular": 92476,
+        "special": 103,
+        "closingAuction": 817,
+        "postMarket": 2329,
+        "unverified": 393
+      },
+      "warmUpCandles": 49,
+      "fullyCalculatedCandles": 92427,
+      "metrics": {
+        "ema20": {
+          "count": 92457,
+          "min": 647.62,
+          "max": 14946.7,
+          "avg": 1107.78
+        },
+        "ema50": {
+          "count": 92427,
+          "min": 649.72,
+          "max": 6980.38,
+          "avg": 1107.76
+        },
+        "vwap": {
+          "count": 92476,
+          "min": 647.23,
+          "max": 5507.64,
+          "avg": 1107.86
+        },
+        "atr14": {
+          "count": 92463,
+          "min": 0.57,
+          "max": 19567.83,
+          "avg": 5.1
+        },
+        "adx14": {
+          "count": 92450,
+          "min": 6.45,
+          "max": 99.4,
+          "avg": 26.12
+        },
+        "plusDI14": {
+          "count": 92463,
+          "min": 1.34,
+          "max": 99.98,
+          "avg": 20.7
+        },
+        "minusDI14": {
+          "count": 92463,
+          "min": 0,
+          "max": 73.3,
+          "avg": 20.48
+        },
+        "choppiness14": {
+          "count": 92463,
+          "min": 0.01,
+          "max": 83.1,
+          "avg": 50.59
+        },
+        "efficiencyRatio14": {
+          "count": 92462,
+          "min": 0,
+          "max": 1,
+          "avg": 0.28
+        },
+        "volumeSMA20": {
+          "count": 92457,
+          "min": 0,
+          "max": 3045209.4,
+          "avg": 188008.36
+        },
+        "relativeVolume20": {
+          "count": 92457,
+          "min": 0,
+          "max": 20,
+          "avg": 1.06
+        }
+      }
+    },
+    {
+      "symbol": "HDFCBANK",
+      "totalCandles": 96334,
+      "sessionCounts": {
+        "regular": 92477,
+        "special": 103,
+        "closingAuction": 922,
+        "postMarket": 2439,
+        "unverified": 393
+      },
+      "warmUpCandles": 49,
+      "fullyCalculatedCandles": 92428,
+      "metrics": {
+        "ema20": {
+          "count": 92458,
+          "min": 676.27,
+          "max": 20347.57,
+          "avg": 1429.47
+        },
+        "ema50": {
+          "count": 92428,
+          "min": 678.79,
+          "max": 9499.99,
+          "avg": 1429.55
+        },
+        "vwap": {
+          "count": 92477,
+          "min": 672.4,
+          "max": 5595.77,
+          "avg": 1428.89
+        },
+        "atr14": {
+          "count": 92464,
+          "min": 0.43,
+          "max": 26643.02,
+          "avg": 6.68
+        },
+        "adx14": {
+          "count": 92451,
+          "min": 5.96,
+          "max": 99.3,
+          "avg": 26.63
+        },
+        "plusDI14": {
+          "count": 92464,
+          "min": 0.93,
+          "max": 99.98,
+          "avg": 20.49
+        },
+        "minusDI14": {
+          "count": 92464,
+          "min": 0,
+          "max": 96.95,
+          "avg": 20.94
+        },
+        "choppiness14": {
+          "count": 92464,
+          "min": 0.01,
+          "max": 100,
+          "avg": 50.44
+        },
+        "efficiencyRatio14": {
+          "count": 92463,
+          "min": 0,
+          "max": 1,
+          "avg": 0.28
+        },
+        "volumeSMA20": {
+          "count": 92458,
+          "min": 0,
+          "max": 10044477.85,
+          "avg": 243281.6
+        },
+        "relativeVolume20": {
+          "count": 92458,
+          "min": 0,
+          "max": 20,
+          "avg": 1.05
+        }
+      }
+    },
+    {
+      "symbol": "M&M",
+      "totalCandles": 95911,
+      "sessionCounts": {
+        "regular": 92479,
+        "special": 103,
+        "closingAuction": 749,
+        "postMarket": 2186,
+        "unverified": 394
+      },
+      "warmUpCandles": 49,
+      "fullyCalculatedCandles": 92430,
+      "metrics": {
+        "ema20": {
+          "count": 92460,
+          "min": 677.35,
+          "max": 31722.89,
+          "avg": 2211.44
+        },
+        "ema50": {
+          "count": 92430,
+          "min": 682.32,
+          "max": 14838.04,
+          "avg": 2211.49
+        },
+        "vwap": {
+          "count": 92479,
+          "min": 685.46,
+          "max": 14855.1,
+          "avg": 2212.71
+        },
+        "atr14": {
+          "count": 92466,
+          "min": 0.71,
+          "max": 41561.8,
+          "avg": 11.74
+        },
+        "adx14": {
+          "count": 92453,
+          "min": 5.34,
+          "max": 99.07,
+          "avg": 26.52
+        },
+        "plusDI14": {
+          "count": 92466,
+          "min": 1.37,
+          "max": 99.96,
+          "avg": 21.53
+        },
+        "minusDI14": {
+          "count": 92466,
+          "min": 0,
+          "max": 78.24,
+          "avg": 21.25
+        },
+        "choppiness14": {
+          "count": 92466,
+          "min": 0.01,
+          "max": 82.49,
+          "avg": 49.08
+        },
+        "efficiencyRatio14": {
+          "count": 92465,
+          "min": 0,
+          "max": 1,
+          "avg": 0.28
+        },
+        "volumeSMA20": {
+          "count": 92460,
+          "min": 0,
+          "max": 739516.7,
+          "avg": 39974.43
+        },
+        "relativeVolume20": {
+          "count": 92460,
+          "min": 0,
+          "max": 20,
+          "avg": 1.05
+        }
+      }
+    },
+    {
+      "symbol": "AXISBANK",
+      "totalCandles": 95808,
+      "sessionCounts": {
+        "regular": 92401,
+        "special": 102,
+        "closingAuction": 754,
+        "postMarket": 2158,
+        "unverified": 393
+      },
+      "warmUpCandles": 49,
+      "fullyCalculatedCandles": 92352,
+      "metrics": {
+        "ema20": {
+          "count": 92382,
+          "min": 624.84,
+          "max": 12470.71,
+          "avg": 1039.21
+        },
+        "ema50": {
+          "count": 92352,
+          "min": 627.49,
+          "max": 5820.66,
+          "avg": 1039.22
+        },
+        "vwap": {
+          "count": 92401,
+          "min": 625.71,
+          "max": 4037.24,
+          "avg": 1039.12
+        },
+        "atr14": {
+          "count": 92388,
+          "min": 0.65,
+          "max": 16335.49,
+          "avg": 4.77
+        },
+        "adx14": {
+          "count": 92375,
+          "min": 6.82,
+          "max": 99.15,
+          "avg": 26.33
+        },
+        "plusDI14": {
+          "count": 92388,
+          "min": 2.22,
+          "max": 99.97,
+          "avg": 20.98
+        },
+        "minusDI14": {
+          "count": 92388,
+          "min": 0,
+          "max": 75.16,
+          "avg": 20.61
+        },
+        "choppiness14": {
+          "count": 92388,
+          "min": 0.01,
+          "max": 84.8,
+          "avg": 50.17
+        },
+        "efficiencyRatio14": {
+          "count": 92387,
+          "min": 0,
+          "max": 1,
+          "avg": 0.28
+        },
+        "volumeSMA20": {
+          "count": 92382,
+          "min": 0,
+          "max": 1221237.2,
+          "avg": 119546.12
+        },
+        "relativeVolume20": {
+          "count": 92382,
+          "min": 0,
+          "max": 20,
+          "avg": 1.05
+        }
+      }
+    },
+    {
+      "symbol": "BHARTIARTL",
+      "totalCandles": 95811,
+      "sessionCounts": {
+        "regular": 92478,
+        "special": 102,
+        "closingAuction": 705,
+        "postMarket": 2133,
+        "unverified": 393
+      },
+      "warmUpCandles": 49,
+      "fullyCalculatedCandles": 92429,
+      "metrics": {
+        "ema20": {
+          "count": 92459,
+          "min": 635.82,
+          "max": 19484.94,
+          "avg": 1318.96
+        },
+        "ema50": {
+          "count": 92429,
+          "min": 637.77,
+          "max": 9113.34,
+          "avg": 1318.93
+        },
+        "vwap": {
+          "count": 92478,
+          "min": 638.47,
+          "max": 7059.44,
+          "avg": 1319.16
+        },
+        "atr14": {
+          "count": 92465,
+          "min": 0.32,
+          "max": 25515.49,
+          "avg": 6.59
+        },
+        "adx14": {
+          "count": 92452,
+          "min": 5.47,
+          "max": 99.01,
+          "avg": 25.9
+        },
+        "plusDI14": {
+          "count": 92465,
+          "min": 1.97,
+          "max": 99.97,
+          "avg": 21.51
+        },
+        "minusDI14": {
+          "count": 92465,
+          "min": 0,
+          "max": 80.61,
+          "avg": 20.73
+        },
+        "choppiness14": {
+          "count": 92465,
+          "min": 0.01,
+          "max": 84.84,
+          "avg": 49.78
+        },
+        "efficiencyRatio14": {
+          "count": 92464,
+          "min": 0,
+          "max": 1,
+          "avg": 0.27
+        },
+        "volumeSMA20": {
+          "count": 92459,
+          "min": 0,
+          "max": 8140054.9,
+          "avg": 92688.74
+        },
+        "relativeVolume20": {
+          "count": 92459,
+          "min": 0,
+          "max": 20,
+          "avg": 1.06
+        }
+      }
+    }
+  ]
+}

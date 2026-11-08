@@ -7,6 +7,7 @@ const express = require('express');
 const growwRoutes = require('../modules/groww/groww.routes');
 const healthRoutes = require('../modules/health/health.routes');
 const marketDataRoutes = require('../modules/market-data/marketData.routes');
+const indicatorsRoutes = require('../modules/indicators/indicators.routes');
 
 const router = express.Router();
 
@@ -14,6 +15,7 @@ const router = express.Router();
 router.use('/groww', growwRoutes);
 router.use('/health', healthRoutes);
 router.use('/market-data', marketDataRoutes);
+router.use('/indicators', indicatorsRoutes);
 
 module.exports = router;
 

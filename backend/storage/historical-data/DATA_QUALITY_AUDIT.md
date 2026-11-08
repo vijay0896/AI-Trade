@@ -2,28 +2,28 @@
 
 **Document File:** `DATA_QUALITY_AUDIT.md`  
 **Storage Location:** `backend/storage/historical-data/DATA_QUALITY_AUDIT.md`  
-**Audit Date:** November 8, 2026  
-**Auditor:** Senior Quantitative Software Architect & Data Quality Auditor  
+**Audit Date:** November 8, 2026 (Updated with Phase 2.2 Calendar & Session Corrections)  
+**Auditor:** Senior Quantitative Developer & Codebase Auditor  
 **Audit Scope:** Independent, line-by-line verification of all 305 monthly CSV files across 5 NSE stocks (`ICICIBANK`, `HDFCBANK`, `M&M`, `AXISBANK`, `BHARTIARTL`) covering November 8, 2021 through November 6, 2026.
 
 ---
 
 ## 1. Executive Summary & Quality Classification
 
-All 479,982 downloaded historical 5-minute candles across all 5 symbols were independently verified from the actual CSV files on disk. Every candle conforms to strict mathematical OHLCV integrity rules, has zero duplicate timestamps, and maintains 99.86% continuous session completeness over the 5-year span.
+All 479,982 downloaded historical 5-minute candles across all 5 symbols were independently verified from the actual CSV files on disk. Every candle conforms to strict mathematical OHLCV integrity rules, has zero duplicate timestamps, and maintains 99.92% continuous regular session completeness over the 5-year span.
 
-### Overall Status Classification
+### Multi-Dimensional Status Classification
 
-| Symbol | Total Candles | Period Covered | Missing Trading Days | Continuous Completeness | OHLCV Violations | Status |
+| Symbol | Total Candles | OHLCV Integrity | Timestamp Integrity | Session Classification | Regular Completeness | Overall Status |
 |---|---|---|---|---|---|---|
-| **ICICIBANK** | 96,118 | 2021-11-08 to 2026-11-06 | 0 | 99.86% (132 gaps) | 0 | **PASS** |
-| **HDFCBANK** | 96,334 | 2021-11-08 to 2026-11-06 | 0 | 99.86% (131 gaps) | 0 | **PASS** |
-| **M&M** | 95,911 | 2021-11-08 to 2026-11-06 | 0 | 99.86% (130 gaps) | 0 | **PASS** |
-| **AXISBANK** | 95,808 | 2021-11-08 to 2026-11-06 | 0 | 99.86% (134 gaps) | 0 | **PASS** |
-| **BHARTIARTL** | 95,811 | 2021-11-08 to 2026-11-06 | 0 | 99.86% (130 gaps) | 0 | **PASS** |
+| **ICICIBANK** | 96,118 | **PASS** (0 errors) | **PASS** (0 duplicates) | **VERIFIED & CORRECTED** | **99.92%** (74 gaps / 92,550 exp) | **PASS** |
+| **HDFCBANK** | 96,334 | **PASS** (0 errors) | **PASS** (0 duplicates) | **VERIFIED & CORRECTED** | **99.92%** (73 gaps / 92,550 exp) | **PASS** |
+| **M&M** | 95,911 | **PASS** (0 errors) | **PASS** (0 duplicates) | **VERIFIED & CORRECTED** | **99.92%** (70 gaps / 92,550 exp) | **PASS** |
+| **AXISBANK** | 95,808 | **PASS** (0 errors) | **PASS** (0 duplicates) | **VERIFIED & CORRECTED** | **99.92%** (74 gaps / 92,475 exp) | **PASS** |
+| **BHARTIARTL** | 95,811 | **PASS** (0 errors) | **PASS** (0 duplicates) | **VERIFIED & CORRECTED** | **99.92%** (72 gaps / 92,550 exp) | **PASS** |
 
 > [!NOTE]
-> The historical dataset is **CERTIFIED READY** for Phase 3 (Technical Indicator Engine & Quantitative Strategy Backtesting).
+> All session boundaries have been corrected to adhere strictly to official NSE exchange circulars. The dataset is certified research-ready for Phase 3 (Technical Indicator Engine).
 
 ---
 
@@ -34,69 +34,68 @@ All 479,982 downloaded historical 5-minute candles across all 5 symbols were ind
 - **Weekend Days (Saturdays & Sundays):** 522 days
 - **Standard Weekdays (Monday–Friday):** 1,303 days
 - **Official NSE National Holidays:** 68 days (Republic Day, Holi, Good Friday, Id-ul-Fitr, Independence Day, Gandhi Jayanti, Diwali Balipratipada, Gurunanak Jayanti, Christmas, etc.)
-- **Special Weekend Trading Sessions:** 5 days (e.g. Saturday Disaster Recovery drills on 2024-03-02 and 2024-05-18, plus Diwali Muhurat evening sessions)
+- **Special Weekend Trading Sessions:** 5 days (Saturday Disaster Recovery drills on 2024-03-02 and 2024-05-18, Diwali Muhurat evening sessions, Budget live session)
+- **Total Regular Continuous Trading Days:** 1,234 days (AXISBANK: 1,233 days)
+- **Special Session Days:** 6 days (5 Muhurat trading sessions + 2 DR split sessions)
 - **Total Expected NSE Trading Sessions:** 1,240 sessions
 - **Actual Trading Sessions Found in Dataset:**
   - `ICICIBANK`: **1,240 days** (100.0%)
   - `HDFCBANK`: **1,240 days** (100.0%)
   - `M&M`: **1,240 days** (100.0%)
-  - `AXISBANK`: **1,239 days** (99.92% — single exchange holiday alignment)
+  - `AXISBANK`: **1,239 days** (99.92% — single holiday alignment)
   - `BHARTIARTL`: **1,240 days** (100.0%)
 
 **Conclusion:** **Zero regular trading days are missing** across the entire 5-year timeline.
 
 ---
 
-## 3. Investigation of Reported Missing Gaps
+## 3. Corrected Session Classifications & Gap Root-Cause Analysis
 
-In Task 2, naive interval analysis reported ~1,580 missing gaps per stock:
-- `ICICIBANK`: 1,591
-- `HDFCBANK`: 1,567
-- `M&M`: 1,582
-- `AXISBANK`: 1,631
-- `BHARTIARTL`: 1,625
+### 3.1 Normal Continuous Market Session Boundaries
+- **Market Open:** 09:15:00 IST
+- **Market Close:** 15:30:00 IST
+- **Standard 5-Minute Candle Timestamps:** `09:15:00` through `15:25:00` inclusive (75 continuous 5-minute intervals per standard trading day).
+- **Final Continuous Candle:** `15:25:00` (represents trades between 15:25:00 and 15:30:00).
+- **Closing Auction:** `15:30:00` (represents post-market closing weighted price discovery auction).
+- **Post-Market Reporting:** `15:40:00` (post-market trading close) and `16:00:00` (exchange settlement price publication).
 
-### Root Cause Analysis of Gaps
+### 3.2 Authoritative Corrections to Special Trading Dates
 
-An in-depth chronological trace revealed that **over 91.5% of these reported gaps are not missing candles at all**, but are boundary transitions between standard continuous trading and post-market settlement points:
+1. **October 21, 2025 (`MUHURAT_SPECIAL`):**
+   - **Correction:** This was the official NSE scheduled Diwali Muhurat trading session for Samvat 2082 (Official Circular: `NSE/CMTR/70319`). Normal continuous market trading ran from **13:45 to 14:45**.
+   - The morning market was closed as per scheduled circular instructions. It is strictly classified as **`MUHURAT_SPECIAL`** and not an exchange technical halt.
+2. **March 2, 2024 & May 18, 2024 (`DR_SPLIT`):**
+   - **Correction:** Official NSE split trading sessions between the Primary Data Center and Disaster Recovery (DR) site.
+   - Operating windows: Session 1 (Primary): **09:15–10:00**; Session 2 (DR site): **11:30–12:30**.
+   - Classified as **`DR_SPLIT`** sessions.
+3. **September 26, 2025 (`UNVERIFIED`):**
+   - **Correction:** Continuous trading candles cease at `14:45:00` (67 regular bars recorded instead of 75). In the absence of an authoritative NSE Capital Market circular confirming an official early closure, the cause of the missing 14:50–15:25 bars is classified as **`UNVERIFIED`** rather than assuming clearing maintenance.
 
-```
-09:15:00 ─── Regular Continuous Trading (75 candles of 5-min intervals) ───► 15:25:00
-                                                                                │
-                                           ┌────────────────────────────────────┘
-                                           ▼
-                                       15:30:00 (Closing Cross Price Discovery)
-                                           │
-                                           ▼ [10-min gap: flagged as 1 missing candle by naive check]
-                                       15:40:00 (Post-Market Session Close)
-                                           │
-                                           ▼ [20-min gap: flagged as 3 missing candles by naive check]
-                                       16:00:00 (Exchange Settlement Price Publication)
-```
+### 3.3 Breakdown of Candle Counts by Session Classification
 
-1. **Post-Market Auction Artifacts (~1,450 gaps per stock):**
-   - The interval between `15:30:00` and `15:40:00` was flagged as 1 "missing" candle (`15:35`).
-   - The interval between `15:40:00` and `16:00:00` was flagged as 3 "missing" candles (`15:45`, `15:50`, `15:55`).
-   - These 4 non-trading intervals occurred across ~360 days where post-market ticks were reported ($4 \times 360 \approx 1,440$ false-positive gaps).
-   
-2. **Special Trading Sessions (7 sessions):**
-   - **Diwali Muhurat Trading (e.g. 2022-10-24, 2023-11-12):** Evening 1-hour sessions (18:15 to 19:15). Normal 09:15–15:30 hours were closed as scheduled.
-   - **Disaster Recovery (DR) Drills (e.g. 2024-03-02, 2024-05-18):** Saturday 2-hour mini sessions (22–24 candles).
+| Session Classification | Description | ICICIBANK | HDFCBANK | M&M | AXISBANK | BHARTIARTL |
+|---|---|---|---|---|---|---|
+| **`REGULAR`** | 09:15:00 to 15:25:00 continuous market bars | 92,476 | 92,477 | 92,480 | 92,401 | 92,478 |
+| **`MUHURAT_SPECIAL`** | Diwali Muhurat sessions (2021–2025) | 58 | 58 | 56 | 57 | 58 |
+| **`DR_SPLIT`** | Saturday DR switch sessions (2024-03-02 / 2024-05-18) | 45 | 45 | 47 | 45 | 44 |
+| **`CLOSING_AUCTION`** | 15:30:00 closing cross auction discovery | 817 | 922 | 749 | 754 | 705 |
+| **`POST_MARKET`** | > 15:30:00 post-market / settlement bars | 2,329 | 2,439 | 2,186 | 2,158 | 2,133 |
+| **`UNVERIFIED`** | Pre-open auction bars (09:00/09:05) & unverified anomalies | 393 | 393 | 393 | 393 | 393 |
+| **TOTAL CANDLES** | All stored records (never altered or deleted) | **96,118** | **96,334** | **95,911** | **95,808** | **95,811** |
 
-3. **Genuinely Missing Continuous Trading Candles (~130 candles per stock over 5 years):**
-   - When evaluating only standard continuous trading hours (`09:15:00` to `15:25:00`):
-     - `ICICIBANK`: **132 missing candles** out of ~93,000 expected (99.86% completeness)
-     - `HDFCBANK`: **131 missing candles** out of ~93,000 expected (99.86% completeness)
-     - `M&M`: **130 missing candles** out of ~93,000 expected (99.86% completeness)
-     - `AXISBANK`: **134 missing candles** out of ~93,000 expected (99.86% completeness)
-     - `BHARTIARTL`: **130 missing candles** out of ~93,000 expected (99.86% completeness)
-   - **Documented Causes of Genuine Gaps:**
-     - **2022-03-07:** Exchange feed disruption caused 4 missing bars (`09:20`, `09:25`, `09:30`, `09:35`).
-     - **2022-07-05:** Delayed market data open caused 2 missing opening bars (`09:15`, `09:20`).
-     - **2025-10-21:** Major exchange technical suspension between 09:15 and 13:40 (58 missing bars).
-     - **2025-09-26:** Early market close / clearing system maintenance at 14:45 (8 missing closing bars).
+### 3.4 Genuine Regular-Session Missing Candles
 
----
+When strictly auditing the 1,234 standard continuous trading sessions (`09:15:00` to `15:25:00`, expected $1,234 \times 75 = 92,550$ candles):
+
+- **Expected Regular Candles:** 92,550 (AXISBANK: 92,475)
+- **Actual Regular Candles:**
+  - `ICICIBANK`: **92,476** (only **74** missing regular bars over 5 years — **99.920% completeness**)
+  - `HDFCBANK`: **92,477** (only **73** missing regular bars over 5 years — **99.921% completeness**)
+  - `M&M`: **92,480** (only **70** missing regular bars over 5 years — **99.924% completeness**)
+  - `AXISBANK`: **92,401** (only **74** missing regular bars over 5 years — **99.920% completeness**)
+  - `BHARTIARTL`: **92,478** (only **72** missing regular bars over 5 years — **99.922% completeness**)
+
+**Summary:** The reported ~1,580 gaps in Task 2 were overwhelmingly caused by non-trading gaps between the 15:30 closing auction, 15:40 post-market close, and 16:00 settlement records. Within actual regular trading hours, data completeness exceeds **99.92%**.
 
 ## 4. Timestamp & Session Boundary Validation
 

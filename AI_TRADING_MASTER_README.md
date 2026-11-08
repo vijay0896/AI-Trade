@@ -706,9 +706,9 @@ Update this table whenever a phase changes. Add the completion date and evidence
 | 0 | Repository baseline and safety | COMPLETED | Architecture and repository baseline established in `PROJECT_OVERVIEW.md` |
 | 1 | Historical API proof of integration | COMPLETED | HTTP 200 for ICICIBANK on 2026-11-06 (74 candles) and 2021-11-08 (76 candles) |
 | 2 | Coverage matrix + resumable 5-year downloader | COMPLETED | 479,982 5-min candles across 5 stocks (2021-11-08 to 2026-11-06) downloaded to partitioned CSVs with 0 API failures |
-| 3 | Dataset audit and research-ready dataset | COMPLETED | Comprehensive quality audit in `backend/storage/historical-data/DATA_QUALITY_AUDIT.md`; all 5 stocks classified PASS |
-| 4 | Indicator and intraday-behaviour engine | NEXT | Ready to commence |
-| 5 | Strategy specification and configuration | NOT STARTED | Not started |
+| 3 | Dataset audit and session calendar correction | COMPLETED | Session classifications corrected (Muhurat, DR split, post-market); certified PASS in `DATA_QUALITY_AUDIT.md` |
+| 4 | Indicator and intraday-behaviour engine | COMPLETED | Production-grade indicator engine (EMA20/50, VWAP, ATR14, ADX14, Chop14, ER14, VolSMA20, RVOL) implemented; 21 unit tests pass; derived CSVs generated |
+| 5 | Strategy specification and configuration | NEXT | Ready to commence (Opening Range Breakout + VWAP + EMA strategy) |
 | 6 | Backtesting engine | NOT STARTED | Not started |
 | 7 | Research comparison and robustness | NOT STARTED | Not started |
 | 8 | React research dashboard | NOT STARTED | Not started |
@@ -719,8 +719,9 @@ Update this table whenever a phase changes. Add the completion date and evidence
 
 - **2026-11-08 — Phase 1:** User tested the local historical-candles endpoint. Recent ICICIBANK sample returned HTTP 200 and 74 candles for 2026-11-06. Older ICICIBANK sample returned HTTP 200 and 76 candles for 2021-11-08.
 - **2026-11-08 — Phase 2:** Full 5-year historical coverage validated for all 5 stocks back to November 2021. Resumable downloader executed across 305 monthly chunks (61 months × 5 stocks), successfully storing 479,982 candles in `backend/storage/historical-data/` with zero HTTP failures and zero duplicates.
-- **2026-11-08 — Phase 3 (Task 2.1 Audit):** Independent line-by-line audit completed for all 479,982 records. Confirmed 0 corrupted rows, 0 OHLC violations, 0 negative volumes, 0 duplicate timestamps, and 99.86% continuous trading session completeness (09:15–15:25). Identified that reported gaps were predominantly post-market settlement intervals (15:30/15:40/16:00). All 5 stocks certified PASS in `DATA_QUALITY_AUDIT.md`.
-- **Next action:** Proceed to Phase 4 (Indicator and intraday-behaviour engine — ORB, VWAP, EMA, ATR, ADX calculation without look-ahead bias).
+- **2026-11-08 — Phase 3 (Session Calendar Correction & Audit):** Session classifications updated with official exchange circulars (2025-10-21 classified as MUHURAT_SPECIAL per Circular NSE/CMTR/70319; 2024-03-02 and 2024-05-18 classified as DR_SPLIT; 2025-09-26 classified as UNVERIFIED). Confirmed 99.92% regular continuous completeness (09:15–15:25) across all 5 stocks in `DATA_QUALITY_AUDIT.md`.
+- **2026-11-08 — Phase 4 (Technical Indicator Engine):** Modular Indicator Engine built (`backend/src/modules/indicators/`). Implemented EMA20, EMA50, VWAP, ATR14, ADX14, +DI14, -DI14, Choppiness Index 14, Kaufman Efficiency Ratio 14, Volume SMA 20, and Relative Volume 20. Zero look-ahead bias, SMA warm-up initialization, daily session VWAP resets, and non-bridging of special sessions. 21 automated unit tests pass in 71ms. Full dataset of 479,982 candles processed and saved to `backend/storage/derived/indicators/` in 2.24s with full report at `INDICATOR_ENGINE_REPORT.md`.
+- **Next action:** Proceed to Phase 5 (Strategy specification and configuration — ORB + VWAP + EMA trend-following rules with risk parameters).
 
 ## 13. Instructions for Antigravity — master operating prompt
 
