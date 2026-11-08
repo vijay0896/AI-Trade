@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-HDFCBANK-D_ORB_VWAP_EMA_ADX-MW7IJ473",
+  "symbol": "HDFCBANK",
+  "strategyId": "STRAT-ORB-VAR-D",
+  "strategyName": "Variant D: ORB with VWAP, EMA and ADX/DI Filter",
+  "variant": "D_ORB_VWAP_EMA_ADX",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 96334,
+  "totalRegularBars": 92477,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1216,
+  "initialCapital": 100000,
+  "endingCapital": 99421.78,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T07:30:33.294Z",
+  "runtimeMs": 207
+}

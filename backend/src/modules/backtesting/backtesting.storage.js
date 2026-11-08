@@ -78,14 +78,21 @@ class BacktestStorageManager {
       'targetPrice',
       'exitReason',
       'barsHeld',
+      'theoreticalGrossPnL',
+      'entrySlippageCost',
+      'exitSlippageCost',
+      'totalSlippageCost',
       'grossPnL',
-      'netPnL',
       'brokerage',
+      'stt',
+      'stampDuty',
+      'exchangeCharges',
+      'sebiCharges',
+      'ipftCharges',
       'statutoryCharges',
       'gst',
       'totalCharges',
-      'entrySlippageCost',
-      'exitSlippageCost',
+      'netPnL',
       'isAmbiguous'
     ];
 
@@ -107,14 +114,21 @@ class BacktestStorageManager {
         t.targetPrice,
         t.exitReason,
         t.barsHeld,
+        t.theoreticalGrossPnL !== undefined ? t.theoreticalGrossPnL : t.grossPnL,
+        t.entrySlippageCost,
+        t.exitSlippageCost,
+        t.totalSlippageCost !== undefined ? t.totalSlippageCost : (Number(t.entrySlippageCost || 0) + Number(t.exitSlippageCost || 0)),
         t.grossPnL,
-        t.netPnL,
         t.brokerage,
+        t.stt !== undefined ? t.stt : 0,
+        t.stampDuty !== undefined ? t.stampDuty : 0,
+        t.exchangeCharges !== undefined ? t.exchangeCharges : 0,
+        t.sebiCharges !== undefined ? t.sebiCharges : 0,
+        t.ipftCharges !== undefined ? t.ipftCharges : 0,
         t.statutoryCharges,
         t.gst,
         t.totalCharges,
-        t.entrySlippageCost,
-        t.exitSlippageCost,
+        t.netPnL,
         t.isAmbiguous
       ].join(','));
     }
@@ -160,7 +174,7 @@ class BacktestStorageManager {
   }
 
   /**
-   * Update master runs index JSON file
+   * Update master runs index JSON file with canonical classification and reconciliation metrics
    */
   static updateRunsIndex(meta, metrics) {
     const indexPath = path.join(BACKTEST_STORAGE_PATHS.RUNS_DIR, 'runs_index.json');
@@ -173,18 +187,35 @@ class BacktestStorageManager {
       }
     }
 
-    // Remove existing entry with same runId if present
+    // Remove existing entry with exact same runId if present
     index = index.filter(item => item.runId !== meta.runId);
+
+    // Any existing entry for the same (symbol, variant, direction) is marked as non-canonical
+    for (const item of index) {
+      if (item.symbol === meta.symbol && item.variant === meta.variant && item.direction === meta.direction) {
+        item.isCanonical = false;
+        item.runType = item.runType === 'CANONICAL' ? 'SUPERSEDED' : (item.runType || 'SUPERSEDED');
+      }
+    }
 
     index.unshift({
       runId: meta.runId,
       symbol: meta.symbol,
       variant: meta.variant,
       direction: meta.direction,
+      isCanonical: true,
+      runType: 'CANONICAL',
       startDate: meta.startDate,
       endDate: meta.endDate,
       totalTrades: metrics.tradingPerformance.totalTrades,
       winRate: metrics.tradingPerformance.winRate,
+      theoreticalGrossPnL: metrics.overview.theoreticalGrossPnL !== undefined ? metrics.overview.theoreticalGrossPnL : null,
+      slippageCost: metrics.overview.slippageCost !== undefined ? metrics.overview.slippageCost : null,
+      grossRealizedPnL: metrics.overview.grossRealizedPnL !== undefined ? metrics.overview.grossRealizedPnL : metrics.overview.grossPnL,
+      totalCharges: metrics.overview.totalCharges,
+      brokerage: metrics.overview.brokerage,
+      statutoryCharges: metrics.overview.statutoryCharges,
+      gst: metrics.overview.gst,
       netPnL: metrics.overview.netPnL,
       netReturnPercent: metrics.overview.netReturnPercent,
       maxDrawdownPercent: metrics.riskPerformance.maxDrawdownPercent,

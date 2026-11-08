@@ -102,10 +102,12 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   │   │   └── STRATEGY_SPECIFICATION.md    # Master quantitative trading strategy specification
 │   │   └── backtesting/                # Historical backtesting engine runs, journals & master reports
 │   │       ├── BACKTEST_ENGINE_REPORT.md    # Master quantitative report across 25 batch runs
-│   │       ├── runs_index.json              # Master registry catalog of all completed backtest runs
+│   │       ├── BACKTEST_RECONCILIATION_REPORT.md # Financial audit & accounting reconciliation report (Phase 6.1)
+│   │       ├── BACKTEST_OUTCOMES_CHATGPT.json # Consolidated 25-run canonical outcomes for LLM research
+│   │       ├── runs_index.json              # Master registry catalog of canonical (25) & superseded backtest runs
 │   │       └── runs/                        # Partitioned run outputs (trades.csv, equity_curve.csv, summary.json)
 │   ├── test/
-│   │   ├── backtesting.test.js         # Native Node.js test suite for backtest engine & Groww fees (13 tests)
+│   │   ├── backtesting.test.js         # Native Node.js test suite for backtest engine & Groww fees (17 tests)
 │   │   ├── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
 │   │   └── strategy.test.js            # Native Node.js test suite for strategy & risk (23 tests)
 │   └── src/
@@ -1026,6 +1028,7 @@ HTTP Request
 | Indicators | Technical Indicator Engine (Phase 4) | IMPLEMENTED | `indicators.calculator.js`, `indicators.service.js`, `indicators.validator.js` | Streaming causal calculation for EMA20/50, VWAP, ATR14, ADX14, Choppiness14, ER14, VolSMA20 & RVOL across 479,982 candles. |
 | Strategy | Strategy Specification & Config (Phase 5) | IMPLEMENTED | `strategy.config.js`, `strategy.schema.js`, `strategy.service.js` | Predefined ORB variants (A-E), retest models, Zod validation, position sizing calculator & 18+ cohort parameter matrix. |
 | Backtesting | Historical Backtesting Engine (Phase 6) | IMPLEMENTED | `backtesting.engine.js`, `backtesting.fees.js`, `backtesting.execution.js`, `runBacktest.js` | Deterministic event-driven engine with Groww fee schedule, slippage, same-bar ambiguity resolution & 25-run batch runner across 479,982 candles. |
+| Backtesting | Backtest Reconciliation & Financial Audit (Phase 6.1) | IMPLEMENTED | `BACKTEST_RECONCILIATION_REPORT.md`, `backtesting.fees.js`, `backtesting.metrics.js` | 100% reconciled ledger, Groww effective-dated 0.1% + min fee floors, NSE Circular FA64232, and slippage sensitivity across 0-5 bps. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -1063,7 +1066,7 @@ HTTP Request
 2. **Fallback Quote Rate Limits:**
    - `getFallbackLiveQuote` calls Yahoo Finance's unauthenticated chart API. In high-frequency environments, requests may get throttled without a dedicated broker market-data feed.
 3. **Automated Test Coverage Progress:**
-   - Comprehensive unit testing is implemented using the native Node.js test runner (`node --test`), with 57 tests passing across 21 test suites covering technical indicators, session classification, strategy schema/risk, and the backtesting engine (fees, slippage, gap fills, ambiguity resolution, and determinism).
+   - Comprehensive unit testing is implemented using the native Node.js test runner (`node --test`), with 61 tests passing across 21 test suites covering technical indicators, session classification, strategy schema/risk, and the reconciled backtesting engine (fees, slippage, gap fills, ambiguity resolution, financial reconciliation invariant, and determinism).
 4. **Volatile Session Storage:**
    - Broker session tokens are cached in Node.js process memory. Multi-instance scaling or server restarts require re-authenticating with Groww.
 
@@ -1269,19 +1272,21 @@ sequenceDiagram
 | [`backend/src/modules/strategy/strategy.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.service.js) | Strategy Business Logic & Risk Sizing | `getAllConfigs()`, `validateCustomConfig()`, `calculatePositionSize()`, `exportConfigurationsToFile()` |
 | [`backend/src/modules/strategy/strategy.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.controller.js) | Strategy HTTP Controller | `getAllConfigs`, `getVariantConfig`, `validateConfig`, `calculatePositionSize`, `getParameterMatrix` |
 | [`backend/src/modules/strategy/strategy.routes.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/strategy/strategy.routes.js) | Strategy Express Router | `/api/v1/strategy/*` endpoints |
-| [`backend/src/modules/backtesting/backtesting.constants.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.constants.js) | Backtesting Constants & Schedules | Fee schedules (pre/post Oct 2024), default parameters & storage paths |
-| [`backend/src/modules/backtesting/backtesting.fees.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.fees.js) | Groww Fees & Statutory Tax Calculator | Brokerage ($\min(₹20, 0.05\%)$), STT, Stamp Duty, NSE, SEBI, IPFT, GST |
+| [`backend/src/modules/backtesting/backtesting.constants.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.constants.js) | Backtesting Constants & Schedules | Effective-dated Groww fees (0.1%, min ₹2/₹5), NSE uniform rate (0.00297%), default parameters & storage paths |
+| [`backend/src/modules/backtesting/backtesting.fees.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.fees.js) | Groww Fees & Statutory Tax Calculator | Brokerage (0.1% or max ₹20, min ₹2/₹5), STT, Stamp Duty, NSE Circular FA64232, SEBI, IPFT, GST |
 | [`backend/src/modules/backtesting/backtesting.execution.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.execution.js) | Execution Simulator & Ambiguity Resolver | Slippage (2 bps), gap fills, conservative same-bar stop priority & exits |
 | [`backend/src/modules/backtesting/backtesting.risk.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.risk.js) | Backtest Risk & Position Constraints | Position size integration, daily loss circuit breaker & max daily trades |
-| [`backend/src/modules/backtesting/backtesting.metrics.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.metrics.js) | Performance & Statistical Engine | Win Rate, Gross/Net P&L, Profit Factor, Expectancy, Drawdown & Streaks |
+| [`backend/src/modules/backtesting/backtesting.metrics.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.metrics.js) | Performance & Statistical Engine | Reconciled metrics (Theoretical Gross, Slippage, Realized Gross, Charges, Net P&L) & streaks |
 | [`backend/src/modules/backtesting/backtesting.engine.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.engine.js) | Core Event-Driven Backtesting Loop | Session exclusion, Opening Range locking, signal-to-order-to-fill flow |
-| [`backend/src/modules/backtesting/backtesting.storage.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.storage.js) | Run Persistence & Registry Index | `trades.csv`, `equity_curve.csv`, `summary.json` & `runs_index.json` |
+| [`backend/src/modules/backtesting/backtesting.storage.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.storage.js) | Run Persistence & Registry Index | `trades.csv`, `equity_curve.csv`, `summary.json`, `runs_index.json` with canonical classification |
 | [`backend/src/modules/backtesting/backtesting.schema.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.schema.js) | Backtest Request Validation Schemas | Zod validation for backtest execution requests |
 | [`backend/src/modules/backtesting/backtesting.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.service.js) | Backtesting Business Orchestrator | Single runs, batch evaluation, and run journal catalog queries |
 | [`backend/src/modules/backtesting/backtesting.controller.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.controller.js) | Backtest HTTP Request/Response Handler | `getRuns()`, `getRunDetails()`, `getRunTrades()`, `executeRun()` |
 | [`backend/src/modules/backtesting/backtesting.routes.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/backtesting/backtesting.routes.js) | Backtesting Express Router | `/api/v1/backtesting/*` endpoints |
 | [`backend/src/scripts/runBacktest.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/scripts/runBacktest.js) | CLI Backtest Executable | Standalone CLI entrypoint (`npm run backtest`) with `--batch` support |
-| [`backend/test/backtesting.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/backtesting.test.js) | Unit Test Suite (Native `node:test`) | 13 passing unit tests verifying Groww fees, slippage, same-bar stops & determinism |
+| [`backend/test/backtesting.test.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/test/backtesting.test.js) | Unit Test Suite (Native `node:test`) | 17 passing unit tests verifying Groww fees, min brokerage, slippage, same-bar stops & reconciliation |
+| [`backend/storage/backtesting/BACKTEST_RECONCILIATION_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_RECONCILIATION_REPORT.md) | Financial Audit & Reconciliation Report | Master Phase 6.1 audit document certifying 100% ledger reconciliation and fee accuracy |
+| [`backend/storage/backtesting/BACKTEST_OUTCOMES_CHATGPT.json`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_OUTCOMES_CHATGPT.json) | LLM Research Dataset | Audited & reconciled 25-run canonical outcomes JSON for ChatGPT/LLM analysis |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 

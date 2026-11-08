@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-M&M-E_FULL_CONFIRMATION-MW7IJ573",
+  "symbol": "M&M",
+  "strategyId": "STRAT-ORB-VAR-E",
+  "strategyName": "Variant E: Full Trend Confirmation Strategy",
+  "variant": "E_FULL_CONFIRMATION",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95911,
+  "totalRegularBars": 92479,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1209,
+  "initialCapital": 100000,
+  "endingCapital": 98977.35,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T07:30:34.590Z",
+  "runtimeMs": 207
+}

@@ -24,9 +24,15 @@ class BacktestMetricsCalculator {
     let grossLosses = 0;
     let netWins = 0;
     let netLosses = 0;
-    let totalGrossPnL = 0;
+    let totalTheoreticalGrossPnL = 0;
+    let totalGrossPnL = 0; // Gross realized after slippage
     let totalNetPnL = 0;
     let totalBrokerage = 0;
+    let totalSTT = 0;
+    let totalStampDuty = 0;
+    let totalExchange = 0;
+    let totalSEBI = 0;
+    let totalIPFT = 0;
     let totalStatutory = 0;
     let totalGST = 0;
     let totalCharges = 0;
@@ -45,14 +51,27 @@ class BacktestMetricsCalculator {
     const exitReasons = {};
 
     for (const t of trades) {
-      totalGrossPnL += t.grossPnL;
-      totalNetPnL += t.netPnL;
-      totalBrokerage += t.brokerage;
-      totalStatutory += t.statutoryCharges;
-      totalGST += t.gst;
-      totalCharges += t.totalCharges;
-      totalSlippageCost += (t.entrySlippageCost || 0) + (t.exitSlippageCost || 0);
-      totalBarsInMarket += t.barsHeld || 1;
+      const tradeSlippage = t.totalSlippageCost !== undefined
+        ? Number(t.totalSlippageCost)
+        : ((Number(t.entrySlippageCost) || 0) + (Number(t.exitSlippageCost) || 0));
+      const tradeTheoreticalGross = t.theoreticalGrossPnL !== undefined
+        ? Number(t.theoreticalGrossPnL)
+        : (Number(t.grossPnL) + tradeSlippage);
+
+      totalTheoreticalGrossPnL += tradeTheoreticalGross;
+      totalGrossPnL += Number(t.grossPnL);
+      totalNetPnL += Number(t.netPnL);
+      totalBrokerage += Number(t.brokerage) || 0;
+      totalSTT += Number(t.stt) || 0;
+      totalStampDuty += Number(t.stampDuty) || 0;
+      totalExchange += Number(t.exchangeCharges) || 0;
+      totalSEBI += Number(t.sebiCharges) || 0;
+      totalIPFT += Number(t.ipftCharges) || 0;
+      totalStatutory += Number(t.statutoryCharges) || 0;
+      totalGST += Number(t.gst) || 0;
+      totalCharges += Number(t.totalCharges) || 0;
+      totalSlippageCost += tradeSlippage;
+      totalBarsInMarket += Number(t.barsHeld) || 1;
 
       // Exit Reason Count
       exitReasons[t.exitReason] = (exitReasons[t.exitReason] || 0) + 1;
@@ -67,18 +86,18 @@ class BacktestMetricsCalculator {
       // Win / Loss / Scratch
       if (t.netPnL > 0) {
         winningTrades++;
-        grossWins += t.grossPnL;
-        netWins += t.netPnL;
-        largestWin = Math.max(largestWin, t.netPnL);
+        grossWins += Number(t.grossPnL);
+        netWins += Number(t.netPnL);
+        largestWin = Math.max(largestWin, Number(t.netPnL));
 
         currentConsecutiveWins++;
         maxConsecutiveWins = Math.max(maxConsecutiveWins, currentConsecutiveWins);
         currentConsecutiveLosses = 0;
       } else if (t.netPnL < 0) {
         losingTrades++;
-        grossLosses += Math.abs(t.grossPnL);
-        netLosses += Math.abs(t.netPnL);
-        largestLoss = Math.min(largestLoss, t.netPnL);
+        grossLosses += Math.abs(Number(t.grossPnL));
+        netLosses += Math.abs(Number(t.netPnL));
+        largestLoss = Math.min(largestLoss, Number(t.netPnL));
 
         currentConsecutiveLosses++;
         maxConsecutiveLosses = Math.max(maxConsecutiveLosses, currentConsecutiveLosses);
@@ -128,14 +147,34 @@ class BacktestMetricsCalculator {
         initialCapital,
         endingCapital: Number((initialCapital + totalNetPnL).toFixed(2)),
         netReturnPercent: Number(((totalNetPnL / initialCapital) * 100).toFixed(2)),
-        grossPnL: Number(totalGrossPnL.toFixed(2)),
-        netPnL: Number(totalNetPnL.toFixed(2)),
-        totalCharges: Number(totalCharges.toFixed(2)),
+        theoreticalGrossPnL: Number(totalTheoreticalGrossPnL.toFixed(2)),
+        slippageCost: Number(totalSlippageCost.toFixed(2)),
+        grossRealizedPnL: Number(totalGrossPnL.toFixed(2)),
+        grossPnL: Number(totalGrossPnL.toFixed(2)), // Gross realized after slippage (preserved for backward compatibility)
         brokerage: Number(totalBrokerage.toFixed(2)),
+        stt: Number(totalSTT.toFixed(2)),
+        stampDuty: Number(totalStampDuty.toFixed(2)),
+        exchangeCharges: Number(totalExchange.toFixed(2)),
+        sebiCharges: Number(totalSEBI.toFixed(4)),
+        ipftCharges: Number(totalIPFT.toFixed(4)),
         statutoryCharges: Number(totalStatutory.toFixed(2)),
         gst: Number(totalGST.toFixed(2)),
-        slippageCost: Number(totalSlippageCost.toFixed(2)),
-        costsPercentOfGross: grossWins > 0 ? Number(((totalCharges / grossWins) * 100).toFixed(2)) : 0
+        totalCharges: Number(totalCharges.toFixed(2)),
+        netPnL: Number(totalNetPnL.toFixed(2)),
+        costsPercentOfGross: Math.abs(totalTheoreticalGrossPnL) > 0
+          ? Number((((totalCharges + totalSlippageCost) / Math.abs(totalTheoreticalGrossPnL)) * 100).toFixed(2))
+          : 0,
+        accountingIdentity: {
+          theoreticalGrossPnL: Number(totalTheoreticalGrossPnL.toFixed(2)),
+          minusSlippageCost: Number(totalSlippageCost.toFixed(2)),
+          equalsGrossRealizedPnL: Number(totalGrossPnL.toFixed(2)),
+          minusTotalCharges: Number(totalCharges.toFixed(2)),
+          equalsNetRealizedPnL: Number(totalNetPnL.toFixed(2)),
+          isReconciled: Math.abs(
+            Number(totalNetPnL.toFixed(2)) -
+            Number((totalTheoreticalGrossPnL - totalSlippageCost - totalCharges).toFixed(2))
+          ) < 0.1
+        }
       },
       tradingPerformance: {
         totalTrades,

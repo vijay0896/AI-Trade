@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-BHARTIARTL-E_FULL_CONFIRMATION-MW7IJ70J",
+  "symbol": "BHARTIARTL",
+  "strategyId": "STRAT-ORB-VAR-E",
+  "strategyName": "Variant E: Full Trend Confirmation Strategy",
+  "variant": "E_FULL_CONFIRMATION",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95811,
+  "totalRegularBars": 92478,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1203,
+  "initialCapital": 100000,
+  "endingCapital": 99365.86,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T07:30:36.962Z",
+  "runtimeMs": 223
+}

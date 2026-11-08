@@ -69,35 +69,35 @@ Intraday equities trading in India is subject to multiple statutory taxes and ex
 
 Simulated across the full five-year period (`2021-11-08` to `2026-11-06`) with ₹100,000 initial capital, 0.5% risk per trade, max 2 trades/day, 1:1.5 Risk/Reward target, and 2.0 bps slippage:
 
-### Consolidated Performance Matrix
+### Consolidated Performance Matrix (Reconciled Phase 6.1 Audit)
 
-| Symbol | Strategy Variant | Total Trades | Win Rate | Gross P&L (₹) | Total Charges (₹) | Slippage (₹) | Net P&L (₹) | Net Return | Profit Factor | Max Drawdown |
-|---|---|---|---|---|---|---|---|---|---|---|
-| **ICICIBANK** | Variant A (Basic ORB) | 58 | 27.59% | -4,867.74 | 3,640.83 | 1,224.45 | -8,508.57 | -8.51% | 0.32 | 10.55% |
-| **ICICIBANK** | Variant B (ORB + VWAP) | 58 | 27.59% | -4,894.10 | 3,640.81 | 1,224.45 | -8,534.91 | -8.53% | 0.32 | 10.57% |
-| **ICICIBANK** | Variant C (ORB + VWAP + EMA) | 51 | 29.41% | -3,026.00 | 3,230.14 | 1,085.30 | -6,256.14 | -6.26% | 0.37 | 8.15% |
-| **ICICIBANK** | Variant D (ORB + EMA + ADX) | 42 | 23.81% | -1,894.40 | 2,698.15 | 884.20 | -4,592.55 | -4.59% | 0.41 | 6.75% |
-| **ICICIBANK** | Variant E (Full Trend Confirm) | 18 | 38.89% | -744.50 | 1,159.55 | 378.10 | -1,904.05 | -1.90% | 0.45 | 3.29% |
-| **HDFCBANK** | Variant A (Basic ORB) | 40 | 45.00% | 2,058.40 | 2,330.38 | 768.40 | -271.98 | -0.27% | 0.95 | 2.81% |
-| **HDFCBANK** | Variant B (ORB + VWAP) | 40 | 45.00% | 2,058.40 | 2,330.38 | 768.40 | -271.98 | -0.27% | 0.95 | 2.81% |
-| **HDFCBANK** | Variant C (ORB + VWAP + EMA) | 33 | 39.39% | 682.20 | 1,938.10 | 632.10 | -1,255.90 | -1.26% | 0.72 | 2.90% |
-| **HDFCBANK** | Variant D (ORB + EMA + ADX) | 29 | 44.83% | 1,251.51 | 1,678.28 | 545.20 | -426.77 | -0.43% | 0.89 | 2.23% |
-| **HDFCBANK** | Variant E (Full Trend Confirm) | 11 | **63.64%** | **1,633.40** | 568.24 | 189.40 | **+1,065.16** | **+1.07%** | **2.30** | **0.66%** |
-| **M&M** | Variant A (Basic ORB) | 55 | 32.73% | -4,757.37 | 2,744.93 | 910.30 | -7,502.30 | -7.50% | 0.31 | 8.14% |
-| **M&M** | Variant B (ORB + VWAP) | 55 | 32.73% | -4,796.97 | 2,744.95 | 910.30 | -7,541.92 | -7.54% | 0.30 | 8.18% |
-| **M&M** | Variant C (ORB + VWAP + EMA) | 46 | 34.78% | -1,972.46 | 2,176.23 | 722.50 | -4,148.69 | -4.15% | 0.43 | 4.57% |
-| **M&M** | Variant D (ORB + EMA + ADX) | 42 | 28.57% | -3,005.75 | 1,964.18 | 650.10 | -4,969.93 | -4.97% | 0.31 | 4.97% |
-| **M&M** | Variant E (Full Trend Confirm) | 19 | 36.84% | 32.35 | 774.65 | 258.40 | -742.30 | -0.74% | 0.52 | 0.89% |
-| **AXISBANK** | Variant A (Basic ORB) | 61 | 34.43% | -2,136.54 | 3,610.69 | 1,180.20 | -5,747.23 | -5.75% | 0.44 | 5.89% |
-| **AXISBANK** | Variant B (ORB + VWAP) | 60 | 35.00% | -2,090.64 | 3,546.49 | 1,162.10 | -5,637.13 | -5.64% | 0.45 | 5.78% |
-| **AXISBANK** | Variant C (ORB + VWAP + EMA) | 50 | 40.00% | -416.41 | 2,830.50 | 925.40 | -3,246.91 | -3.25% | 0.56 | 3.60% |
-| **AXISBANK** | Variant D (ORB + EMA + ADX) | 42 | 40.48% | -795.80 | 2,279.01 | 740.10 | -3,074.81 | -3.07% | 0.49 | 3.19% |
-| **AXISBANK** | Variant E (Full Trend Confirm) | 18 | 55.56% | 818.02 | 958.66 | 315.20 | -140.64 | -0.14% | 0.92 | 1.51% |
-| **BHARTIARTL** | Variant A (Basic ORB) | 65 | 27.69% | -2,830.89 | 3,895.56 | 1,280.40 | -6,726.45 | -6.73% | 0.42 | 6.73% |
-| **BHARTIARTL** | Variant B (ORB + VWAP) | 65 | 27.69% | -2,916.39 | 3,892.18 | 1,280.40 | -6,808.57 | -6.81% | 0.42 | 6.81% |
-| **BHARTIARTL** | Variant C (ORB + VWAP + EMA) | 55 | 27.27% | -1,380.88 | 3,321.75 | 1,090.50 | -4,702.63 | -4.70% | 0.45 | 4.76% |
-| **BHARTIARTL** | Variant D (ORB + EMA + ADX) | 40 | 25.00% | -1,392.95 | 2,252.56 | 738.10 | -3,645.51 | -3.65% | 0.42 | 3.71% |
-| **BHARTIARTL** | Variant E (Full Trend Confirm) | 18 | 38.89% | 446.11 | 950.54 | 310.20 | -504.43 | -0.50% | 0.73 | 1.27% |
+| Symbol | Strategy Variant | Total Trades | Win Rate | Theoretical Gross (₹) | Slippage Cost (₹) | Realized Gross (₹) | Total Charges (₹) | Net P&L (₹) | Net Return | Profit Factor | Max Drawdown | Reconciled |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **ICICIBANK** | Variant A (Basic ORB) | 58 | 25.86% | -3,638.94 | 1,223.99 | -4,862.93 | 3,827.28 | -8,690.21 | -8.69% | 0.32 | 10.74% | **PASS** |
+| **ICICIBANK** | Variant B (ORB + VWAP) | 58 | 25.86% | -3,668.69 | 1,222.83 | -4,891.52 | 3,826.23 | -8,717.75 | -8.72% | 0.32 | 10.75% | **PASS** |
+| **ICICIBANK** | Variant C (ORB + VWAP + EMA) | 51 | 27.45% | -2,070.76 | 1,040.86 | -3,111.62 | 3,335.40 | -6,447.02 | -6.45% | 0.37 | 8.34% | **PASS** |
+| **ICICIBANK** | Variant D (ORB + EMA + ADX) | 42 | 23.81% | -1,332.20 | 785.99 | -2,118.19 | 2,682.73 | -4,800.92 | -4.80% | 0.40 | 6.96% | **PASS** |
+| **ICICIBANK** | Variant E (Full Trend Confirm) | 18 | 22.22% | -646.90 | 305.57 | -952.47 | 1,123.04 | -2,075.51 | -2.08% | 0.42 | 3.39% | **PASS** |
+| **HDFCBANK** | Variant A (Basic ORB) | 40 | 45.00% | 3,029.15 | 836.27 | 2,192.88 | 2,619.59 | -426.71 | -0.43% | 0.90 | 2.97% | **PASS** |
+| **HDFCBANK** | Variant B (ORB + VWAP) | 40 | 45.00% | 3,029.15 | 836.27 | 2,192.88 | 2,619.59 | -426.71 | -0.43% | 0.90 | 2.97% | **PASS** |
+| **HDFCBANK** | Variant C (ORB + VWAP + EMA) | 33 | 39.39% | 1,306.10 | 640.19 | 665.91 | 2,093.12 | -1,427.21 | -1.43% | 0.70 | 3.07% | **PASS** |
+| **HDFCBANK** | Variant D (ORB + EMA + ADX) | 29 | 44.83% | 1,809.45 | 557.94 | 1,251.51 | 1,829.73 | -578.22 | -0.58% | 0.85 | 2.28% | **PASS** |
+| **HDFCBANK** | Variant E (Full Trend Confirm) | 11 | **63.64%** | **1,810.30** | **176.90** | **1,633.40** | **642.26** | **+991.14** | **+0.99%** | **2.18** | **0.67%** | **PASS** |
+| **M&M** | Variant A (Basic ORB) | 55 | 32.73% | -3,937.30 | 768.31 | -4,705.61 | 3,227.55 | -7,933.16 | -7.93% | 0.28 | 8.47% | **PASS** |
+| **M&M** | Variant B (ORB + VWAP) | 55 | 32.73% | -3,976.90 | 768.31 | -4,745.21 | 3,227.60 | -7,972.81 | -7.97% | 0.28 | 8.51% | **PASS** |
+| **M&M** | Variant C (ORB + VWAP + EMA) | 46 | 32.61% | -1,386.10 | 602.85 | -1,988.95 | 2,643.69 | -4,632.64 | -4.63% | 0.39 | 4.95% | **PASS** |
+| **M&M** | Variant D (ORB + EMA + ADX) | 42 | 28.57% | -2,459.85 | 545.90 | -3,005.75 | 2,404.78 | -5,410.53 | -5.41% | 0.28 | 5.41% | **PASS** |
+| **M&M** | Variant E (Full Trend Confirm) | 19 | 31.58% | 224.30 | 201.68 | 22.62 | 1,045.27 | -1,022.65 | -1.02% | 0.42 | 1.14% | **PASS** |
+| **AXISBANK** | Variant A (Basic ORB) | 61 | 34.43% | -1,001.15 | 1,151.40 | -2,152.55 | 3,896.51 | -6,049.06 | -6.05% | 0.43 | 6.15% | **PASS** |
+| **AXISBANK** | Variant B (ORB + VWAP) | 60 | 35.00% | -978.55 | 1,133.46 | -2,112.01 | 3,833.17 | -5,945.18 | -5.95% | 0.43 | 6.04% | **PASS** |
+| **AXISBANK** | Variant C (ORB + VWAP + EMA) | 50 | 40.00% | 452.65 | 861.56 | -408.91 | 3,119.58 | -3,528.49 | -3.53% | 0.53 | 3.80% | **PASS** |
+| **AXISBANK** | Variant D (ORB + EMA + ADX) | 42 | 40.48% | -87.90 | 693.40 | -781.30 | 2,580.22 | -3,361.52 | -3.36% | 0.46 | 3.46% | **PASS** |
+| **AXISBANK** | Variant E (Full Trend Confirm) | 18 | 44.44% | 1,114.84 | 296.82 | 818.02 | 1,100.84 | -282.82 | -0.28% | 0.84 | 1.58% | **PASS** |
+| **BHARTIARTL** | Variant A (Basic ORB) | 65 | 27.69% | -1,574.24 | 1,243.19 | -2,817.43 | 4,149.35 | -6,966.78 | -6.97% | 0.41 | 6.97% | **PASS** |
+| **BHARTIARTL** | Variant B (ORB + VWAP) | 65 | 27.69% | -1,678.19 | 1,239.28 | -2,917.47 | 4,145.85 | -7,063.32 | -7.06% | 0.40 | 7.06% | **PASS** |
+| **BHARTIARTL** | Variant C (ORB + VWAP + EMA) | 55 | 25.45% | -318.84 | 1,062.04 | -1,380.88 | 3,523.02 | -4,903.90 | -4.90% | 0.44 | 4.93% | **PASS** |
+| **BHARTIARTL** | Variant D (ORB + EMA + ADX) | 40 | 25.00% | -731.08 | 661.87 | -1,392.95 | 2,458.93 | -3,851.88 | -3.85% | 0.40 | 3.87% | **PASS** |
+| **BHARTIARTL** | Variant E (Full Trend Confirm) | 18 | 38.89% | 707.88 | 261.77 | 446.11 | 1,080.25 | -634.14 | -0.63% | 0.67 | 1.37% | **PASS** |
 
 ---
 
@@ -138,25 +138,29 @@ Below is an authentic trade extracted directly from `trades.csv` in `RUN-ICICIBA
   - Nominal Open: `751.95`
   - Slippage (2 bps): $-0.15 \implies$ Executed Exit Price: `751.80`
 - **P&L & Transaction Cost Accounting:**
-  - Gross P&L: $(751.80 - 748.25) \times 63 = \mathbf{+₹223.65}$
-  - Brokerage: ₹40.00
-  - STT: ₹11.84 (0.025% on sell turnover)
-  - Stamp Duty: ₹1.41 (0.003% on buy turnover)
-  - Exchange Charges (NSE): ₹2.79
-  - SEBI & IPFT: ₹0.18
-  - GST (18% on fees): ₹8.08
+  - Theoretical Gross P&L (before slippage): $(751.95 - 748.10) \times 63 = \mathbf{+₹242.55}$
+  - Slippage Cost (2 bps per side): $(0.15 + 0.15) \times 63 = \mathbf{₹18.90}$
+  - Realized Gross P&L (after slippage): $(751.80 - 748.25) \times 63 = \mathbf{+₹223.65}$
+  - Brokerage (0.1%, capped at ₹20 per leg): ₹40.00
+  - STT (0.025% on sell leg): ₹11.84
+  - Stamp Duty (0.003% on buy leg): ₹1.41
+  - Exchange Charges (NSE 0.00325% pre-Oct 2024): ₹3.07
+  - SEBI & IPFT: ₹0.19
+  - GST (18% on fees): ₹7.79
   - Total Charges: **₹64.30**
   - Net Realized P&L: $223.65 - 64.30 = \mathbf{+₹159.35}$.
+  - Accounting Identity Check: $242.55 \text{ (TheoGross)} - 18.90 \text{ (Slippage)} - 64.30 \text{ (Charges)} = \mathbf{+₹159.35}$ (Exact Reconciled).
 
 ---
 
 ## 6. Verification and Invariant Testing
 
-The engine was tested using native Node.js test runner (`node --test`), with **57 passing unit tests across 21 test suites**:
+The engine was tested using native Node.js test runner (`node --test`), with **61 passing unit tests across 21 test suites**:
 
-1. **Groww Fees & Taxes:** Exact match against published rates and verified pre/post October 2024 schedules.
-2. **Gap Modeling:** Gap-through-stop verified to fill at candle open instead of theoretical stop.
-3. **Ambiguity Resolution:** Worst-case stop loss verified during simultaneous intrabar touches.
-4. **Determinism:** Repeated backtest executions on identical datasets yielded identical trade outputs.
-5. **No Look-Ahead:** Future candle leakage verified absent; signal on candle close $t$ executed strictly at candle open $t+1$.
+1. **Groww Fees & Taxes:** Exact match against published rates (0.1% vs ₹20 cap), minimum fee floors (₹2 pre-June 2025 vs ₹5 post-June 2025), and verified pre/post October 2024 schedules.
+2. **Accounting Invariant:** Strict reconciliation verified across every trade ($\text{TheoGross} - \text{Slippage} - \text{Charges} \equiv \text{NetPnL}$).
+3. **Gap Modeling:** Gap-through-stop verified to fill at candle open instead of theoretical stop.
+4. **Ambiguity Resolution:** Worst-case stop loss verified during simultaneous intrabar touches.
+5. **Determinism:** Repeated backtest executions on identical datasets yielded identical trade outputs.
+6. **No Look-Ahead:** Future candle leakage verified absent; signal on candle close $t$ executed strictly at candle open $t+1$.
 

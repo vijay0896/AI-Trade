@@ -18,14 +18,32 @@ class BacktestFeeEngine {
     }
 
     if (!dateStr) {
-      return FEE_SCHEDULES.CURRENT_POST_OCT_2024;
+      return FEE_SCHEDULES.CURRENT_POST_JUNE_2025;
     }
 
     const dateOnly = String(dateStr).split('T')[0];
+    if (dateOnly >= '2025-06-21') {
+      return FEE_SCHEDULES.CURRENT_POST_JUNE_2025;
+    }
     if (dateOnly >= '2024-10-01') {
-      return FEE_SCHEDULES.CURRENT_POST_OCT_2024;
+      return FEE_SCHEDULES.INTERMEDIATE_POST_OCT_2024_PRE_JUNE_2025;
     }
     return FEE_SCHEDULES.HISTORICAL_PRE_OCT_2024;
+  }
+
+  /**
+   * Compute equity intraday brokerage for an order leg with effective-dated min floor and SEBI cap
+   * @param {number} turnover Order leg traded turnover (price * quantity)
+   * @param {Object} schedule Fee schedule object
+   * @returns {number}
+   */
+  static computeLegBrokerage(turnover, schedule) {
+    if (!turnover || turnover <= 0) return 0.0;
+    // Standard rule: 0.1% or Rs. 20, whichever is lower
+    const nominalBrokerage = Math.min(schedule.brokerageMaxPerOrder, turnover * schedule.brokerageRate);
+    // Minimum fee floor (Rs. 2 before June 21, 2025; Rs. 5 after), capped at 2.5% of trade value (SEBI limit)
+    const minBrokerageCapped = Math.min(schedule.brokerageMinPerOrder, turnover * schedule.brokerageMinPercentCap);
+    return Math.max(minBrokerageCapped, nominalBrokerage);
   }
 
   /**
@@ -59,7 +77,7 @@ class BacktestFeeEngine {
     const totalTurnover = entryTurnover + exitTurnover;
 
     // 1. Entry Leg Calculations
-    const entryBrokerage = Math.min(schedule.brokerageMaxPerOrder, entryTurnover * schedule.brokerageRate);
+    const entryBrokerage = this.computeLegBrokerage(entryTurnover, schedule);
     const entryExchange = entryTurnover * schedule.exchangeTransactionRate;
     const entrySEBI = entryTurnover * schedule.sebiTurnoverRate;
     const entryIPFT = entryTurnover * schedule.ipftRate;
@@ -72,12 +90,13 @@ class BacktestFeeEngine {
       ? entryTurnover * schedule.stampDutyRateBuy
       : entryTurnover * schedule.stampDutyRateSell;
 
+    // GST applies only to service fees: Brokerage, Exchange charges, SEBI charges, and IPFT. (STT & Stamp duty are excluded)
     const entryGstTaxable = entryBrokerage + entryExchange + entrySEBI + entryIPFT;
     const entryGST = entryGstTaxable * schedule.gstRate;
     const entryTotalFees = entryBrokerage + entrySTT + entryStampDuty + entryExchange + entrySEBI + entryIPFT + entryGST;
 
     // 2. Exit Leg Calculations
-    const exitBrokerage = Math.min(schedule.brokerageMaxPerOrder, exitTurnover * schedule.brokerageRate);
+    const exitBrokerage = this.computeLegBrokerage(exitTurnover, schedule);
     const exitExchange = exitTurnover * schedule.exchangeTransactionRate;
     const exitSEBI = exitTurnover * schedule.sebiTurnoverRate;
     const exitIPFT = exitTurnover * schedule.ipftRate;

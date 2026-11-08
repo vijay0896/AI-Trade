@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-ICICIBANK-C_ORB_VWAP_EMA-MW7IJ2W8",
+  "symbol": "ICICIBANK",
+  "strategyId": "STRAT-ORB-VAR-C",
+  "strategyName": "Variant C: ORB with VWAP and EMA 20/50",
+  "variant": "C_ORB_VWAP_EMA",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 96118,
+  "totalRegularBars": 92476,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1207,
+  "initialCapital": 100000,
+  "endingCapital": 93552.98,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T07:30:31.657Z",
+  "runtimeMs": 257
+}

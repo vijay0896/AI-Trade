@@ -32,7 +32,7 @@ describe('Historical Backtesting Engine Test Suite', () => {
       assert.equal(costs.exitTurnover, 151500);
       assert.equal(costs.totalTurnover, 301500);
 
-      // Brokerage: 0.05% of 150k = Rs. 75, capped at Rs. 20. Same on exit (Rs. 20). Total = Rs. 40
+      // Brokerage: 0.1% of 150k = Rs. 150, capped at Rs. 20. Same on exit (Rs. 20). Total = Rs. 40
       assert.equal(costs.brokerage, 40);
 
       // STT on Intraday Long: 0.025% on SELL leg only: 151,500 * 0.00025 = Rs. 37.88
@@ -55,6 +55,55 @@ describe('Historical Backtesting Engine Test Suite', () => {
       const schedule = BacktestFeeEngine.resolveFeeSchedule('2023-05-15T10:00:00');
       assert.equal(schedule.effectiveTo, '2024-09-30');
       assert.equal(schedule.exchangeTransactionRate, 0.0000325); // Legacy 0.00325%
+      assert.equal(schedule.brokerageRate, 0.0010); // 0.1%
+      assert.equal(schedule.brokerageMinPerOrder, 2.0); // Legacy Rs. 2 min floor
+    });
+
+    it('should resolve revised minimum brokerage (Rs. 5) for post-June 21, 2025 dates', () => {
+      const schedule = BacktestFeeEngine.resolveFeeSchedule('2025-07-01T10:00:00');
+      assert.equal(schedule.effectiveFrom, '2025-06-21');
+      assert.equal(schedule.brokerageMinPerOrder, 5.0); // Updated Rs. 5 floor
+      assert.equal(schedule.exchangeTransactionRate, 0.0000297); // Uniform 0.00297%
+    });
+
+    it('should enforce Groww effective-dated minimum brokerage and SEBI 2.5% cap on small orders', () => {
+      const preJuneSchedule = BacktestFeeEngine.resolveFeeSchedule('2024-11-01');
+      const postJuneSchedule = BacktestFeeEngine.resolveFeeSchedule('2025-07-01');
+
+      // 1. Turnover = Rs. 3,000 (0.1% = Rs. 3.00)
+      // Pre-June 2025: min floor Rs. 2 -> nominal Rs. 3 is higher -> Rs. 3.00
+      assert.equal(BacktestFeeEngine.computeLegBrokerage(3000, preJuneSchedule), 3.00);
+      // Post-June 2025: min floor Rs. 5 -> nominal Rs. 3 is lower -> Rs. 5.00
+      assert.equal(BacktestFeeEngine.computeLegBrokerage(3000, postJuneSchedule), 5.00);
+
+      // 2. Turnover = Rs. 50 (Very small order)
+      // 2.5% SEBI maximum cap = Rs. 1.25. Brokerage must not exceed 2.5% of order value
+      assert.equal(BacktestFeeEngine.computeLegBrokerage(50, postJuneSchedule), 1.25);
+
+      // 3. Turnover = Rs. 50,000 (0.1% = Rs. 50)
+      // Capped at maximum Rs. 20
+      assert.equal(BacktestFeeEngine.computeLegBrokerage(50000, postJuneSchedule), 20.00);
+    });
+
+    it('should strictly exclude STT and Stamp Duty from the GST calculation base', () => {
+      const costs = BacktestFeeEngine.calculateTradeCosts({
+        side: 'LONG',
+        quantity: 50,
+        entryPrice: 2000,
+        exitPrice: 2010,
+        entryTimestamp: '2025-01-10T10:00:00'
+      });
+
+      // Taxable services: Brokerage + Exchange charges + SEBI + IPFT
+      const entryTaxable = costs.entryLeg.brokerage + costs.entryLeg.exchange + (costs.entryTurnover * 0.000001) + (costs.entryTurnover * 0.000001);
+      const exitTaxable = costs.exitLeg.brokerage + costs.exitLeg.exchange + (costs.exitTurnover * 0.000001) + (costs.exitTurnover * 0.000001);
+      const totalTaxable = entryTaxable + exitTaxable;
+      const expectedGST = Number((totalTaxable * 0.18).toFixed(2));
+
+      assert.equal(costs.gst, expectedGST);
+      // Ensure GST is not levied on STT or Stamp Duty
+      const totalTaxes = costs.stt + costs.stampDuty;
+      assert.ok(costs.gst < (totalTaxable + totalTaxes) * 0.18);
     });
 
     it('should calculate STT on Entry side for Short trades (Sell first)', () => {
@@ -232,9 +281,9 @@ describe('Historical Backtesting Engine Test Suite', () => {
   describe('Performance Metrics Analytics Calculator', () => {
     it('should compute accurate win rate, expectancy, and profit factor', () => {
       const sampleTrades = [
-        { grossPnL: 1000, netPnL: 950, brokerage: 40, statutoryCharges: 8, gst: 2, totalCharges: 50, barsHeld: 4, side: 'LONG', exitReason: 'PROFIT_TARGET', entryTimestamp: '2024-01-01T10:00:00' },
-        { grossPnL: 1000, netPnL: 950, brokerage: 40, statutoryCharges: 8, gst: 2, totalCharges: 50, barsHeld: 5, side: 'LONG', exitReason: 'PROFIT_TARGET', entryTimestamp: '2024-01-02T10:00:00' },
-        { grossPnL: -500, netPnL: -550, brokerage: 40, statutoryCharges: 8, gst: 2, totalCharges: 50, barsHeld: 2, side: 'SHORT', exitReason: 'STOP_LOSS', entryTimestamp: '2024-01-03T10:00:00' }
+        { theoreticalGrossPnL: 1020, totalSlippageCost: 20, grossPnL: 1000, netPnL: 950, brokerage: 40, statutoryCharges: 8, gst: 2, totalCharges: 50, barsHeld: 4, side: 'LONG', exitReason: 'PROFIT_TARGET', entryTimestamp: '2024-01-01T10:00:00' },
+        { theoreticalGrossPnL: 1020, totalSlippageCost: 20, grossPnL: 1000, netPnL: 950, brokerage: 40, statutoryCharges: 8, gst: 2, totalCharges: 50, barsHeld: 5, side: 'LONG', exitReason: 'PROFIT_TARGET', entryTimestamp: '2024-01-02T10:00:00' },
+        { theoreticalGrossPnL: -490, totalSlippageCost: 10, grossPnL: -500, netPnL: -550, brokerage: 40, statutoryCharges: 8, gst: 2, totalCharges: 50, barsHeld: 2, side: 'SHORT', exitReason: 'STOP_LOSS', entryTimestamp: '2024-01-03T10:00:00' }
       ];
 
       const dailyRecords = [
@@ -254,6 +303,35 @@ describe('Historical Backtesting Engine Test Suite', () => {
       assert.equal(metrics.tradingPerformance.averageLoss, 550);
       assert.equal(metrics.tradingPerformance.profitFactor, 3.45); // 1900 / 550 = 3.45
       assert.ok(metrics.riskPerformance.maxDrawdown > 0);
+
+      // Financial Accounting Identity Verification
+      assert.equal(metrics.overview.accountingIdentity.isReconciled, true);
+      assert.equal(
+        metrics.overview.theoreticalGrossPnL - metrics.overview.slippageCost - metrics.overview.totalCharges,
+        metrics.overview.netPnL
+      );
+    });
+
+    it('should maintain strict accounting identity on trade-level ledger', () => {
+      // Theoretical Gross: 3029.15, Slippage: 836.27, Realized Gross: 2192.88, Charges: 2464.86, Net: -271.98
+      const trade = {
+        entryTimestamp: '2024-01-01T10:00:00',
+        theoreticalGrossPnL: 3029.15,
+        totalSlippageCost: 836.27,
+        grossPnL: 2192.88,
+        totalCharges: 2464.86,
+        netPnL: -271.98,
+        brokerage: 1454.14,
+        statutoryCharges: 723.78,
+        gst: 286.94
+      };
+
+      const metrics = BacktestMetricsCalculator.calculate([trade], [], 100000, 75);
+      assert.equal(metrics.overview.accountingIdentity.isReconciled, true);
+      assert.equal(
+        Number((metrics.overview.theoreticalGrossPnL - metrics.overview.slippageCost - metrics.overview.totalCharges).toFixed(2)),
+        metrics.overview.netPnL
+      );
     });
   });
 

@@ -421,6 +421,33 @@ Completed evidence:
 - Test Suite: 57 passing unit tests across 21 suites (`backend/test/backtesting.test.js`, `backend/test/strategy.test.js`, and `backend/test/indicators.test.js`).
 - Strictly non-optimistic: No live trading claims; demonstrates how basic ORB is value-destroying after costs, while progressive multi-indicator filtering (Variant E) compresses drawdown and reduces churn by ~70%.
 
+### Phase 6.1 — Backtest reconciliation and financial accuracy audit
+
+**Status: COMPLETED (Financial Reconciliation Certified, Effective-Dated Groww Fees & Ledger Invariant Verified).**
+
+Completed evidence:
+- Financial Reconciliation Certified: Eliminated discrepancy between theoretical gross P&L, slippage cost, and realized gross P&L.
+- Invariant Accounting Identity Enforced:
+  $$\text{Net P\&L} = \text{Theoretical Gross P\&L} - \text{Total Slippage Cost} - \text{Total Charges}$$
+  Every trade in `trades.csv` and every run in `summary.json` satisfies this identity with zero discrepancy across all 25 runs.
+- Audited Groww Brokerage Schedule:
+  - Base rate: 0.1% or max ₹20 per executed order leg.
+  - Effective-dated minimum floor: ₹2 per order pre-21 June 2025; ₹5 per order effective 21 June 2025.
+  - SEBI ceiling guard: Minimum fee capped at 2.5% of order turnover.
+- Audited NSE & Statutory Charges:
+  - NSE Cash Market: ₹2.97 per lakh (0.00297%) post-Oct 1, 2024 (NSE Circular `NSE/FA/64232`); 0.00325% retail baseline pass-through pre-Oct 2024.
+  - STT: 0.025% on sell side only.
+  - Stamp Duty: 0.003% on buy side only.
+  - SEBI & IPFT: ₹10 per crore (0.0001%) on both legs.
+  - GST: 18% strictly on service fees (Brokerage + Exchange + SEBI + IPFT), excluding STT and Stamp Duty.
+- Run Registry Reconciled:
+  - Classified exactly 25 canonical batch runs (`isCanonical: true`, `runType: 'CANONICAL'`).
+  - Superseded initial test runs preserved with `isCanonical: false`.
+- Slippage Sensitivity Stress Test Completed: Tested across 0, 1, 2, 3, and 5 bps per side. HDFCBANK Variant E remains net profitable across all slippage scenarios up to 5 bps (+1.19% at 0 bps down to +0.67% at 5 bps).
+- Master Reconciliation Report: [`BACKTEST_RECONCILIATION_REPORT.md`](file:///Users/vijaychoudhary/AI-TRADING/backend/storage/backtesting/BACKTEST_RECONCILIATION_REPORT.md).
+- Reconciled Outputs: Regenerated `BACKTEST_ENGINE_REPORT.md`, `BACKTEST_OUTCOMES_CHATGPT.json`, and `runs_index.json`.
+- Test Suite: 61 tests passing across 21 test suites (`backend/test/backtesting.test.js`, `backend/test/strategy.test.js`, and `backend/test/indicators.test.js`).
+
 ### Phase 7 — Research comparison, ranking, and robustness
 
 **Status: NOT STARTED / NEXT.**

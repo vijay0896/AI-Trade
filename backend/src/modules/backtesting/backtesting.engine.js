@@ -154,22 +154,40 @@ class BacktestEngine {
 
           if (exitEvent) {
             // Finalize Trade
-            const exitPrice = exitEvent.exitPrice;
-            const grossPnL = activeTrade.side === 'LONG'
-              ? (exitPrice - activeTrade.entryPrice) * activeTrade.quantity
-              : (activeTrade.entryPrice - exitPrice) * activeTrade.quantity;
+            const qty = activeTrade.quantity;
+            const nominalEntryPrice = activeTrade.nominalEntryPrice;
+            const execEntryPrice = activeTrade.entryPrice;
+            const nominalExitPrice = exitEvent.nominalExitPrice;
+            const execExitPrice = exitEvent.exitPrice;
 
+            // 1. Theoretical Gross P&L before slippage
+            const theoreticalGrossPnL = activeTrade.side === 'LONG'
+              ? (nominalExitPrice - nominalEntryPrice) * qty
+              : (nominalEntryPrice - nominalExitPrice) * qty;
+
+            // 2. Slippage Costs
+            const entrySlippageCost = Math.abs(execEntryPrice - nominalEntryPrice) * qty;
+            const exitSlippageCost = Math.abs(execExitPrice - nominalExitPrice) * qty;
+            const totalSlippageCost = entrySlippageCost + exitSlippageCost;
+
+            // 3. Gross Realized P&L after slippage
+            const grossRealizedPnL = activeTrade.side === 'LONG'
+              ? (execExitPrice - execEntryPrice) * qty
+              : (execEntryPrice - execExitPrice) * qty;
+
+            // 4. Itemized Transaction Charges (Brokerage + Statutory + GST)
             const feeResult = BacktestFeeEngine.calculateTradeCosts({
               side: activeTrade.side,
-              quantity: activeTrade.quantity,
-              entryPrice: activeTrade.entryPrice,
-              exitPrice,
+              quantity: qty,
+              entryPrice: execEntryPrice,
+              exitPrice: execExitPrice,
               entryTimestamp: activeTrade.entryTimestamp,
               exitTimestamp: exitEvent.exitTimestamp,
               customSchedule: customFeeSchedule
             });
 
-            const netPnL = grossPnL - feeResult.totalCharges;
+            // 5. Final Net Realized P&L
+            const netPnL = grossRealizedPnL - feeResult.totalCharges;
             dailyRealizedPnL += netPnL;
             runningCapital += netPnL;
 
@@ -179,24 +197,31 @@ class BacktestEngine {
               side: activeTrade.side,
               entryTimestamp: activeTrade.entryTimestamp,
               exitTimestamp: exitEvent.exitTimestamp,
-              nominalEntryPrice: activeTrade.nominalEntryPrice,
-              entryPrice: activeTrade.entryPrice,
-              nominalExitPrice: exitEvent.nominalExitPrice,
-              exitPrice,
-              quantity: activeTrade.quantity,
+              nominalEntryPrice: Number(nominalEntryPrice.toFixed(2)),
+              entryPrice: Number(execEntryPrice.toFixed(2)),
+              nominalExitPrice: Number(nominalExitPrice.toFixed(2)),
+              exitPrice: Number(execExitPrice.toFixed(2)),
+              quantity: qty,
               positionValue: activeTrade.positionValue,
               initialStopLoss: activeTrade.initialStopLoss,
               targetPrice: activeTrade.targetPrice,
               exitReason: exitEvent.exitReason,
               barsHeld: exitEvent.barsHeld,
-              grossPnL: Number(grossPnL.toFixed(2)),
-              netPnL: Number(netPnL.toFixed(2)),
+              theoreticalGrossPnL: Number(theoreticalGrossPnL.toFixed(2)),
+              entrySlippageCost: Number(entrySlippageCost.toFixed(2)),
+              exitSlippageCost: Number(exitSlippageCost.toFixed(2)),
+              totalSlippageCost: Number(totalSlippageCost.toFixed(2)),
+              grossPnL: Number(grossRealizedPnL.toFixed(2)), // Gross realized after slippage
               brokerage: feeResult.brokerage,
+              stt: feeResult.stt,
+              stampDuty: feeResult.stampDuty,
+              exchangeCharges: feeResult.exchangeCharges,
+              sebiCharges: feeResult.sebiCharges,
+              ipftCharges: feeResult.ipftCharges,
               statutoryCharges: feeResult.statutoryCharges,
               gst: feeResult.gst,
               totalCharges: feeResult.totalCharges,
-              entrySlippageCost: activeTrade.entrySlippageCost,
-              exitSlippageCost: exitEvent.slippageApplied * activeTrade.quantity,
+              netPnL: Number(netPnL.toFixed(2)),
               isAmbiguous: exitEvent.isAmbiguous,
               ambiguityDetail: exitEvent.ambiguityDetail || null
             });

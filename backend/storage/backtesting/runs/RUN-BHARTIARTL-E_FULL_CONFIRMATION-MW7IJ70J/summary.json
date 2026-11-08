@@ -1,0 +1,262 @@
+{
+  "overview": {
+    "initialCapital": 100000,
+    "endingCapital": 99365.86,
+    "netReturnPercent": -0.63,
+    "theoreticalGrossPnL": 707.88,
+    "slippageCost": 261.77,
+    "grossRealizedPnL": 446.11,
+    "grossPnL": 446.11,
+    "brokerage": 717.11,
+    "stt": 163.16,
+    "stampDuty": 19.54,
+    "exchangeCharges": 40.93,
+    "sebiCharges": 1.3046,
+    "ipftCharges": 1.3046,
+    "statutoryCharges": 226.26,
+    "gst": 136.92,
+    "totalCharges": 1080.25,
+    "netPnL": -634.14,
+    "costsPercentOfGross": 189.58,
+    "accountingIdentity": {
+      "theoreticalGrossPnL": 707.88,
+      "minusSlippageCost": 261.77,
+      "equalsGrossRealizedPnL": 446.11,
+      "minusTotalCharges": 1080.25,
+      "equalsNetRealizedPnL": -634.14,
+      "isReconciled": true
+    }
+  },
+  "tradingPerformance": {
+    "totalTrades": 18,
+    "winningTrades": 7,
+    "losingTrades": 11,
+    "scratchTrades": 0,
+    "winRate": 38.89,
+    "averageWin": 185.45,
+    "averageLoss": 175.66,
+    "expectancy": -35.22,
+    "profitFactor": 0.67,
+    "averageRealizedRR": 1.06
+  },
+  "riskPerformance": {
+    "maxDrawdown": 1378.56,
+    "maxDrawdownPercent": 1.37,
+    "drawdownDurationDays": 25,
+    "largestWin": 669.76,
+    "largestLoss": -309,
+    "maxConsecutiveWins": 2,
+    "maxConsecutiveLosses": 5,
+    "dailyLossLimitTriggers": 0,
+    "timeInMarketPercent": 0.56
+  },
+  "directionalAnalysis": {
+    "long": {
+      "totalTrades": 15,
+      "winningTrades": 6,
+      "winRate": 40,
+      "netPnL": -481.73,
+      "profitFactor": 0.72,
+      "avgTrade": -32.12
+    },
+    "short": {
+      "totalTrades": 3,
+      "winningTrades": 1,
+      "winRate": 33.33,
+      "netPnL": -152.41,
+      "profitFactor": 0.33,
+      "avgTrade": -50.8
+    }
+  },
+  "exitReasonBreakdown": {
+    "SQUARE_OFF": 10,
+    "MAX_HOLDING_TIME": 7,
+    "PROFIT_TARGET": 1
+  },
+  "periodicBreakdown": {
+    "monthly": {
+      "2022-01": {
+        "period": "2022-01",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -96.6,
+        "netPnL": -155.91,
+        "charges": 59.31,
+        "winRate": 0
+      },
+      "2022-06": {
+        "period": "2022-06",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -115.8,
+        "netPnL": -177.8,
+        "charges": 62,
+        "winRate": 0
+      },
+      "2022-10": {
+        "period": "2022-10",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 318.09,
+        "netPnL": 250.17,
+        "charges": 67.92,
+        "winRate": 100
+      },
+      "2023-05": {
+        "period": "2023-05",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 733.32,
+        "netPnL": 669.76,
+        "charges": 63.56,
+        "winRate": 100
+      },
+      "2023-08": {
+        "period": "2023-08",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -107.6,
+        "netPnL": -167.19,
+        "charges": 59.59,
+        "winRate": 0
+      },
+      "2023-11": {
+        "period": "2023-11",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 169.2,
+        "netPnL": 108.86,
+        "charges": 60.34,
+        "winRate": 100
+      },
+      "2024-01": {
+        "period": "2024-01",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 85.4,
+        "netPnL": 23.42,
+        "charges": 61.98,
+        "winRate": 100
+      },
+      "2024-02": {
+        "period": "2024-02",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -116.85,
+        "netPnL": -180.69,
+        "charges": 63.84,
+        "winRate": 0
+      },
+      "2024-03": {
+        "period": "2024-03",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 65.79,
+        "netPnL": 11.09,
+        "charges": 54.7,
+        "winRate": 100
+      },
+      "2024-05": {
+        "period": "2024-05",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -46.02,
+        "netPnL": -105.21,
+        "charges": 59.19,
+        "winRate": 0
+      },
+      "2024-10": {
+        "period": "2024-10",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -251.43,
+        "netPnL": -309,
+        "charges": 57.57,
+        "winRate": 0
+      },
+      "2026-04": {
+        "period": "2026-04",
+        "trades": 2,
+        "wins": 1,
+        "grossPnL": -48.96,
+        "netPnL": -165.29,
+        "charges": 116.33,
+        "winRate": 50
+      },
+      "2026-06": {
+        "period": "2026-06",
+        "trades": 2,
+        "wins": 0,
+        "grossPnL": -231.03,
+        "netPnL": -346.48,
+        "charges": 115.45,
+        "winRate": 0
+      },
+      "2026-07": {
+        "period": "2026-07",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -59.5,
+        "netPnL": -124.2,
+        "charges": 64.7,
+        "winRate": 0
+      },
+      "2026-09": {
+        "period": "2026-09",
+        "trades": 1,
+        "wins": 0,
+        "grossPnL": -60.5,
+        "netPnL": -123.87,
+        "charges": 63.37,
+        "winRate": 0
+      },
+      "2026-10": {
+        "period": "2026-10",
+        "trades": 1,
+        "wins": 1,
+        "grossPnL": 208.6,
+        "netPnL": 158.2,
+        "charges": 50.4,
+        "winRate": 100
+      }
+    },
+    "yearly": {
+      "2022": {
+        "period": "2022",
+        "trades": 3,
+        "wins": 1,
+        "grossPnL": 105.69,
+        "netPnL": -83.54,
+        "charges": 189.23,
+        "winRate": 33.33
+      },
+      "2023": {
+        "period": "2023",
+        "trades": 3,
+        "wins": 2,
+        "grossPnL": 794.92,
+        "netPnL": 611.43,
+        "charges": 183.49,
+        "winRate": 66.67
+      },
+      "2024": {
+        "period": "2024",
+        "trades": 5,
+        "wins": 2,
+        "grossPnL": -263.11,
+        "netPnL": -560.39,
+        "charges": 297.28,
+        "winRate": 40
+      },
+      "2026": {
+        "period": "2026",
+        "trades": 7,
+        "wins": 2,
+        "grossPnL": -191.39,
+        "netPnL": -601.64,
+        "charges": 410.25,
+        "winRate": 28.57
+      }
+    }
+  }
+}

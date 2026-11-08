@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-M&M-D_ORB_VWAP_EMA_ADX-MW7IJ513",
+  "symbol": "M&M",
+  "strategyId": "STRAT-ORB-VAR-D",
+  "strategyName": "Variant D: ORB with VWAP, EMA and ADX/DI Filter",
+  "variant": "D_ORB_VWAP_EMA_ADX",
+  "direction": "BOTH",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95911,
+  "totalRegularBars": 92479,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 1209,
+  "initialCapital": 100000,
+  "endingCapital": 94589.47,
+  "slippageBps": 2,
+  "executedAt": "2026-11-08T07:30:34.381Z",
+  "runtimeMs": 214
+}
