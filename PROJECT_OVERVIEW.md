@@ -98,9 +98,15 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │       │   │   ├── groww.formatter.js  # Raw API response normalization layer
 │       │   │   ├── groww.routes.js     # Route endpoint declarations (/api/v1/groww/*)
 │       │   │   └── groww.service.js    # Session caching, auto-refresh, and orchestration
-│       │   └── health/
-│       │       ├── health.controller.js# System health & broker status provider
-│       │       └── health.routes.js    # Health check routes (/api/health)
+│       │   ├── health/
+│       │   │   ├── health.controller.js# System health & broker status provider
+│       │   │   └── health.routes.js    # Health check routes (/api/health)
+│       │   └── market-data/
+│       │       ├── marketData.client.js    # Groww Historical Candle API v1 client
+│       │       ├── marketData.controller.js# Market data HTTP request/response handler
+│       │       ├── marketData.formatter.js # OHLCV normalizer, sorter & deduplicator
+│       │       ├── marketData.routes.js    # Routes (/api/v1/market-data/*)
+│       │       └── marketData.service.js   # Scope validator & Groww token orchestrator
 │       └── routes/
 │           └── index.js                # Master v1 API aggregator
 │
@@ -257,6 +263,7 @@ HTTP Request
 | `GET` | `/api/v1/groww/funds` | `GrowwController.getFunds` | Cash balances, margins & collateral | IMPLEMENTED |
 | `GET` | `/api/v1/groww/holdings` | `GrowwController.getHoldings` | Demat holdings + Live LTP & P&L | IMPLEMENTED |
 | `GET` | `/api/v1/groww/positions` | `GrowwController.getPositions` | Open intraday & F&O positions | IMPLEMENTED |
+| `GET` | `/api/v1/market-data/historical-candles` | `MarketDataController.getHistoricalCandles` | 5-minute historical OHLCV candles (ICICIBANK) | IMPLEMENTED |
 
 ### 6.2 Endpoint Detail Specifications
 
@@ -451,6 +458,45 @@ HTTP Request
 }
 ```
 
+#### 7. Get Historical Candles (5-Minute OHLCV)
+- **Path:** `GET /api/v1/market-data/historical-candles`
+- **Query Parameters:**
+  - `symbol` (default: `ICICIBANK` / `NSE-ICICIBANK`)
+  - `exchange` (default: `NSE`)
+  - `segment` (default: `CASH`)
+  - `start_time` (default: `2026-11-06 09:15:00`)
+  - `end_time` (default: `2026-11-06 15:30:00`)
+  - `candle_interval` (default: `5minute`)
+- **Controller Action:** Invokes `MarketDataService.getHistoricalCandles()`.
+- **Response Shape (200 OK):**
+```json
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Historical candles fetched successfully",
+  "data": {
+    "symbol": "NSE-ICICIBANK",
+    "candleInterval": "5minute",
+    "startTime": "2026-11-06T09:15:00",
+    "endTime": "2026-11-06T15:30:00",
+    "candleCount": 75,
+    "candles": [
+      {
+        "timestamp": "2026-11-06T09:15:00",
+        "open": 1285.5,
+        "high": 1290.0,
+        "low": 1284.2,
+        "close": 1288.4,
+        "volume": 245000
+      }
+    ]
+  },
+  "timestamp": "2026-11-08T05:15:00.000Z"
+}
+```
+> [!NOTE]
+> If the authenticated Groww API token lacks the `historical-basic` entitlement, Groww returns HTTP 403 (`Access forbidden for this request.`). The endpoint surfaces this transparently as an HTTP 403 `AppError` without falling back to secondary data vendors.
+
 ---
 
 ## 7. Database Analysis
@@ -525,6 +571,7 @@ HTTP Request
 | Portfolio | Funds & Multi-Segment Margins | IMPLEMENTED | `groww.controller.js#L51`, `Funds/index.tsx` | Categorizes and renders cash balance, collateral, equity delivery/intraday margins, and F&O margins. |
 | Portfolio | Demat Holdings Ledger | IMPLEMENTED | `groww.controller.js#L63`, `Holdings/index.tsx` | Lists user holdings (`GROWW`, `ITBEES`, `MAFANG`) with ISIN, quantity, free quantity, and average buy price. |
 | Market Data | Real-Time LTP & Returns | IMPLEMENTED | `groww.client.js#L139`, `Holdings/index.tsx` | Calculates live current value, absolute P&L in ₹, percentage return, and day change. |
+| Market Data | Historical 5-Minute Candles | IMPLEMENTED | `marketData.client.js`, `marketData.service.js`, `marketData.formatter.js` | Fetches, validates, and normalizes 5-minute historical OHLCV candles for ICICIBANK via Groww API v1. |
 | Trading | Live Positions Surveillance | IMPLEMENTED | `groww.controller.js#L75`, `Positions/index.tsx` | Displays open intraday (MIS) and F&O contracts with buy/sell quantities and realised/unrealised P&L. |
 | UI Navigation | Responsive Collapsible Sidebar | IMPLEMENTED | `Sidebar.tsx`, `LayoutContext.tsx` | Persists collapsed state in `localStorage` and provides mobile responsive drawer. |
 | UI Feedback | Toast Feedback & Reconnect | IMPLEMENTED | `Header.tsx`, `Dashboard/index.tsx` | Header pill with live ping animation and manual "Sync / Reconnect" button with RTK cache invalidation. |
@@ -735,6 +782,9 @@ sequenceDiagram
 | [`backend/src/modules/groww/groww.client.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/groww/groww.client.js) | Groww API client | `requestAccessToken()`, `getUserProfile()`, `getMargins()`, `getHoldings()`, `getLiveQuote()` |
 | [`backend/src/modules/groww/groww.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/groww/groww.service.js) | Business logic & session | `connect()`, `ensureValidToken()`, `getHoldings()`, `getStatus()` |
 | [`backend/src/modules/groww/groww.formatter.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/groww/groww.formatter.js) | Data normalization | `formatSession()`, `formatProfile()`, `formatFunds()`, `formatHoldings()` |
+| [`backend/src/modules/market-data/marketData.client.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/marketData.client.js) | Historical Candles client | `MarketDataClient.getHistoricalCandles()` |
+| [`backend/src/modules/market-data/marketData.service.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/marketData.service.js) | Historical Candles logic | `MarketDataService.getHistoricalCandles()` |
+| [`backend/src/modules/market-data/marketData.formatter.js`](file:///Users/vijaychoudhary/AI-TRADING/backend/src/modules/market-data/marketData.formatter.js) | Candle formatting & sort | `formatTimestamp()`, `normalizeSingleCandle()`, `formatCandlesResponse()` |
 | [`frontend/src/api/growwApi.ts`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/api/growwApi.ts) | RTK Query endpoints | `useGetGrowwStatusQuery`, `useConnectGrowwMutation`, `useGetGrowwHoldingsQuery` |
 | [`frontend/src/pages/Holdings/index.tsx`](file:///Users/vijaychoudhary/AI-TRADING/frontend/src/pages/Holdings/index.tsx) | Demat holdings view | `HoldingsPage()`, search filter, live return formatting |
 
