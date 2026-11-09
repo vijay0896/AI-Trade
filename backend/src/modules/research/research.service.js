@@ -155,7 +155,9 @@ class ResearchService {
    * @returns {Promise<Array<Object>>}
    */
   static async analyzeCanonicalRuns(stockBehaviours) {
-    const indexPath = path.join(STORAGE_PATHS.BACKTEST_RUNS_DIR, 'runs_index.json');
+    const legacyDir = path.resolve(__dirname, '../../../storage/backtesting/legacy_orb_runs');
+    const runsDir = fs.existsSync(legacyDir) ? legacyDir : STORAGE_PATHS.BACKTEST_RUNS_DIR;
+    const indexPath = path.join(runsDir, 'runs_index.json');
     if (!fs.existsSync(indexPath)) {
       throw new Error(`Runs index not found at ${indexPath}`);
     }
@@ -166,7 +168,7 @@ class ResearchService {
     const analyzedRecords = [];
 
     for (const run of canonicalRuns) {
-      const runDir = path.join(STORAGE_PATHS.BACKTEST_RUNS_DIR, run.runId);
+      const runDir = path.join(runsDir, run.runId);
       const tradesFile = path.join(runDir, 'trades.csv');
       let trades = [];
 

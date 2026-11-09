@@ -13,7 +13,8 @@ const path = require('path');
 
 const AUDIT_DIR = path.resolve(__dirname, '../storage/research/phase-7.1-audit');
 const RESEARCH_DIR = path.resolve(__dirname, '../storage/research');
-const RUNS_DIR = path.resolve(__dirname, '../storage/backtesting/runs');
+const LEGACY_RUNS_DIR = path.resolve(__dirname, '../storage/backtesting/legacy_orb_runs');
+const RUNS_DIR = fs.existsSync(LEGACY_RUNS_DIR) ? LEGACY_RUNS_DIR : path.resolve(__dirname, '../storage/backtesting/runs');
 const RUNS_INDEX_PATH = path.join(RUNS_DIR, 'runs_index.json');
 const ENGINE_PATH = path.resolve(__dirname, '../src/modules/backtesting/backtesting.engine.js');
 

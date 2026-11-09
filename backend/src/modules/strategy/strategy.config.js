@@ -14,7 +14,7 @@ const {
   DEFAULT_UNIVERSE,
   TIME_CONVENTIONS
 } = require('./strategy.constants');
-const { StrategyConfigSchema } = require('./strategy.schema');
+const { StrategyConfigSchema, EMA921StrategySchema } = require('./strategy.schema');
 
 /**
  * Base Template for all Strategy Variants
@@ -151,7 +151,32 @@ const VARIANT_E_CONFIG = StrategyConfigSchema.parse({
 });
 
 /**
- * All Predefined Core Variants
+ * Canonical Single Active Strategy: EMA 9 / EMA 21 Crossover
+ */
+const EMA_9_21_CROSSOVER_CONFIG = EMA921StrategySchema.parse({
+  id: 'ema_9_21_crossover',
+  name: 'EMA 9/21 Crossover',
+  version: '1.0.0',
+  description: 'Intraday trend-following strategy buying when EMA 9 crosses above EMA 21 and closing when EMA 9 crosses below EMA 21. Long-only, no short positions, no stop loss, fixed share quantity.',
+  strategyId: 'ema_9_21_crossover',
+  variant: 'EMA_9_21_CROSSOVER',
+  timeframe: '5minute',
+  timezone: 'Asia/Kolkata',
+  universe: DEFAULT_UNIVERSE,
+  fastPeriod: 9,
+  slowPeriod: 21,
+  fastColor: '#00C853',
+  slowColor: '#FF0000',
+  direction: 'LONG_ONLY',
+  fixedQuantity: 1,
+  capital: 100000,
+  squareOffTime: '15:15:00',
+  entryCutoffTime: '15:00:00'
+});
+EMA_9_21_CROSSOVER_CONFIG.specialSessions = 'SUPPRESS_ALL';
+
+/**
+ * All Predefined Core Variants (5 historical research variants)
  */
 const PREDEFINED_STRATEGIES = {
   [STRATEGY_VARIANTS.VARIANT_A]: VARIANT_A_CONFIG,
@@ -160,6 +185,8 @@ const PREDEFINED_STRATEGIES = {
   [STRATEGY_VARIANTS.VARIANT_D]: VARIANT_D_CONFIG,
   [STRATEGY_VARIANTS.VARIANT_E]: VARIANT_E_CONFIG
 };
+
+const ACTIVE_STRATEGY_CONFIG = EMA_9_21_CROSSOVER_CONFIG;
 
 /**
  * Systematic Research Parameter Matrix (Independent Evaluation Cohorts)
@@ -410,6 +437,8 @@ const PARAMETER_MATRIX_COHORTS = [
 ];
 
 module.exports = {
+  ACTIVE_STRATEGY_CONFIG,
+  EMA_9_21_CROSSOVER_CONFIG,
   BASE_STRATEGY_TEMPLATE,
   VARIANT_A_CONFIG,
   VARIANT_B_CONFIG,

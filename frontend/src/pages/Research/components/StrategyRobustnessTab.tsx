@@ -29,6 +29,22 @@ export const StrategyRobustnessTab: React.FC = () => {
 
   return (
     <div className="space-y-6">
+      {/* Archival Research Notice */}
+      <div className="p-3.5 rounded-xl bg-slate-900 border border-slate-700 text-slate-200 text-xs flex items-center justify-between gap-4">
+        <div className="flex items-center gap-2.5">
+          <Info className="h-4 w-4 text-indigo-400 shrink-0" />
+          <span>
+            <strong>Archival Research Record:</strong> The ORB Variants A–E displayed below are preserved historical research benchmarks. Under Phase 9, the single active production strategy is <strong>EMA 9/21 Crossover</strong>.
+          </span>
+        </div>
+        <a
+          href="/strategy"
+          className="shrink-0 px-3 py-1 bg-indigo-600 hover:bg-indigo-500 text-white rounded text-xs font-semibold transition-colors"
+        >
+          View Active EMA 9/21 Strategy
+        </a>
+      </div>
+
       {/* Prominent HDFCBANK Variant E Reality Check & Disclaimer Banner */}
       <div className="p-4 rounded-xl bg-amber-50 border-2 border-amber-300 text-amber-950 text-xs shadow-xs">
         <div className="flex items-start gap-3">

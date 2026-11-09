@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-ICICIBANK-EMA9_21-MW93UY3P",
+  "symbol": "ICICIBANK",
+  "strategyId": "ema_9_21_crossover",
+  "strategyName": "EMA 9/21 Crossover",
+  "variant": "EMA_9_21_CROSSOVER",
+  "direction": "LONG_ONLY",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 96118,
+  "totalRegularBars": 92476,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 0,
+  "initialCapital": 100000,
+  "endingCapital": 85916.55,
+  "slippageBps": 2,
+  "executedAt": "2026-11-09T10:15:23.634Z",
+  "runtimeMs": 456
+}

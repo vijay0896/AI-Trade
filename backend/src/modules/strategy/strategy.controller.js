@@ -10,16 +10,43 @@ const { asyncHandler } = require('../../core/utils/asyncHandler');
 class StrategyController {
   /**
    * @route GET /api/v1/strategy/configs
-   * @description Get all predefined strategy variant configurations
+   * @description Get all active strategy configurations (sole active: EMA 9/21 Crossover)
    */
   static getAllConfigs = asyncHandler(async (req, res) => {
-    const configs = StrategyService.getAllConfigs();
+    const includeLegacy = req.query.includeLegacy === 'true';
+    const configs = StrategyService.getAllConfigs({ activeOnly: !includeLegacy });
     return ApiResponse.success(res, {
       message: 'Strategy configurations retrieved successfully',
       data: {
         totalVariants: configs.length,
         configs
       }
+    });
+  });
+
+  /**
+   * @route GET /api/v1/strategy/active
+   * @description Get single active strategy configuration (EMA 9/21 Crossover)
+   */
+  static getActiveConfig = asyncHandler(async (req, res) => {
+    const config = StrategyService.getActiveConfig();
+    return ApiResponse.success(res, {
+      message: 'Active strategy configuration retrieved successfully',
+      data: config
+    });
+  });
+
+  /**
+   * @route GET /api/v1/strategy/chart/:symbol
+   * @description Get candlestick data with EMA 9/21 and BUY/SELL signals for chart rendering
+   */
+  static getChartData = asyncHandler(async (req, res) => {
+    const { symbol } = req.params;
+    const { date } = req.query;
+    const chartData = await StrategyService.getChartData(symbol, date);
+    return ApiResponse.success(res, {
+      message: `Chart data for '${symbol}' retrieved successfully`,
+      data: chartData
     });
   });
 

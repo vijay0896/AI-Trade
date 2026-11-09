@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-BHARTIARTL-EMA9_21-MW93UZM0",
+  "symbol": "BHARTIARTL",
+  "strategyId": "ema_9_21_crossover",
+  "strategyName": "EMA 9/21 Crossover",
+  "variant": "EMA_9_21_CROSSOVER",
+  "direction": "LONG_ONLY",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95811,
+  "totalRegularBars": 92478,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 0,
+  "initialCapital": 100000,
+  "endingCapital": 85607.21,
+  "slippageBps": 2,
+  "executedAt": "2026-11-09T10:15:25.580Z",
+  "runtimeMs": 449
+}

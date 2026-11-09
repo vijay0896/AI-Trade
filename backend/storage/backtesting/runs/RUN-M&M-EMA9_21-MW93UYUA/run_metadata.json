@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-M&M-EMA9_21-MW93UYUA",
+  "symbol": "M&M",
+  "strategyId": "ema_9_21_crossover",
+  "strategyName": "EMA 9/21 Crossover",
+  "variant": "EMA_9_21_CROSSOVER",
+  "direction": "LONG_ONLY",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95911,
+  "totalRegularBars": 92479,
+  "totalTradingDays": 1240,
+  "excludedSessionsCount": 0,
+  "initialCapital": 100000,
+  "endingCapital": 84814.33,
+  "slippageBps": 2,
+  "executedAt": "2026-11-09T10:15:24.647Z",
+  "runtimeMs": 513
+}

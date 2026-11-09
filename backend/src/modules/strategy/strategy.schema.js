@@ -116,9 +116,9 @@ const RiskConfigSchema = z.object({
 );
 
 /**
- * Master Strategy Specification Schema
+ * Master Strategy Specification Schema (Legacy ORB Schema)
  */
-const StrategyConfigSchema = z.object({
+const LegacyStrategyConfigSchema = z.object({
   id: z.string().min(3).max(64),
   name: z.string().min(3).max(128),
   version: z.string().default('1.0.0'),
@@ -151,6 +151,39 @@ const StrategyConfigSchema = z.object({
 );
 
 /**
+ * EMA 9/21 Crossover Strategy Configuration Schema (Single Active Strategy)
+ */
+const EMA921StrategySchema = z.object({
+  id: z.literal('ema_9_21_crossover'),
+  name: z.string().default('EMA 9/21 Crossover'),
+  version: z.string().default('1.0.0'),
+  description: z.string().default('Intraday trend-following strategy buying when EMA 9 crosses above EMA 21 and closing when EMA 9 crosses below EMA 21. Long-only, no short positions, no stop loss, fixed share quantity.'),
+  strategyId: z.literal('ema_9_21_crossover').default('ema_9_21_crossover'),
+  variant: z.literal('EMA_9_21_CROSSOVER'),
+  timeframe: z.enum(['5minute']).default('5minute'),
+  timezone: z.enum(['Asia/Kolkata']).default('Asia/Kolkata'),
+  universe: z.array(z.string().min(1)).min(1).default(DEFAULT_UNIVERSE),
+  fastPeriod: z.number().int().min(2).max(50).default(9),
+  slowPeriod: z.number().int().min(2).max(200).default(21),
+  fastColor: z.string().default('#00C853'),
+  slowColor: z.string().default('#FF0000'),
+  direction: z.literal('LONG_ONLY').default('LONG_ONLY'),
+  fixedQuantity: z.number().int().positive().default(1),
+  capital: z.number().positive().default(100000),
+  squareOffTime: z.string().regex(TIME_REGEX, 'squareOffTime must be HH:MM:SS format').default('15:15:00'),
+  entryCutoffTime: z.string().regex(TIME_REGEX, 'entryCutoffTime must be HH:MM:SS format').default('15:00:00')
+}).refine(
+  (data) => data.fastPeriod < data.slowPeriod,
+  { message: 'fastPeriod must be less than slowPeriod', path: ['slowPeriod'] }
+).refine(
+  (data) => data.entryCutoffTime < data.squareOffTime,
+  { message: 'entryCutoffTime must precede squareOffTime', path: ['entryCutoffTime'] }
+);
+
+// StrategyConfigSchema is the unified validator (evaluates Legacy first if variant is known or EMA 9/21)
+const StrategyConfigSchema = z.union([LegacyStrategyConfigSchema, EMA921StrategySchema]);
+
+/**
  * Position Size Calculation Parameter Schema
  */
 const PositionSizeParamsSchema = z.object({
@@ -171,6 +204,8 @@ module.exports = {
   ExitConfigSchema,
   RiskConfigSchema,
   StrategyConfigSchema,
+  LegacyStrategyConfigSchema,
+  EMA921StrategySchema,
   PositionSizeParamsSchema
 };
 

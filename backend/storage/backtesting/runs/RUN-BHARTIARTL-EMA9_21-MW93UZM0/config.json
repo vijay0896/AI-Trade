@@ -1,0 +1,26 @@
+{
+  "id": "ema_9_21_crossover",
+  "name": "EMA 9/21 Crossover",
+  "version": "1.0.0",
+  "variant": "EMA_9_21_CROSSOVER",
+  "strategyId": "ema_9_21_crossover",
+  "description": "Intraday trend-following strategy buying when EMA 9 crosses above EMA 21 and closing when EMA 9 crosses below EMA 21. Long-only, no short positions, no stop loss, fixed share quantity.",
+  "universe": [
+    "ICICIBANK",
+    "HDFCBANK",
+    "M&M",
+    "AXISBANK",
+    "BHARTIARTL"
+  ],
+  "timeframe": "5minute",
+  "timezone": "Asia/Kolkata",
+  "fastPeriod": 9,
+  "slowPeriod": 21,
+  "fastColor": "#00C853",
+  "slowColor": "#FF0000",
+  "direction": "LONG_ONLY",
+  "fixedQuantity": 1,
+  "capital": 100000,
+  "squareOffTime": "15:15:00",
+  "entryCutoffTime": "15:00:00"
+}

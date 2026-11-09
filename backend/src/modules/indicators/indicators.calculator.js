@@ -16,6 +16,14 @@ class IndicatorsCalculator {
    * Resets all internal state for a fresh stock sequence.
    */
   reset() {
+    // 0. EMA 9 & EMA 21 (Core Crossover Strategy)
+    this.ema9Alpha = 2 / (9 + 1); // 0.20
+    this.ema21Alpha = 2 / (21 + 1); // 2/22 = 0.090909...
+    this.ema9Window = [];
+    this.ema21Window = [];
+    this.currentEMA9 = null;
+    this.currentEMA21 = null;
+
     // 1. EMA 20 & EMA 50
     this.ema20Alpha = 2 / (20 + 1);
     this.ema50Alpha = 2 / (50 + 1);
@@ -70,6 +78,37 @@ class IndicatorsCalculator {
    */
   processRegularBar({ timestamp, open, high, low, close, volume }) {
     const [date] = timestamp.split('T');
+
+    // -------------------------------------------------------------
+    // 0. EMA 9 & EMA 21 (Calculated on Candle Close)
+    // -------------------------------------------------------------
+    // EMA 9 (Green #00C853)
+    let ema9 = null;
+    if (this.currentEMA9 === null) {
+      this.ema9Window.push(close);
+      if (this.ema9Window.length === 9) {
+        const sum = this.ema9Window.reduce((a, b) => a + b, 0);
+        this.currentEMA9 = sum / 9;
+        ema9 = Number(this.currentEMA9.toFixed(2));
+      }
+    } else {
+      this.currentEMA9 = close * this.ema9Alpha + this.currentEMA9 * (1 - this.ema9Alpha);
+      ema9 = Number(this.currentEMA9.toFixed(2));
+    }
+
+    // EMA 21 (Red #FF0000)
+    let ema21 = null;
+    if (this.currentEMA21 === null) {
+      this.ema21Window.push(close);
+      if (this.ema21Window.length === 21) {
+        const sum = this.ema21Window.reduce((a, b) => a + b, 0);
+        this.currentEMA21 = sum / 21;
+        ema21 = Number(this.currentEMA21.toFixed(2));
+      }
+    } else {
+      this.currentEMA21 = close * this.ema21Alpha + this.currentEMA21 * (1 - this.ema21Alpha);
+      ema21 = Number(this.currentEMA21.toFixed(2));
+    }
 
     // -------------------------------------------------------------
     // 1. EMA 20 & EMA 50
@@ -290,6 +329,8 @@ class IndicatorsCalculator {
     }
 
     return {
+      ema9,
+      ema21,
       ema20,
       ema50,
       vwap,
@@ -302,6 +343,54 @@ class IndicatorsCalculator {
       volumeSMA20,
       relativeVolume20
     };
+  }
+
+  /**
+   * Calculate continuous EMA 9 and EMA 21 series and crossover signals across an array of candles.
+   * @param {Array<Object>} candles
+   * @returns {Array<Object>} Candles enriched with ema9, ema21, and signal ('BUY'|'SELL'|null)
+   */
+  static calculateCandlesWithEMA9And21(candles) {
+    const calc = new IndicatorsCalculator();
+    let prevEMA9 = null;
+    let prevEMA21 = null;
+
+    return candles.map((c) => {
+      const indicators = calc.processRegularBar({
+        timestamp: c.timestamp,
+        open: c.open,
+        high: c.high,
+        low: c.low,
+        close: c.close,
+        volume: c.volume
+      });
+
+      const currEMA9 = indicators.ema9;
+      const currEMA21 = indicators.ema21;
+      let signal = null; // 'BUY' | 'SELL' | null
+
+      // Check crossover only when both current and previous EMAs are valid
+      if (currEMA9 !== null && currEMA21 !== null && prevEMA9 !== null && prevEMA21 !== null) {
+        // Bullish Crossover: Previous EMA 9 <= EMA 21, Current EMA 9 > EMA 21
+        if (prevEMA9 <= prevEMA21 && currEMA9 > currEMA21) {
+          signal = 'BUY';
+        }
+        // Bearish Crossunder: Previous EMA 9 >= EMA 21, Current EMA 9 < EMA 21
+        else if (prevEMA9 >= prevEMA21 && currEMA9 < currEMA21) {
+          signal = 'SELL';
+        }
+      }
+
+      if (currEMA9 !== null) prevEMA9 = currEMA9;
+      if (currEMA21 !== null) prevEMA21 = currEMA21;
+
+      return {
+        ...c,
+        ema9: currEMA9,
+        ema21: currEMA21,
+        signal
+      };
+    });
   }
 }
 

@@ -101,11 +101,17 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   │   │   ├── STRATEGY_PARAMETER_MATRIX.md # Orthogonal research cohorts for backtesting
 │   │   │   └── STRATEGY_SPECIFICATION.md    # Master quantitative trading strategy specification
 │   │   └── backtesting/                # Historical backtesting engine runs, journals & master reports
+│   │       ├── ema_9_21/                    # Phase 9 Canonical Single Active Strategy deliverables
+│   │       │   ├── EMA_9_21_CROSSOVER_REPORT.md # 5-year master backtest audit across 9,264 trades
+│   │       │   ├── portfolio_summary.json   # Machine-readable portfolio & stock metrics
+│   │       │   └── [SYMBOL]/                # summary.json and trades.csv per stock
+│   │       ├── EMA_9_21_BACKTEST_OUTCOMES_CHATGPT.json # Consolidated EMA 9/21 5-year outcomes for LLM analysis
 │   │       ├── BACKTEST_ENGINE_REPORT.md    # Master quantitative report across 25 batch runs
 │   │       ├── BACKTEST_RECONCILIATION_REPORT.md # Financial audit & accounting reconciliation report (Phase 6.1)
 │   │       ├── BACKTEST_OUTCOMES_CHATGPT.json # Consolidated 25-run canonical outcomes for LLM research
-│   │       ├── runs_index.json              # Master registry catalog of canonical (25) & superseded backtest runs
-│   │       └── runs/                        # Partitioned run outputs (trades.csv, equity_curve.csv, summary.json)
+│   │       ├── runs/                        # Active backtest runs (RUN-[SYMBOL]-EMA9_21-*)
+│   │       │   └── runs_index.json          # Master catalog indexing the 5 canonical EMA 9/21 runs
+│   │       └── legacy_orb_runs/             # Archived legacy ORB backtests (51 runs + runs_index.json)
 │   │   └── research/                   # Phase 7 Quantitative Research deliverables & matrices
 │   │       ├── RESEARCH_COMPARISON_REPORT.md# Master 310-line quantitative findings report
 │   │       ├── STOCK_BEHAVIOUR_METRICS.csv  # 55 granular metrics across all 5 stocks
@@ -117,7 +123,9 @@ The **AI Trading System** is a modular algorithmic trading foundation and portfo
 │   │       └── research_run_metadata.json   # Pipeline execution metadata & duration
 │   ├── test/
 │   │   ├── backtesting.test.js         # Native Node.js test suite for backtest engine & Groww fees (17 tests)
+│   │   ├── ema9_21.strategy.test.js    # Dedicated Phase 9 unit tests for EMA 9/21 Crossover (13 tests)
 │   │   ├── indicators.test.js          # Native Node.js test suite for indicators (21 tests)
+│   │   ├── research.audit.test.js      # Phase 7.1 Statistical Integrity & Invariant test suite (11 tests)
 │   │   ├── research.test.js            # Native Node.js test suite for research & dual rankings (16 tests)
 │   │   └── strategy.test.js            # Native Node.js test suite for strategy & risk (23 tests)
 │   └── src/
@@ -346,11 +354,14 @@ HTTP Request
 | `GET` | `/api/v1/market-data/downloader-status` | `MarketDataController.getDownloaderStatus` | Returns 5-year download status & audit summary | IMPLEMENTED |
 | `GET` | `/api/v1/indicators/status` | `IndicatorsController.getStatus` | Technical Indicator Engine status & calculation metrics | IMPLEMENTED |
 | `GET` | `/api/v1/indicators/latest` | `IndicatorsController.getLatestIndicators` | Latest calculated indicators for symbol (e.g. ICICIBANK) | IMPLEMENTED |
-| `GET` | `/api/v1/strategy/configs` | `StrategyController.getAllConfigs` | Returns all 5 predefined strategy variant configurations (A-E) | IMPLEMENTED |
+| `GET` | `/api/v1/strategy/configs` | `StrategyController.getAllConfigs` | Returns active strategy (or all variants if `includeLegacy=true`) | IMPLEMENTED |
+| `GET` | `/api/v1/strategy/active` | `StrategyController.getActiveConfig` | Returns single active production strategy (`ema_9_21_crossover`) | IMPLEMENTED |
+| `GET` | `/api/v1/strategy/chart/:symbol` | `StrategyController.getChartData` | Returns 5m candles with EMA 9/21 series & BUY/SELL crossover markers | IMPLEMENTED |
 | `GET` | `/api/v1/strategy/configs/:variantId` | `StrategyController.getVariantConfig` | Returns single variant configuration by ID or variant key | IMPLEMENTED |
 | `GET` | `/api/v1/strategy/matrix` | `StrategyController.getParameterMatrix` | Returns 7 orthogonal research cohorts with 18+ experiments | IMPLEMENTED |
 | `POST` | `/api/v1/strategy/validate` | `StrategyController.validateConfig` | Validates custom strategy configuration against strict Zod schema | IMPLEMENTED |
 | `POST` | `/api/v1/strategy/position-size` | `StrategyController.calculatePositionSize` | Risk-budgeted position sizing with integer shares & capital guards | IMPLEMENTED |
+| `GET` | `/api/v1/backtesting/ema9-21/summary` | `BacktestController.getEMA921Summary` | Returns 5-year consolidated backtest summary for EMA 9/21 Crossover | IMPLEMENTED |
 | `GET` | `/api/v1/backtesting/runs` | `BacktestController.getRuns` | Catalog of past backtest runs with high-level performance metrics | IMPLEMENTED |
 | `GET` | `/api/v1/backtesting/runs/:runId` | `BacktestController.getRunDetails` | Run metadata, strategy parameters, equity curve & performance summary | IMPLEMENTED |
 | `GET` | `/api/v1/backtesting/runs/:runId/trades` | `BacktestController.getRunTrades` | Paginated granular trade journal records with itemized fees & slippage | IMPLEMENTED |

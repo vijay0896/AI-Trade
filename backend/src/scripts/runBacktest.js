@@ -11,17 +11,17 @@
  */
 
 const BacktestService = require('../modules/backtesting/backtesting.service');
-const { DEFAULT_UNIVERSE, STRATEGY_VARIANTS } = require('../modules/strategy/strategy.constants');
+const { DEFAULT_UNIVERSE, STRATEGY_VARIANTS, ACTIVE_STRATEGY } = require('../modules/strategy/strategy.constants');
 const logger = require('../config/logger');
 
 function parseArgs() {
   const args = process.argv.slice(2);
   const params = {
     symbol: 'ICICIBANK',
-    variant: STRATEGY_VARIANTS.VARIANT_A,
+    variant: ACTIVE_STRATEGY.ID,
     capital: 100000,
     slippageBps: 2.0,
-    direction: 'BOTH',
+    direction: ACTIVE_STRATEGY.DIRECTION || 'LONG_ONLY',
     batch: false
   };
 
@@ -57,11 +57,10 @@ async function main() {
 
   try {
     if (args.batch) {
-      console.log('Executing Full Batch Evaluation Across 5 Stocks and 5 Variants...\n');
-      const allVariants = Object.values(STRATEGY_VARIANTS);
+      console.log(`Executing Batch Evaluation Across 5 Universe Stocks for ${args.variant}...\n`);
       const batchResult = await BacktestService.runBatchEvaluation({
         symbols: DEFAULT_UNIVERSE,
-        variants: allVariants,
+        variants: [args.variant],
         capital: args.capital,
         slippageBps: args.slippageBps,
         direction: args.direction

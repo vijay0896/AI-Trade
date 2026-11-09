@@ -9,6 +9,12 @@ const BacktestController = require('./backtesting.controller');
 const router = express.Router();
 
 /**
+ * @route GET /api/v1/backtesting/ema9-21/summary
+ * @description Get consolidated EMA 9/21 Crossover 5-year backtest performance metrics
+ */
+router.get('/ema9-21/summary', BacktestController.getEMA921Summary);
+
+/**
  * @route GET /api/v1/backtesting/runs
  * @description Get past backtest execution summaries
  */

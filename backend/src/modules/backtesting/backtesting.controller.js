@@ -54,6 +54,18 @@ class BacktestController {
   });
 
   /**
+   * @route GET /api/v1/backtesting/ema9-21/summary
+   * @description Get consolidated EMA 9/21 Crossover 5-year backtest performance metrics
+   */
+  static getEMA921Summary = asyncHandler(async (req, res) => {
+    const summary = BacktestService.getEMA921Summary();
+    return ApiResponse.success(res, {
+      message: 'EMA 9/21 backtest summary retrieved successfully',
+      data: summary
+    });
+  });
+
+  /**
    * @route POST /api/v1/backtesting/run
    * @description Execute a new historical backtest run
    */

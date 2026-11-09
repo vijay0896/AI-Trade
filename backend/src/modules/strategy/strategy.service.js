@@ -8,10 +8,12 @@ const path = require('path');
 const {
   STRATEGY_VARIANTS,
   REQUIRED_INDICATORS_BY_VARIANT,
-  DEFAULT_UNIVERSE
+  DEFAULT_UNIVERSE,
+  ACTIVE_STRATEGY
 } = require('./strategy.constants');
 const {
   PREDEFINED_STRATEGIES,
+  ACTIVE_STRATEGY_CONFIG,
   PARAMETER_MATRIX_COHORTS
 } = require('./strategy.config');
 const {
@@ -19,6 +21,7 @@ const {
   PositionSizeParamsSchema
 } = require('./strategy.schema');
 const StrategyFormatter = require('./strategy.formatter');
+const IndicatorsCalculator = require('../indicators/indicators.calculator');
 const { AppError } = require('../../core/utils/asyncHandler');
 const logger = require('../../config/logger');
 
@@ -26,10 +29,23 @@ const STRATEGY_STORAGE_DIR = path.resolve(__dirname, '../../../storage/strategy'
 
 class StrategyService {
   /**
-   * Get all predefined core strategy configurations
+   * Get active strategy configuration (EMA 9/21 Crossover)
+   * @returns {Object}
+   */
+  static getActiveConfig() {
+    return StrategyFormatter.formatConfig(ACTIVE_STRATEGY_CONFIG);
+  }
+
+  /**
+   * Get all active strategy configurations (sole active strategy: EMA 9/21 Crossover)
+   * If options.includeLegacy is true, also returns historical research variants.
+   * @param {Object} [options]
    * @returns {Array<Object>}
    */
-  static getAllConfigs() {
+  static getAllConfigs(options = {}) {
+    if (options && options.activeOnly) {
+      return StrategyFormatter.formatConfigList([ACTIVE_STRATEGY_CONFIG]);
+    }
     const list = Object.values(PREDEFINED_STRATEGIES);
     return StrategyFormatter.formatConfigList(list);
   }
@@ -45,6 +61,14 @@ class StrategyService {
     }
 
     const clean = String(idOrVariant).trim().toUpperCase();
+    if (
+      clean === 'EMA_9_21_CROSSOVER' ||
+      clean === 'EMA_9_21' ||
+      clean === ACTIVE_STRATEGY.ID.toUpperCase()
+    ) {
+      return StrategyFormatter.formatConfig(ACTIVE_STRATEGY_CONFIG);
+    }
+
     // Match by variant value, STRATEGY_VARIANTS key, or ID
     let found = PREDEFINED_STRATEGIES[clean];
     if (!found && STRATEGY_VARIANTS[clean]) {
@@ -140,6 +164,102 @@ class StrategyService {
    */
   static getParameterMatrix() {
     return StrategyFormatter.formatParameterMatrix(PARAMETER_MATRIX_COHORTS);
+  }
+
+  /**
+   * Get 5-minute candle data with continuous EMA 9, EMA 21, and BUY/SELL markers for a stock
+   * @param {string} symbol
+   * @param {string} [requestedDate] YYYY-MM-DD
+   * @returns {Promise<Object>}
+   */
+  static async getChartData(symbol, requestedDate = null) {
+    const cleanSym = String(symbol).trim().toUpperCase();
+    if (!DEFAULT_UNIVERSE.includes(cleanSym)) {
+      throw new AppError(`Symbol '${symbol}' is not supported. Universe: ${DEFAULT_UNIVERSE.join(', ')}`, 400);
+    }
+
+    const BacktestEngine = require('../backtesting/backtesting.engine');
+    const { candlesByDay } = await BacktestEngine.loadDerivedCandles(cleanSym);
+    const sortedDays = Object.keys(candlesByDay).sort();
+    if (sortedDays.length === 0) {
+      throw new AppError(`No historical market data found for '${cleanSym}'`, 404);
+    }
+
+    const targetDate = requestedDate && sortedDays.includes(requestedDate)
+      ? requestedDate
+      : sortedDays[sortedDays.length - 1];
+
+    // Compute continuous EMAs across all regular session bars up to targetDate
+    const calc = new IndicatorsCalculator();
+    let prevEMA9 = null;
+    let prevEMA21 = null;
+    const dayCandles = [];
+    let currentSignal = 'HOLD';
+
+    for (const d of sortedDays) {
+      const isTarget = (d === targetDate);
+      for (const c of candlesByDay[d]) {
+        if (c.sessionType === 'REGULAR') {
+          const ind = calc.processRegularBar(c);
+          const currEMA9 = ind.ema9;
+          const currEMA21 = ind.ema21;
+          let signal = null; // 'BUY' | 'SELL' | null
+
+          if (currEMA9 !== null && currEMA21 !== null && prevEMA9 !== null && prevEMA21 !== null) {
+            if (prevEMA9 <= prevEMA21 && currEMA9 > currEMA21) {
+              signal = 'BUY';
+            } else if (prevEMA9 >= prevEMA21 && currEMA9 < currEMA21) {
+              signal = 'SELL';
+            }
+          }
+
+          if (isTarget) {
+            dayCandles.push({
+              timestamp: c.timestamp,
+              time: c.timestamp.split('T')[1].slice(0, 5),
+              open: c.open,
+              high: c.high,
+              low: c.low,
+              close: c.close,
+              volume: c.volume,
+              ema9: currEMA9,
+              ema21: currEMA21,
+              signal
+            });
+            if (signal) {
+              currentSignal = signal;
+            }
+          }
+
+          if (currEMA9 !== null) prevEMA9 = currEMA9;
+          if (currEMA21 !== null) prevEMA21 = currEMA21;
+        }
+      }
+      if (d === targetDate) break;
+    }
+
+    const lastCandle = dayCandles[dayCandles.length - 1] || null;
+
+    return {
+      symbol: cleanSym,
+      date: targetDate,
+      availableDates: sortedDays.slice(-90), // Last 90 trading days for fast selection
+      totalAvailableDates: sortedDays.length,
+      currentEMA9: lastCandle?.ema9 ?? null,
+      currentEMA21: lastCandle?.ema21 ?? null,
+      currentPrice: lastCandle?.close ?? null,
+      currentSignal: currentSignal || 'HOLD',
+      strategy: {
+        id: ACTIVE_STRATEGY.ID,
+        name: ACTIVE_STRATEGY.NAME,
+        fastPeriod: ACTIVE_STRATEGY.FAST_PERIOD,
+        slowPeriod: ACTIVE_STRATEGY.SLOW_PERIOD,
+        fastColor: ACTIVE_STRATEGY.FAST_COLOR,
+        slowColor: ACTIVE_STRATEGY.SLOW_COLOR,
+        timeframe: ACTIVE_STRATEGY.TIMEFRAME
+      },
+      candles: dayCandles
+    };
   }
 
   /**

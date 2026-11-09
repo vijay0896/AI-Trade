@@ -8,6 +8,7 @@ import FundsPage from "./pages/Funds";
 import HoldingsPage from "./pages/Holdings";
 import PositionsPage from "./pages/Positions";
 import ResearchPage from "./pages/Research";
+import StrategyPage from "./pages/Strategy";
 
 function AppContent() {
   const { collapsed, setCollapsed, mobileOpen, setMobileOpen, isMobile } = useLayout();
@@ -34,6 +35,7 @@ function AppContent() {
             <Route path="/funds" element={<FundsPage />} />
             <Route path="/holdings" element={<HoldingsPage />} />
             <Route path="/positions" element={<PositionsPage />} />
+            <Route path="/strategy" element={<StrategyPage />} />
             <Route path="/research" element={<ResearchPage />} />
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>

@@ -13,13 +13,7 @@ const BacktestRunRequestSchema = z.object({
   symbol: z.enum(DEFAULT_UNIVERSE, {
     errorMap: () => ({ message: `symbol must be one of: ${DEFAULT_UNIVERSE.join(', ')}` })
   }),
-  variant: z.enum([
-    STRATEGY_VARIANTS.VARIANT_A,
-    STRATEGY_VARIANTS.VARIANT_B,
-    STRATEGY_VARIANTS.VARIANT_C,
-    STRATEGY_VARIANTS.VARIANT_D,
-    STRATEGY_VARIANTS.VARIANT_E
-  ]).default(STRATEGY_VARIANTS.VARIANT_A),
+  variant: z.string().default('ema_9_21_crossover'),
   capital: z.number().positive('capital must be greater than zero').default(100000),
   slippageBps: z.number().min(0, 'slippageBps cannot be negative').default(2.0),
   direction: z.enum([

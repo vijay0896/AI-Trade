@@ -246,8 +246,15 @@ class BacktestStorageManager {
    * @returns {Object|null}
    */
   static loadRunDetails(runId) {
-    const runDir = path.join(BACKTEST_STORAGE_PATHS.RUNS_DIR, runId);
-    if (!fs.existsSync(runDir)) return null;
+    let runDir = path.join(BACKTEST_STORAGE_PATHS.RUNS_DIR, runId);
+    if (!fs.existsSync(runDir)) {
+      const legacyDir = path.resolve(__dirname, '../../../storage/backtesting/legacy_orb_runs', runId);
+      if (fs.existsSync(legacyDir)) {
+        runDir = legacyDir;
+      } else {
+        return null;
+      }
+    }
 
     try {
       const meta = JSON.parse(fs.readFileSync(path.join(runDir, 'run_metadata.json'), 'utf-8'));
@@ -265,8 +272,15 @@ class BacktestStorageManager {
    * @returns {Array<Object>|null}
    */
   static loadRunTrades(runId) {
-    const tradesPath = path.join(BACKTEST_STORAGE_PATHS.RUNS_DIR, runId, 'trades.csv');
-    if (!fs.existsSync(tradesPath)) return null;
+    let tradesPath = path.join(BACKTEST_STORAGE_PATHS.RUNS_DIR, runId, 'trades.csv');
+    if (!fs.existsSync(tradesPath)) {
+      const legacyPath = path.resolve(__dirname, '../../../storage/backtesting/legacy_orb_runs', runId, 'trades.csv');
+      if (fs.existsSync(legacyPath)) {
+        tradesPath = legacyPath;
+      } else {
+        return null;
+      }
+    }
 
     const content = fs.readFileSync(tradesPath, 'utf-8');
     const lines = content.split('\n').filter(l => l.trim().length > 0);

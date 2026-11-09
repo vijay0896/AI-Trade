@@ -6,6 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
+const IndicatorsCalculator = require('../indicators/indicators.calculator');
 const {
   BACKTEST_STORAGE_PATHS,
   EXIT_REASONS
@@ -31,14 +32,23 @@ class BacktestEngine {
    * @returns {Promise<Object>} Backtest run result
    */
   static async run(options) {
+    const { strategyConfig } = options;
+    if (
+      strategyConfig?.id === 'ema_9_21_crossover' ||
+      strategyConfig?.strategyId === 'ema_9_21_crossover' ||
+      strategyConfig?.variant === 'EMA_9_21_CROSSOVER' ||
+      strategyConfig?.variant === 'ema_9_21_crossover'
+    ) {
+      return this.runEMA921(options);
+    }
+
     const {
       symbol,
-      strategyConfig,
       capital = 100000,
       slippageBps = 2.0,
       startDate = null,
       endDate = null,
-      direction = strategyConfig.entry.direction || 'BOTH',
+      direction = strategyConfig.entry?.direction || 'BOTH',
       customFeeSchedule = null
     } = options;
 
@@ -65,10 +75,10 @@ class BacktestEngine {
       const dayCandles = candlesByDay[day];
       const startOfDayCapital = runningCapital;
 
-      // Filter: Check for special or non-regular sessions
-      const hasNonRegular = dayCandles.some(c => c.sessionType !== 'REGULAR');
-      if (hasNonRegular && strategyConfig.specialSessions === 'SUPPRESS_ALL') {
-        const specialType = dayCandles.find(c => c.sessionType !== 'REGULAR')?.sessionType || 'NON_REGULAR';
+      // Filter: Check for special or non-regular sessions (Muhurat, DR split)
+      const isSpecial = dayCandles.some(c => c.sessionType === 'MUHURAT_SPECIAL' || c.sessionType === 'DR_SPLIT');
+      if (isSpecial && strategyConfig.specialSessions === 'SUPPRESS_ALL') {
+        const specialType = dayCandles.find(c => c.sessionType === 'MUHURAT_SPECIAL' || c.sessionType === 'DR_SPLIT')?.sessionType || 'NON_REGULAR';
         excludedSessions.push({
           date: day,
           symbol,
@@ -680,6 +690,463 @@ class BacktestEngine {
     }
 
     return side === 'LONG' ? orLow : orHigh;
+  }
+
+  /**
+   * Run historical backtest for EMA 9 / EMA 21 Crossover Strategy
+   * Long-only trend-following, candle-close signal + next-candle-open execution,
+   * square-off at 15:15 IST, fixed share quantity (1 share), full Groww fee schedule.
+   *
+   * @param {Object} options
+   * @returns {Promise<Object>} Backtest run result
+   */
+  static async runEMA921(options) {
+    const {
+      symbol,
+      strategyConfig,
+      capital = 100000,
+      slippageBps = 2.0,
+      startDate = null,
+      endDate = null,
+      customFeeSchedule = null
+    } = options;
+
+    const startTimeMs = Date.now();
+    const runId = `RUN-${symbol}-EMA9_21-${Date.now().toString(36).toUpperCase()}`;
+
+    // 1. Ingest derived indicator candles
+    const { candlesByDay, totalCandlesProcessed, totalRegularBars } = await this.loadDerivedCandles(
+      symbol,
+      startDate,
+      endDate
+    );
+
+    const sortedDays = Object.keys(candlesByDay).sort();
+    const completedTrades = [];
+    const dailyRecords = [];
+    const excludedSessions = [];
+    let runningCapital = capital;
+    let globalTradeIndex = 1;
+    let totalBuySignals = 0;
+    let totalSellSignals = 0;
+
+    // 2. Compute streaming continuous EMA 9 and EMA 21 across all regular candles chronologically
+    const calc = new IndicatorsCalculator();
+    let prevEMA9 = null;
+    let prevEMA21 = null;
+
+    // Enrich all regular candles with continuous EMA 9 and EMA 21
+    for (const day of sortedDays) {
+      const dayCandles = candlesByDay[day];
+      for (const candle of dayCandles) {
+        if (candle.sessionType === 'REGULAR') {
+          const indicators = calc.processRegularBar(candle);
+          candle.ema9 = indicators.ema9;
+          candle.ema21 = indicators.ema21;
+
+          // Check crossover only when both current and previous EMAs are valid
+          let buySignal = false;
+          let sellSignal = false;
+          if (
+            candle.ema9 !== null &&
+            candle.ema21 !== null &&
+            prevEMA9 !== null &&
+            prevEMA21 !== null
+          ) {
+            // Bullish Crossover: Previous EMA 9 <= EMA 21, Current EMA 9 > EMA 21
+            if (prevEMA9 <= prevEMA21 && candle.ema9 > candle.ema21) {
+              buySignal = true;
+              totalBuySignals++;
+            }
+            // Bearish Crossunder: Previous EMA 9 >= EMA 21, Current EMA 9 < EMA 21
+            else if (prevEMA9 >= prevEMA21 && candle.ema9 < candle.ema21) {
+              sellSignal = true;
+              totalSellSignals++;
+            }
+          }
+
+          candle.buySignal = buySignal;
+          candle.sellSignal = sellSignal;
+
+          if (candle.ema9 !== null) prevEMA9 = candle.ema9;
+          if (candle.ema21 !== null) prevEMA21 = candle.ema21;
+        } else {
+          candle.buySignal = false;
+          candle.sellSignal = false;
+        }
+      }
+    }
+
+    // 3. Candle-by-candle simulation day by day
+    const fixedQuantity = strategyConfig.fixedQuantity || 1;
+    const entryCutoffTime = strategyConfig.entryCutoffTime || '15:00:00';
+    const squareOffTime = strategyConfig.squareOffTime || '15:15:00';
+
+    for (const day of sortedDays) {
+      const dayCandles = candlesByDay[day];
+      const startOfDayCapital = runningCapital;
+
+      // Filter: Check for special or non-regular sessions (Muhurat, DR split)
+      const isSpecial = dayCandles.some(c => c.sessionType === 'MUHURAT_SPECIAL' || c.sessionType === 'DR_SPLIT');
+      if (isSpecial && strategyConfig.specialSessions === 'SUPPRESS_ALL') {
+        const specialType = dayCandles.find(c => c.sessionType === 'MUHURAT_SPECIAL' || c.sessionType === 'DR_SPLIT')?.sessionType || 'NON_REGULAR';
+        excludedSessions.push({
+          date: day,
+          symbol,
+          reason: `SPECIAL_SESSION_${specialType}`,
+          candlesCount: dayCandles.length
+        });
+        continue;
+      }
+
+      // Regular continuous session bars
+      const actionableCandles = dayCandles.filter(c => c.sessionType === 'REGULAR');
+      if (actionableCandles.length === 0) continue;
+
+      let activeTrade = null;
+      let pendingBuySignal = null;
+      let pendingSellSignal = null;
+      let dailyTradesCount = 0;
+      let dailyRealizedPnL = 0;
+
+      for (let barIdx = 0; barIdx < actionableCandles.length; barIdx++) {
+        const candle = actionableCandles[barIdx];
+        const timeStr = candle.timestamp.split('T')[1];
+
+        // -------------------------------------------------------------
+        // Step A: Check Pending Exit (from prior bar's SELL crossunder)
+        // -------------------------------------------------------------
+        if (activeTrade && pendingSellSignal) {
+          const nominalExitPrice = candle.open;
+          const execExitPrice = BacktestExecutionEngine.applySlippage(
+            nominalExitPrice,
+            'LONG',
+            'EXIT',
+            slippageBps
+          );
+
+          const qty = activeTrade.quantity;
+          const nominalEntryPrice = activeTrade.nominalEntryPrice;
+          const execEntryPrice = activeTrade.entryPrice;
+
+          const theoreticalGrossPnL = (nominalExitPrice - nominalEntryPrice) * qty;
+          const entrySlippageCost = Math.abs(execEntryPrice - nominalEntryPrice) * qty;
+          const exitSlippageCost = Math.abs(execExitPrice - nominalExitPrice) * qty;
+          const totalSlippageCost = entrySlippageCost + exitSlippageCost;
+          const grossRealizedPnL = (execExitPrice - execEntryPrice) * qty;
+
+          const feeResult = BacktestFeeEngine.calculateTradeCosts({
+            side: 'LONG',
+            quantity: qty,
+            entryPrice: execEntryPrice,
+            exitPrice: execExitPrice,
+            entryTimestamp: activeTrade.entryTimestamp,
+            exitTimestamp: candle.timestamp,
+            customSchedule: customFeeSchedule
+          });
+
+          const netPnL = grossRealizedPnL - feeResult.totalCharges;
+          dailyRealizedPnL += netPnL;
+          runningCapital += netPnL;
+
+          completedTrades.push({
+            tradeId: activeTrade.tradeId,
+            symbol,
+            side: 'LONG',
+            entryTimestamp: activeTrade.entryTimestamp,
+            exitTimestamp: candle.timestamp,
+            nominalEntryPrice: Number(nominalEntryPrice.toFixed(2)),
+            entryPrice: Number(execEntryPrice.toFixed(2)),
+            nominalExitPrice: Number(nominalExitPrice.toFixed(2)),
+            exitPrice: Number(execExitPrice.toFixed(2)),
+            quantity: qty,
+            positionValue: activeTrade.positionValue,
+            initialStopLoss: null,
+            targetPrice: null,
+            exitReason: EXIT_REASONS.BEARISH_CROSSOVER || 'BEARISH_CROSSOVER',
+            barsHeld: activeTrade.barsHeld + 1,
+            theoreticalGrossPnL: Number(theoreticalGrossPnL.toFixed(2)),
+            entrySlippageCost: Number(entrySlippageCost.toFixed(2)),
+            exitSlippageCost: Number(exitSlippageCost.toFixed(2)),
+            totalSlippageCost: Number(totalSlippageCost.toFixed(2)),
+            grossPnL: Number(grossRealizedPnL.toFixed(2)),
+            brokerage: feeResult.brokerage,
+            stt: feeResult.stt,
+            stampDuty: feeResult.stampDuty,
+            exchangeCharges: feeResult.exchangeCharges,
+            sebiCharges: feeResult.sebiCharges,
+            ipftCharges: feeResult.ipftCharges,
+            statutoryCharges: feeResult.statutoryCharges,
+            gst: feeResult.gst,
+            totalCharges: feeResult.totalCharges,
+            netPnL: Number(netPnL.toFixed(2)),
+            isAmbiguous: false,
+            ambiguityDetail: null
+          });
+
+          activeTrade = null;
+          pendingSellSignal = null;
+        }
+
+        // -------------------------------------------------------------
+        // Step B: Intraday Square-off at 15:15:00 IST
+        // -------------------------------------------------------------
+        if (activeTrade && timeStr >= squareOffTime) {
+          const nominalExitPrice = candle.open;
+          const execExitPrice = BacktestExecutionEngine.applySlippage(
+            nominalExitPrice,
+            'LONG',
+            'EXIT',
+            slippageBps
+          );
+
+          const qty = activeTrade.quantity;
+          const nominalEntryPrice = activeTrade.nominalEntryPrice;
+          const execEntryPrice = activeTrade.entryPrice;
+
+          const theoreticalGrossPnL = (nominalExitPrice - nominalEntryPrice) * qty;
+          const entrySlippageCost = Math.abs(execEntryPrice - nominalEntryPrice) * qty;
+          const exitSlippageCost = Math.abs(execExitPrice - nominalExitPrice) * qty;
+          const totalSlippageCost = entrySlippageCost + exitSlippageCost;
+          const grossRealizedPnL = (execExitPrice - execEntryPrice) * qty;
+
+          const feeResult = BacktestFeeEngine.calculateTradeCosts({
+            side: 'LONG',
+            quantity: qty,
+            entryPrice: execEntryPrice,
+            exitPrice: execExitPrice,
+            entryTimestamp: activeTrade.entryTimestamp,
+            exitTimestamp: candle.timestamp,
+            customSchedule: customFeeSchedule
+          });
+
+          const netPnL = grossRealizedPnL - feeResult.totalCharges;
+          dailyRealizedPnL += netPnL;
+          runningCapital += netPnL;
+
+          completedTrades.push({
+            tradeId: activeTrade.tradeId,
+            symbol,
+            side: 'LONG',
+            entryTimestamp: activeTrade.entryTimestamp,
+            exitTimestamp: candle.timestamp,
+            nominalEntryPrice: Number(nominalEntryPrice.toFixed(2)),
+            entryPrice: Number(execEntryPrice.toFixed(2)),
+            nominalExitPrice: Number(nominalExitPrice.toFixed(2)),
+            exitPrice: Number(execExitPrice.toFixed(2)),
+            quantity: qty,
+            positionValue: activeTrade.positionValue,
+            initialStopLoss: null,
+            targetPrice: null,
+            exitReason: EXIT_REASONS.SQUARE_OFF || 'INTRADAY_SQUARE_OFF',
+            barsHeld: activeTrade.barsHeld + 1,
+            theoreticalGrossPnL: Number(theoreticalGrossPnL.toFixed(2)),
+            entrySlippageCost: Number(entrySlippageCost.toFixed(2)),
+            exitSlippageCost: Number(exitSlippageCost.toFixed(2)),
+            totalSlippageCost: Number(totalSlippageCost.toFixed(2)),
+            grossPnL: Number(grossRealizedPnL.toFixed(2)),
+            brokerage: feeResult.brokerage,
+            stt: feeResult.stt,
+            stampDuty: feeResult.stampDuty,
+            exchangeCharges: feeResult.exchangeCharges,
+            sebiCharges: feeResult.sebiCharges,
+            ipftCharges: feeResult.ipftCharges,
+            statutoryCharges: feeResult.statutoryCharges,
+            gst: feeResult.gst,
+            totalCharges: feeResult.totalCharges,
+            netPnL: Number(netPnL.toFixed(2)),
+            isAmbiguous: false,
+            ambiguityDetail: null
+          });
+
+          activeTrade = null;
+          pendingSellSignal = null;
+        }
+
+        // -------------------------------------------------------------
+        // Step C: Execute Pending Entry (from prior bar's BUY crossover)
+        // -------------------------------------------------------------
+        if (!activeTrade && pendingBuySignal) {
+          if (timeStr < squareOffTime) {
+            const nominalEntryPrice = candle.open;
+            const execEntryPrice = BacktestExecutionEngine.applySlippage(
+              nominalEntryPrice,
+              'LONG',
+              'ENTRY',
+              slippageBps
+            );
+
+            const qty = fixedQuantity;
+            const positionValue = execEntryPrice * qty;
+
+            if (positionValue <= runningCapital) {
+              activeTrade = {
+                tradeId: `TRD-${symbol}-${String(globalTradeIndex++).padStart(5, '0')}`,
+                symbol,
+                side: 'LONG',
+                entryTimestamp: candle.timestamp,
+                nominalEntryPrice,
+                entryPrice: execEntryPrice,
+                quantity: qty,
+                positionValue: Number(positionValue.toFixed(2)),
+                initialStopLoss: null,
+                targetPrice: null,
+                barsHeld: 0,
+                entrySlippageCost: Math.abs(execEntryPrice - nominalEntryPrice) * qty
+              };
+              dailyTradesCount++;
+            }
+          }
+          pendingBuySignal = null;
+        }
+
+        // Update bars held
+        if (activeTrade) {
+          activeTrade.barsHeld++;
+        }
+
+        // -------------------------------------------------------------
+        // Step D: Evaluate Signals on Candle Close (Strictly Causal)
+        // -------------------------------------------------------------
+        if (candle.buySignal) {
+          // Bullish Crossover: Previous EMA 9 <= EMA 21, Current EMA 9 > EMA 21
+          // Only trigger pending BUY if NO active position and time is before cutoff
+          if (!activeTrade && !pendingBuySignal && timeStr <= entryCutoffTime) {
+            pendingBuySignal = {
+              signalTimestamp: candle.timestamp,
+              signalPrice: candle.close
+            };
+          }
+        }
+
+        if (candle.sellSignal) {
+          // Bearish Crossunder: Previous EMA 9 >= EMA 21, Current EMA 9 < EMA 21
+          // Only trigger exit if an active long position exists
+          if (activeTrade && !pendingSellSignal) {
+            pendingSellSignal = {
+              signalTimestamp: candle.timestamp,
+              signalPrice: candle.close
+            };
+          }
+        }
+      }
+
+      // End of Day: Unconditional safety square-off if activeTrade survived
+      if (activeTrade) {
+        const lastCandle = actionableCandles[actionableCandles.length - 1];
+        const nominalExitPrice = lastCandle.close;
+        const execExitPrice = BacktestExecutionEngine.applySlippage(
+          nominalExitPrice,
+          'LONG',
+          'EXIT',
+          slippageBps
+        );
+
+        const qty = activeTrade.quantity;
+        const grossRealizedPnL = (execExitPrice - activeTrade.entryPrice) * qty;
+        const feeResult = BacktestFeeEngine.calculateTradeCosts({
+          side: 'LONG',
+          quantity: qty,
+          entryPrice: activeTrade.entryPrice,
+          exitPrice: execExitPrice,
+          entryTimestamp: activeTrade.entryTimestamp,
+          exitTimestamp: lastCandle.timestamp,
+          customSchedule: customFeeSchedule
+        });
+
+        const netPnL = grossRealizedPnL - feeResult.totalCharges;
+        dailyRealizedPnL += netPnL;
+        runningCapital += netPnL;
+
+        completedTrades.push({
+          tradeId: activeTrade.tradeId,
+          symbol,
+          side: 'LONG',
+          entryTimestamp: activeTrade.entryTimestamp,
+          exitTimestamp: lastCandle.timestamp,
+          nominalEntryPrice: activeTrade.nominalEntryPrice,
+          entryPrice: activeTrade.entryPrice,
+          nominalExitPrice,
+          exitPrice: execExitPrice,
+          quantity: qty,
+          positionValue: activeTrade.positionValue,
+          initialStopLoss: null,
+          targetPrice: null,
+          exitReason: EXIT_REASONS.SQUARE_OFF || 'INTRADAY_SQUARE_OFF',
+          barsHeld: activeTrade.barsHeld,
+          theoreticalGrossPnL: Number(((nominalExitPrice - activeTrade.nominalEntryPrice) * qty).toFixed(2)),
+          entrySlippageCost: Number(activeTrade.entrySlippageCost.toFixed(2)),
+          exitSlippageCost: Number((Math.abs(execExitPrice - nominalExitPrice) * qty).toFixed(2)),
+          totalSlippageCost: Number((activeTrade.entrySlippageCost + Math.abs(execExitPrice - nominalExitPrice) * qty).toFixed(2)),
+          grossPnL: Number(grossRealizedPnL.toFixed(2)),
+          brokerage: feeResult.brokerage,
+          stt: feeResult.stt,
+          stampDuty: feeResult.stampDuty,
+          exchangeCharges: feeResult.exchangeCharges,
+          sebiCharges: feeResult.sebiCharges,
+          ipftCharges: feeResult.ipftCharges,
+          statutoryCharges: feeResult.statutoryCharges,
+          gst: feeResult.gst,
+          totalCharges: feeResult.totalCharges,
+          netPnL: Number(netPnL.toFixed(2)),
+          isAmbiguous: false,
+          ambiguityDetail: null
+        });
+
+        activeTrade = null;
+      }
+
+      // Record daily summary
+      dailyRecords.push({
+        date: day,
+        symbol,
+        startOfDayCapital: Number(startOfDayCapital.toFixed(2)),
+        endingCapital: Number(runningCapital.toFixed(2)),
+        endOfDayCapital: Number(runningCapital.toFixed(2)),
+        dailyRealizedPnL: Number(dailyRealizedPnL.toFixed(2)),
+        tradesCount: dailyTradesCount
+      });
+    }
+
+    const runtimeMs = Date.now() - startTimeMs;
+    const metrics = BacktestMetricsCalculator.calculate(
+      completedTrades,
+      dailyRecords,
+      capital,
+      totalRegularBars
+    );
+
+    return {
+      runMetadata: {
+        runId,
+        symbol,
+        strategyId: 'ema_9_21_crossover',
+        strategyName: 'EMA 9/21 Crossover',
+        variant: 'EMA_9_21_CROSSOVER',
+        direction: 'LONG_ONLY',
+        timeframe: '5minute',
+        startDate: sortedDays[0] || null,
+        endDate: sortedDays[sortedDays.length - 1] || null,
+        totalCandlesProcessed,
+        totalRegularBars,
+        totalTradingDays: sortedDays.length,
+        excludedSessionsCount: excludedSessions.length,
+        initialCapital: capital,
+        endingCapital: Number(runningCapital.toFixed(2)),
+        slippageBps,
+        executedAt: new Date().toISOString(),
+        runtimeMs
+      },
+      strategyConfig,
+      signals: {
+        totalBuySignals,
+        totalSellSignals
+      },
+      metrics,
+      trades: completedTrades,
+      dailyPerformance: dailyRecords,
+      excludedSessions
+    };
   }
 
   /**

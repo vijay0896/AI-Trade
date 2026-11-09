@@ -3,7 +3,25 @@
  * @description Constants, Enums, and default parameters for the Intraday Strategy Engine.
  */
 
+const ACTIVE_STRATEGY = {
+  ID: 'ema_9_21_crossover',
+  NAME: 'EMA 9/21 Crossover',
+  VARIANT: 'EMA_9_21_CROSSOVER',
+  FAST_PERIOD: 9,
+  SLOW_PERIOD: 21,
+  FAST_COLOR: '#00C853',
+  SLOW_COLOR: '#FF0000',
+  TIMEFRAME: '5minute',
+  DIRECTION: 'LONG_ONLY',
+  SQUARE_OFF_TIME: '15:15:00',
+  ENTRY_CUTOFF_TIME: '15:00:00',
+  DEFAULT_QUANTITY: 1,
+  CAPITAL_LIMIT: 100000
+};
+
 const STRATEGY_VARIANTS = {
+  EMA_9_21_CROSSOVER: 'ema_9_21_crossover',
+  // Legacy research variants preserved for historical audit datasets
   VARIANT_A: 'A_BASIC_ORB',
   VARIANT_B: 'B_ORB_VWAP',
   VARIANT_C: 'C_ORB_VWAP_EMA',
@@ -67,6 +85,8 @@ const TIME_CONVENTIONS = {
 };
 
 const REQUIRED_INDICATORS_BY_VARIANT = {
+  [STRATEGY_VARIANTS.EMA_9_21_CROSSOVER]: ['ema9', 'ema21'],
+  'ema_9_21_crossover': ['ema9', 'ema21'],
   [STRATEGY_VARIANTS.VARIANT_A]: [],
   [STRATEGY_VARIANTS.VARIANT_B]: ['vwap'],
   [STRATEGY_VARIANTS.VARIANT_C]: ['vwap', 'ema20', 'ema50'],
@@ -94,6 +114,7 @@ const DEFAULT_RISK_LIMITS = {
 };
 
 module.exports = {
+  ACTIVE_STRATEGY,
   STRATEGY_VARIANTS,
   DIRECTION_MODES,
   ENTRY_TYPES,

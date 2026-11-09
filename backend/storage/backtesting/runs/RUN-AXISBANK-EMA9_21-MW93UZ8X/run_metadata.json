@@ -1,0 +1,20 @@
+{
+  "runId": "RUN-AXISBANK-EMA9_21-MW93UZ8X",
+  "symbol": "AXISBANK",
+  "strategyId": "ema_9_21_crossover",
+  "strategyName": "EMA 9/21 Crossover",
+  "variant": "EMA_9_21_CROSSOVER",
+  "direction": "LONG_ONLY",
+  "timeframe": "5minute",
+  "startDate": "2021-11-08",
+  "endDate": "2026-11-06",
+  "totalCandlesProcessed": 95808,
+  "totalRegularBars": 92401,
+  "totalTradingDays": 1239,
+  "excludedSessionsCount": 0,
+  "initialCapital": 100000,
+  "endingCapital": 86595.15,
+  "slippageBps": 2,
+  "executedAt": "2026-11-09T10:15:25.124Z",
+  "runtimeMs": 464
+}

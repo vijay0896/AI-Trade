@@ -13,8 +13,9 @@ const crypto = require('crypto');
 // Paths
 const BASE_DIR = path.resolve(__dirname, '../../..');
 const BACKEND_DIR = path.resolve(__dirname, '..');
-const RUNS_INDEX_PATH = path.join(BASE_DIR, 'backend/storage/backtesting/runs/runs_index.json');
-const RUNS_DIR = path.join(BASE_DIR, 'backend/storage/backtesting/runs');
+const LEGACY_RUNS_DIR = path.join(BASE_DIR, 'backend/storage/backtesting/legacy_orb_runs');
+const RUNS_DIR = fs.existsSync(LEGACY_RUNS_DIR) ? LEGACY_RUNS_DIR : path.join(BASE_DIR, 'backend/storage/backtesting/runs');
+const RUNS_INDEX_PATH = path.join(RUNS_DIR, 'runs_index.json');
 const RESEARCH_DIR = path.join(BASE_DIR, 'backend/storage/research');
 const AUDIT_OUT_DIR = path.join(RESEARCH_DIR, 'phase-7.1-audit');
 const DAILY_SESSIONS_CSV = path.join(RESEARCH_DIR, 'DAILY_SESSION_CLASSIFICATION.csv');

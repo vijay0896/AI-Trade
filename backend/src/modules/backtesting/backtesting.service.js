@@ -3,11 +3,13 @@
  * @description Orchestration service for historical backtest runs, batch evaluations, and results indexing.
  */
 
+const fs = require('fs');
+const path = require('path');
 const BacktestEngine = require('./backtesting.engine');
 const BacktestStorageManager = require('./backtesting.storage');
 const { BacktestRunRequestSchema } = require('./backtesting.schema');
 const StrategyService = require('../strategy/strategy.service');
-const { DEFAULT_UNIVERSE, STRATEGY_VARIANTS } = require('../strategy/strategy.constants');
+const { DEFAULT_UNIVERSE, STRATEGY_VARIANTS, ACTIVE_STRATEGY } = require('../strategy/strategy.constants');
 const { AppError } = require('../../core/utils/asyncHandler');
 const logger = require('../../config/logger');
 
@@ -78,10 +80,10 @@ class BacktestService {
    */
   static async runBatchEvaluation(options = {}) {
     const targetSymbols = options.symbols || DEFAULT_UNIVERSE;
-    const targetVariants = options.variants || [STRATEGY_VARIANTS.VARIANT_A];
+    const targetVariants = options.variants || [STRATEGY_VARIANTS.EMA_9_21_CROSSOVER];
     const capital = options.capital || 100000;
     const slippageBps = options.slippageBps || 2.0;
-    const direction = options.direction || 'BOTH';
+    const direction = options.direction || ACTIVE_STRATEGY.DIRECTION || 'LONG_ONLY';
 
     const batchSummary = [];
     const startTime = Date.now();
@@ -163,6 +165,18 @@ class BacktestService {
       throw new AppError(`Trades for backtest run '${runId}' not found`, 404);
     }
     return trades;
+  }
+
+  /**
+   * Get 5-year consolidated backtest summary for EMA 9/21 Crossover
+   * @returns {Object}
+   */
+  static getEMA921Summary() {
+    const summaryPath = path.resolve(__dirname, '../../../storage/backtesting/ema_9_21/portfolio_summary.json');
+    if (fs.existsSync(summaryPath)) {
+      return JSON.parse(fs.readFileSync(summaryPath, 'utf-8'));
+    }
+    return null;
   }
 }
 

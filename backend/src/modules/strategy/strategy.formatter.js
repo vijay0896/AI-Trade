@@ -11,6 +11,30 @@ class StrategyFormatter {
    */
   static formatConfig(config) {
     if (!config) return null;
+
+    if (config.id === 'ema_9_21_crossover' || config.strategyId === 'ema_9_21_crossover') {
+      return {
+        id: config.id || 'ema_9_21_crossover',
+        name: config.name || 'EMA 9/21 Crossover',
+        version: config.version || '1.0.0',
+        variant: config.variant || 'EMA_9_21_CROSSOVER',
+        strategyId: 'ema_9_21_crossover',
+        description: config.description,
+        universe: config.universe,
+        timeframe: config.timeframe || '5minute',
+        timezone: config.timezone || 'Asia/Kolkata',
+        fastPeriod: config.fastPeriod || 9,
+        slowPeriod: config.slowPeriod || 21,
+        fastColor: config.fastColor || '#00C853',
+        slowColor: config.slowColor || '#FF0000',
+        direction: config.direction || 'LONG_ONLY',
+        fixedQuantity: config.fixedQuantity || 1,
+        capital: config.capital || 100000,
+        squareOffTime: config.squareOffTime || '15:15:00',
+        entryCutoffTime: config.entryCutoffTime || '15:00:00'
+      };
+    }
+
     return {
       id: config.id,
       name: config.name,
@@ -21,49 +45,49 @@ class StrategyFormatter {
       timeframe: config.timeframe,
       timezone: config.timezone,
       openingRange: {
-        startTime: config.openingRange.startTime,
-        endTime: config.openingRange.endTime,
-        candleInterval: config.openingRange.candleInterval,
-        expectedBars: config.openingRange.expectedBars,
-        minWidthPercent: config.openingRange.minWidthPercent,
-        maxWidthPercent: config.openingRange.maxWidthPercent
+        startTime: config.openingRange?.startTime,
+        endTime: config.openingRange?.endTime,
+        candleInterval: config.openingRange?.candleInterval,
+        expectedBars: config.openingRange?.expectedBars,
+        minWidthPercent: config.openingRange?.minWidthPercent,
+        maxWidthPercent: config.openingRange?.maxWidthPercent
       },
       entry: {
-        entryType: config.entry.entryType,
-        direction: config.entry.direction,
-        entryStartTime: config.entry.entryStartTime,
-        entryCutoffTime: config.entry.entryCutoffTime,
-        retestTolerancePercent: config.entry.retestTolerancePercent,
-        retestMaxBars: config.entry.retestMaxBars,
-        requireRetestConfirmationBar: config.entry.requireRetestConfirmationBar
+        entryType: config.entry?.entryType,
+        direction: config.entry?.direction,
+        entryStartTime: config.entry?.entryStartTime,
+        entryCutoffTime: config.entry?.entryCutoffTime,
+        retestTolerancePercent: config.entry?.retestTolerancePercent,
+        retestMaxBars: config.entry?.retestMaxBars,
+        requireRetestConfirmationBar: config.entry?.requireRetestConfirmationBar
       },
       exit: {
-        stopLossMode: config.exit.stopLossMode,
-        atrMultiplierSL: config.exit.atrMultiplierSL,
-        swingLookbackBars: config.exit.swingLookbackBars,
-        targetMode: config.exit.targetMode,
-        riskRewardRatio: config.exit.riskRewardRatio,
-        squareOffTime: config.exit.squareOffTime,
-        maxHoldingDurationBars: config.exit.maxHoldingDurationBars,
-        gapThroughStopModel: config.exit.gapThroughStopModel
+        stopLossMode: config.exit?.stopLossMode,
+        atrMultiplierSL: config.exit?.atrMultiplierSL,
+        swingLookbackBars: config.exit?.swingLookbackBars,
+        targetMode: config.exit?.targetMode,
+        riskRewardRatio: config.exit?.riskRewardRatio,
+        squareOffTime: config.exit?.squareOffTime,
+        maxHoldingDurationBars: config.exit?.maxHoldingDurationBars,
+        gapThroughStopModel: config.exit?.gapThroughStopModel
       },
       filters: {
-        adxThreshold: config.filters.adxThreshold,
-        adxRequireRising: config.filters.adxRequireRising,
-        diDirectionalConfirm: config.filters.diDirectionalConfirm,
-        rvolThreshold: config.filters.rvolThreshold,
-        choppinessMaxThreshold: config.filters.choppinessMaxThreshold,
-        efficiencyRatioMin: config.filters.efficiencyRatioMin,
-        maxVwapCrossesInFirstHour: config.filters.maxVwapCrossesInFirstHour
+        adxThreshold: config.filters?.adxThreshold,
+        adxRequireRising: config.filters?.adxRequireRising,
+        diDirectionalConfirm: config.filters?.diDirectionalConfirm,
+        rvolThreshold: config.filters?.rvolThreshold,
+        choppinessMaxThreshold: config.filters?.choppinessMaxThreshold,
+        efficiencyRatioMin: config.filters?.efficiencyRatioMin,
+        maxVwapCrossesInFirstHour: config.filters?.maxVwapCrossesInFirstHour
       },
       risk: {
-        accountCapital: config.risk.accountCapital,
-        riskPerTradePercent: config.risk.riskPerTradePercent,
-        dailyMaxLossPercent: config.risk.dailyMaxLossPercent,
-        maxTradesPerDay: config.risk.maxTradesPerDay,
-        maxActivePositionsPerStock: config.risk.maxActivePositionsPerStock,
-        maxPortfolioExposurePercent: config.risk.maxPortfolioExposurePercent,
-        leverageMultiplier: config.risk.leverageMultiplier
+        accountCapital: config.risk?.accountCapital,
+        riskPerTradePercent: config.risk?.riskPerTradePercent,
+        dailyMaxLossPercent: config.risk?.dailyMaxLossPercent,
+        maxTradesPerDay: config.risk?.maxTradesPerDay,
+        maxActivePositionsPerStock: config.risk?.maxActivePositionsPerStock,
+        maxPortfolioExposurePercent: config.risk?.maxPortfolioExposurePercent,
+        leverageMultiplier: config.risk?.leverageMultiplier
       },
       specialSessions: config.specialSessions
     };

@@ -6,6 +6,7 @@ import {
   PieChart,
   TrendingUp,
   FlaskConical,
+  Activity,
 } from "lucide-react";
 
 export interface NavItem {
@@ -57,8 +58,14 @@ export const TRADING_NAV_SECTIONS: NavSection[] = [
     ],
   },
   {
-    title: "QUANTITATIVE RESEARCH",
+    title: "TRADING & RESEARCH",
     items: [
+      {
+        name: "EMA 9/21 Strategy",
+        href: "/strategy",
+        icon: Activity,
+        badge: "Active",
+      },
       {
         name: "Research & Backtests",
         href: "/research",
