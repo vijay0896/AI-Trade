@@ -5,7 +5,7 @@ import {
   Wallet,
   PieChart,
   TrendingUp,
-  FlaskConical,
+  FileText,
   Activity,
 } from "lucide-react";
 
@@ -67,9 +67,9 @@ export const TRADING_NAV_SECTIONS: NavSection[] = [
         badge: "Active",
       },
       {
-        name: "Research & Backtests",
+        name: "Backtest Explorer",
         href: "/research",
-        icon: FlaskConical,
+        icon: FileText,
       },
     ],
   },

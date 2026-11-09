@@ -42,11 +42,7 @@ export const BacktestExplorerTab: React.FC = () => {
   // Set initial selected run if none chosen
   React.useEffect(() => {
     if (!selectedRunId && filteredRuns.length > 0) {
-      // Default to HDFCBANK Variant E or first run
-      const hdfcE = filteredRuns.find(
-        (r) => r.symbol === 'HDFCBANK' && r.variant === 'E_FULL_CONFIRMATION'
-      );
-      setSelectedRunId(hdfcE ? hdfcE.runId : filteredRuns[0].runId);
+      setSelectedRunId(filteredRuns[0].runId);
     }
   }, [filteredRuns, selectedRunId]);
 
@@ -443,8 +439,8 @@ export const BacktestExplorerTab: React.FC = () => {
                           ₹{Number(t.exitPrice).toFixed(2)}
                         </td>
                         <td className="px-3 py-2.5 text-right text-slate-900">{t.quantity}</td>
-                        <td className="px-3 py-2.5 text-right text-slate-600">
-                          ₹{Number(t.slippageCost).toFixed(2)}
+                        <td className="px-3 py-2.5 text-right font-mono text-slate-600">
+                          ₹{Number((t as any).totalSlippageCost ?? t.slippageCost ?? 0).toFixed(2)}
                         </td>
                         <td className="px-3 py-2.5 text-right text-slate-600">
                           ₹{Number(t.totalCharges).toFixed(2)}

@@ -10,7 +10,6 @@ const marketDataRoutes = require('../modules/market-data/marketData.routes');
 const indicatorsRoutes = require('../modules/indicators/indicators.routes');
 const strategyRoutes = require('../modules/strategy/strategy.routes');
 const backtestingRoutes = require('../modules/backtesting/backtesting.routes');
-const researchRoutes = require('../modules/research/research.routes');
 
 const router = express.Router();
 
@@ -21,7 +20,6 @@ router.use('/market-data', marketDataRoutes);
 router.use('/indicators', indicatorsRoutes);
 router.use('/strategy', strategyRoutes);
 router.use('/backtesting', backtestingRoutes);
-router.use('/research', researchRoutes);
 
 module.exports = router;
 
