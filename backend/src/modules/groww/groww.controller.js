@@ -79,6 +79,35 @@ class GrowwController {
       data: positions
     });
   });
+
+  /**
+   * @route POST /api/v1/groww/backtest
+   * @description Executes 15-Minute Intraday 9/21 EMA Crossover Backtest
+   */
+  static runBacktest = asyncHandler(async (req, res) => {
+    const {
+      symbols,
+      startDate,
+      endDate,
+      capitalPerTrade,
+      enableMultiTimeframe,
+      enableNR4Filter
+    } = req.body || {};
+
+    const results = await GrowwService.runIntradayBacktest({
+      symbols,
+      startDate,
+      endDate,
+      capitalPerTrade: Number(capitalPerTrade) || 100000,
+      enableMultiTimeframe: enableMultiTimeframe !== false,
+      enableNR4Filter: Boolean(enableNR4Filter)
+    });
+
+    return ApiResponse.success(res, {
+      message: '15-Minute 9/21 EMA Intraday Backtest executed successfully',
+      data: results
+    });
+  });
 }
 
 module.exports = GrowwController;

@@ -7,6 +7,8 @@ import type {
   GrowwFunds,
   GrowwHoldings,
   GrowwPositions,
+  BacktestRequest,
+  BacktestResponseData,
 } from "../types/groww.types";
 
 export const growwApi = baseApi.injectEndpoints({
@@ -49,6 +51,15 @@ export const growwApi = baseApi.injectEndpoints({
       query: () => "/groww/positions",
       providesTags: [API_TAGS.GROWW_POSITIONS],
     }),
+
+    runBacktest: builder.mutation<ApiResponse<BacktestResponseData>, BacktestRequest>({
+      query: (body) => ({
+        url: "/groww/backtest",
+        method: "POST",
+        body,
+      }),
+      invalidatesTags: [API_TAGS.BACKTESTING],
+    }),
   }),
 });
 
@@ -59,5 +70,6 @@ export const {
   useGetGrowwFundsQuery,
   useGetGrowwHoldingsQuery,
   useGetGrowwPositionsQuery,
+  useRunBacktestMutation,
 } = growwApi;
 

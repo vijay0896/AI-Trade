@@ -103,3 +103,75 @@ export interface GrowwPositions {
   positions: PositionItem[];
 }
 
+export interface BacktestRequest {
+  symbols: string[];
+  startDate: string;
+  endDate: string;
+  capitalPerTrade?: number;
+  enableMultiTimeframe?: boolean;
+  enableNR4Filter?: boolean;
+}
+
+export interface BacktestSummary {
+  symbol: string;
+  totalTrades: number;
+  winningTrades: number;
+  losingTrades: number;
+  breakevenTrades: number;
+  winRatePct: number;
+  netPnL: number;
+  profitFactor: number;
+  expectancyR: number;
+  maxDrawdownPct: number;
+  avgRiskReward: number;
+  morningWindowWinRate: number;
+  afternoonWindowWinRate: number;
+  compressionSetupWinRate: number;
+  bestSetupTag: string;
+}
+
+export interface StockBacktestMetrics {
+  symbol: string;
+  totalTrades: number;
+  winningTrades: number;
+  losingTrades: number;
+  breakevenTrades: number;
+  winRatePct: number;
+  netPnL: number;
+  profitFactor: number;
+  expectancyR: number;
+  maxDrawdownPct: number;
+  avgRiskReward: number;
+  morningWindowWinRate: number;
+  afternoonWindowWinRate: number;
+  compressionSetupWinRate: number;
+  bestSetupTag: string;
+}
+
+export interface BacktestTradeLog {
+  tradeId: string;
+  symbol: string;
+  direction: 'LONG' | 'SHORT';
+  entryTimeIST: string;
+  entryTimestamp: string;
+  exitTimestamp: string;
+  sessionWindow: string;
+  patternTags: string[];
+  entryPrice: number;
+  initialSL: number;
+  t1Hit: boolean;
+  t2Hit: boolean;
+  exitPrice: number;
+  exitReason: string;
+  quantity: number;
+  rMultiple: number;
+  netPnL: number;
+}
+
+export interface BacktestResponseData {
+  summary: BacktestSummary;
+  stockBreakdown: StockBacktestMetrics[];
+  tradeLog: BacktestTradeLog[];
+}
+
+

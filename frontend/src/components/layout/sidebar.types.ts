@@ -7,6 +7,7 @@ import {
   TrendingUp,
   FileText,
   Activity,
+  Zap,
 } from "lucide-react";
 
 export interface NavItem {
@@ -65,6 +66,12 @@ export const TRADING_NAV_SECTIONS: NavSection[] = [
         href: "/strategy",
         icon: Activity,
         badge: "Active",
+      },
+      {
+        name: "15m EMA Backtest",
+        href: "/backtest",
+        icon: Zap,
+        badge: "New",
       },
       {
         name: "Backtest Explorer",

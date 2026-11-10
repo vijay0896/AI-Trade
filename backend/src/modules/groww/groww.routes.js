@@ -44,5 +44,11 @@ router.get('/holdings', GrowwController.getHoldings);
  */
 router.get('/positions', GrowwController.getPositions);
 
+/**
+ * @route POST /api/v1/groww/backtest
+ * @description Executes 15-Minute Intraday 9/21 EMA Crossover Backtest
+ */
+router.post('/backtest', GrowwController.runBacktest);
+
 module.exports = router;
 

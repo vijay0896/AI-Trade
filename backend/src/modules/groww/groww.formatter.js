@@ -224,6 +224,65 @@ class GrowwFormatter {
       holdings: formattedList
     };
   }
+
+  /**
+   * Normalizes raw historical candle arrays/objects from Groww API.
+   *
+   * @param {Array} rawCandles - Array of raw candles [[time, o, h, l, c, v], ...]
+   * @param {string} [symbol=''] - Stock symbol
+   * @returns {Array<Object>} Normalized candles: { timestamp, istDate, istTime, open, high, low, close, volume }
+   */
+  static formatCandles(rawCandles, symbol = '') {
+    if (!Array.isArray(rawCandles)) return [];
+
+    return rawCandles.map((c) => {
+      let rawTime, open, high, low, close, volume;
+
+      if (Array.isArray(c)) {
+        [rawTime, open, high, low, close, volume] = c;
+      } else if (c && typeof c === 'object') {
+        rawTime = c.timestamp || c.time || c.date;
+        open = c.open;
+        high = c.high;
+        low = c.low;
+        close = c.close;
+        volume = c.volume;
+      }
+
+      // Format timestamp YYYY-MM-DDTHH:mm:ss
+      let timestamp = '';
+      let istDate = '';
+      let istTime = '';
+
+      if (typeof rawTime === 'number') {
+        const ms = rawTime > 1e11 ? rawTime : rawTime * 1000;
+        const d = new Date(ms);
+        // Format to IST ISO representation
+        const pad = (n) => String(n).padStart(2, '0');
+        istDate = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+        istTime = `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+        timestamp = `${istDate}T${istTime}`;
+      } else if (typeof rawTime === 'string') {
+        const clean = rawTime.trim().replace(' ', 'T');
+        timestamp = clean.slice(0, 19);
+        const parts = timestamp.split('T');
+        istDate = parts[0] || '';
+        istTime = parts[1] || '09:15:00';
+      }
+
+      return {
+        symbol,
+        timestamp,
+        istDate,
+        istTime,
+        open: Number(open) || 0,
+        high: Number(high) || 0,
+        low: Number(low) || 0,
+        close: Number(close) || 0,
+        volume: Number(volume) || 0
+      };
+    }).filter((c) => c.timestamp && c.open > 0 && c.close > 0);
+  }
 }
 
 module.exports = GrowwFormatter;

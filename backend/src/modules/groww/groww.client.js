@@ -91,40 +91,129 @@ class GrowwClient {
   }
 
   /**
-   * Generic authorized GET request handler.
+   * Fetches historical candles from Groww API.
+   * Supports 15m and Daily intervals with flexible parameters.
+   *
+   * @param {Object} params
+   * @param {string} params.growwSymbol - e.g. 'NSE-TATAMOTORS'
+   * @param {string} [params.exchange='NSE']
+   * @param {string} [params.segment='CASH']
+   * @param {string} params.startTime - 'YYYY-MM-DD HH:mm:ss'
+   * @param {string} params.endTime - 'YYYY-MM-DD HH:mm:ss'
+   * @param {string|number} [params.candleInterval='15minute'] - '15minute' or '1day' or interval in minutes (15, 1440)
+   * @param {string} accessToken
+   * @returns {Promise<Object>}
+   */
+  static async getHistoricalCandles(params, accessToken) {
+    let intervalStr = params.candleInterval || '15minute';
+    if (params.interval_in_minutes === 1440 || intervalStr === '1440' || intervalStr === '1day' || intervalStr === 'daily') {
+      intervalStr = '1day';
+    } else if (params.interval_in_minutes === 15 || intervalStr === '15' || intervalStr === '15m') {
+      intervalStr = '15minute';
+    }
+
+    const growwSymbol = params.growwSymbol || (params.tradingSymbol ? `${params.exchange || 'NSE'}-${params.tradingSymbol}` : 'NSE-ICICIBANK');
+    const exchange = params.exchange || 'NSE';
+    const segment = params.segment || 'CASH';
+
+    const queryParams = new URLSearchParams({
+      exchange,
+      segment,
+      groww_symbol: growwSymbol,
+      start_time: params.startTime,
+      end_time: params.endTime,
+      candle_interval: intervalStr
+    });
+
+    const url = `${env.GROWW_API_BASE_URL}/v1/historical/candles?${queryParams.toString()}`;
+
+    try {
+      return await this._authorizedGet(url, accessToken);
+    } catch (err) {
+      logger.warn(`Groww getHistoricalCandles primary API failed for ${growwSymbol} [${intervalStr}]: ${err.message}. Trying range endpoint fallback...`);
+      // Try /v1/historical/candle/range endpoint format as requested
+      const tradingSymbol = growwSymbol.replace(/^(NSE|BSE)-/, '');
+      const rangeParams = new URLSearchParams({
+        exchange,
+        segment,
+        trading_symbol: tradingSymbol,
+        interval_in_minutes: intervalStr === '1day' ? '1440' : '15',
+        start_time: params.startTime,
+        end_time: params.endTime
+      });
+      const rangeUrl = `${env.GROWW_API_BASE_URL}/v1/historical/candle/range?${rangeParams.toString()}`;
+      try {
+        return await this._authorizedGet(rangeUrl, accessToken);
+      } catch (rangeErr) {
+        throw err;
+      }
+    }
+  }
+
+  /**
+   * Generic authorized GET request handler with automatic 429 rate-limit backoff & retry.
    *
    * @private
    * @param {string} url
    * @param {string} accessToken
+   * @param {number} [retries=3]
+   * @param {number} [backoffMs=1500]
    * @returns {Promise<Object>}
    */
-  static async _authorizedGet(url, accessToken) {
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${accessToken}`,
-          Accept: 'application/json',
-          'X-API-VERSION': env.GROWW_API_VERSION
+  static async _authorizedGet(url, accessToken, retries = 3, backoffMs = 1500) {
+    for (let attempt = 1; attempt <= retries; attempt++) {
+      try {
+        const response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+            Accept: 'application/json',
+            'X-API-VERSION': env.GROWW_API_VERSION
+          }
+        });
+
+        // Handle 429 Rate Limit with exponential backoff retry
+        if (response.status === 429) {
+          const retryAfterHeader = response.headers.get('retry-after');
+          const retryAfterSec = retryAfterHeader ? parseInt(retryAfterHeader, 10) : NaN;
+          const waitMs = !isNaN(retryAfterSec) && retryAfterSec > 0
+            ? retryAfterSec * 1000
+            : backoffMs * attempt;
+
+          if (attempt < retries) {
+            logger.warn(`Groww API 429 Rate Limit hit on [${url}]. Backing off for ${waitMs}ms (retry ${attempt}/${retries})...`);
+            await new Promise((resolve) => setTimeout(resolve, waitMs));
+            continue;
+          }
         }
-      });
 
-      const data = await response.json();
+        let data;
+        try {
+          data = await response.json();
+        } catch {
+          data = null;
+        }
 
-      if (!response.ok) {
-        logger.warn(`Groww API GET [${url}] returned status ${response.status}`, data);
-        throw new AppError(
-          data.message || data.error || `Groww API error: ${response.statusText}`,
-          response.status,
-          data
-        );
+        if (!response.ok) {
+          logger.warn(`Groww API GET [${url}] returned status ${response.status}`, data);
+          const errMsg = data?.error?.message || data?.message || `Groww API error: ${response.statusText}`;
+          throw new AppError(errMsg, response.status, data);
+        }
+
+        return data;
+      } catch (err) {
+        if (err instanceof AppError) {
+          // If 429 exhausted all retries or other HTTP client error, throw it
+          throw err;
+        }
+        if (attempt < retries) {
+          logger.warn(`Groww API Network Error on [${url}]: ${err.message}. Retrying in ${backoffMs * attempt}ms...`);
+          await new Promise((resolve) => setTimeout(resolve, backoffMs * attempt));
+          continue;
+        }
+        logger.error(`Groww API Network Error on [${url}]:`, { error: err.message });
+        throw new AppError(`Groww Service Error: ${err.message}`, 502);
       }
-
-      return data;
-    } catch (err) {
-      if (err instanceof AppError) throw err;
-      logger.error(`Groww API Network Error on [${url}]:`, { error: err.message });
-      throw new AppError(`Groww Service Error: ${err.message}`, 502);
     }
   }
 
